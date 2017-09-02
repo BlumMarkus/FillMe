@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">FillMe</string>
+    <string name="str_TitleActualMileage">Kilometerstand:</string>
+    <string name="str_TitleLastEntry">Letzer Eintrag:</string>
+    <string name="str_TitleActualConsumption">Verbrauch:</string>
+    <string name="str_TitleConsumptionCost">Kosten:</string>
+    <string name="str_TitleTotalConsumption">Gesamtverbrauch:</string>
+    <string name="str_TitleTotalConsumptionCost">Gesamtkosten:</string>
+
+    <string name="str_newEntry">Neuer Eintrag</string>
+    <string name="str_changeEntry">Eintrag bearbeiten</string>
+    <string name="str_showEntry">Einträge einsehen</string>
+    <string name="str_DataLastFill">Letzter Tank</string>
+    <string name="str_DataLastMonth">Dieser Monat</string>
+    <string name="str_DataLastYear">Dieses Jahr</string>
+
+    <string name="str_UnitActualMileage">km</string>
+    <string name="str_UnitEuro">€</string>
+    <string name="str_UnitLiter">l</string>
+    <string name="str_UnitActualConsumption">l pro 100 km</string>
+    <string name="str_UnitConsumptionCost">€ pro 100 km</string>
+    <string name="str_UnitTotalConsumption">l pro 100 km</string>
+    <string name="str_UnitTotalConsumptionCost">€ pro 100 km</string>
+
+    <string name="str_headlineNewEntry">Neuer Eintrag</string>
+    <string name="str_pickDate">auswählen</string>
+    <string name="str_date">Datum</string>
+    <string name="str_Mileage">Kilometerstand</string>
+    <string name="str_amount">Betrag</string>
+    <string name="str_liter">Liter</string>
+    <string name="str_back">zurück</string>
+    <string name="str_accept">bestätigen</string>
+    <string name="str_save">speichern</string>
+    <string name="str_delete">löschen</string>
+
+    <string name="str_yes">JA</string>
+    <string name="str_no">NEIN</string>
+</resources>
