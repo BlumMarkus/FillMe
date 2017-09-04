@@ -226,24 +226,4 @@ public class MenuActivity extends AppCompatActivity {
         tv_actualConsumption.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100)));
         tv_actualConsumptionCost.setText(String.valueOf(f.format((sumCost / totalDistance) * 100)));
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        item.getItemId();
-
-        switch(item.getItemId()) {
-            case R.id.action_settings:
-                Intent intent = new Intent(MenuActivity.this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 }

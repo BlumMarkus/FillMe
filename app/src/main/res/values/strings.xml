@@ -35,4 +35,10 @@
 
     <string name="str_yes">JA</string>
     <string name="str_no">NEIN</string>
+
+    <color name="lightBlue">#60a4e0</color>
+    <color name="blue">#3e7eb7</color>
+    <color name="darkBlue">#124068</color>
+
+    <color name="lightBackground">#b7ddff</color>
 </resources>

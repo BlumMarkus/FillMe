@@ -40,25 +40,10 @@ public class newEntryActivity extends AppCompatActivity {
     private double liter;
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == android.R.id.home) {
-            this.finish();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newentry);
         fmds = new FillMeDataSource(this);
-
-        // Back-Button
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Button btn_accept = (Button) findViewById(R.id.btn_accept);
         Button btn_selectDate = (Button) findViewById(R.id.btn_SelectDate);
