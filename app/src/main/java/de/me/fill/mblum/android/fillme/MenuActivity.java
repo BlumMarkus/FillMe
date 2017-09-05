@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -23,56 +24,57 @@ public class MenuActivity extends AppCompatActivity {
     private Calendar cal;
     private int yearCal;
     private int monthCal;
-    private String logTag = "MenuActivity";
+    private String LOGTAG = "MenuActivity";
 
     private ArrayList<FillEntry> list;
     private ArrayList<FillEntry> monthList;
     private ArrayList<FillEntry> yearList;
 
-    private TextView tv_actualMileage;
-    private TextView tv_lastEntry;
-    private TextView tv_actualConsumption;
-    private TextView tv_actualConsumptionCost;
-    private TextView tv_totalConsumption;
-    private TextView tv_totalConsumptionCost;
+    private TextView tv_show_last_mileage;
+    private TextView tv_show_last_date;
 
-    private Button btn_newEntry;
-    private Button btn_showEntryList;
-    private Button btn_statistic_lastFill;
-    private Button btn_statistic_lastMonth;
-    private Button btn_statistic_lastYear;
+    private TextView tv_show_overview_mileage;
+    private TextView tv_show_overview_time;
+    private TextView tv_show_overview_cost;
+    private TextView tv_show_overview_liter;
+
+    private ImageButton btn_add_new_entry;
+    private ImageButton btn_show_statistic_list;
+    private ImageButton btn_show_statistic_diagram;
+
+    private ImageButton btn_show_overview_last_fill;
+    private ImageButton btn_show_overview_last_month;
+    private ImageButton btn_show_overview_last_year;
+    private ImageButton btn_show_overview_all;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        Log.d(logTag,"onCreate wurde erfolgreich aufgerufen.");
+        Log.d(LOGTAG,"onCreate wurde erfolgreich aufgerufen.");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(logTag,"onResume wurde erfolgreich aufgerufen.");
+        Log.d(LOGTAG,"onResume wurde erfolgreich aufgerufen.");
 
-        btn_newEntry = (Button) findViewById(R.id.btn_newEntry);
-        btn_showEntryList = (Button) findViewById(R.id.btn_showEntry);
+        btn_add_new_entry = (ImageButton) findViewById(R.id.btn_menu_add_new_entry);
+        btn_show_statistic_list = (ImageButton) findViewById(R.id.btn_menu_show_statistic_list);
+        btn_show_statistic_diagram = (ImageButton) findViewById(R.id.btn_menu_show_statistic_diagram);
 
-        btn_statistic_lastFill = (Button) findViewById(R.id.btn_DataLastFill);
-        btn_statistic_lastMonth = (Button) findViewById(R.id.btn_DataLastMonth);
-        btn_statistic_lastYear = (Button) findViewById(R.id.btn_DataLastYear);
+        btn_show_overview_last_fill = (ImageButton) findViewById(R.id.btn_menu_show_overview_last_fill);
+        btn_show_overview_last_month = (ImageButton) findViewById(R.id.btn_menu_show_overview_last_month);
+        btn_show_overview_last_year = (ImageButton) findViewById(R.id.btn_menu_show_overview_last_year);
+        btn_show_overview_all = (ImageButton) findViewById(R.id.btn_menu_show_overview_all);
 
-        tv_actualMileage = (TextView) findViewById(R.id.txt_ActualMileage);
-        tv_lastEntry = (TextView) findViewById(R.id.txt_LastEntry);
-        tv_actualConsumption = (TextView) findViewById(R.id.txt_ActualConsumption);
-        tv_actualConsumptionCost = (TextView) findViewById(R.id.txt_ActualConsumptionCost);
-        tv_totalConsumption = (TextView) findViewById(R.id.txt_TotalConsumption);
-        tv_totalConsumptionCost = (TextView) findViewById(R.id.txt_TotalConsumptionCost);
+        tv_show_last_mileage = (TextView) findViewById(R.id.tv_menu_show_last_mileage);
+        tv_show_last_date = (TextView) findViewById(R.id.tv_menu_show_last_date);
 
-        btn_newEntry.setBackgroundResource(R.color.passiveButton);
-        btn_showEntryList.setBackgroundResource(R.color.passiveButton);
-        btn_statistic_lastFill.setBackgroundResource(R.color.passiveButton);
-        btn_statistic_lastMonth.setBackgroundResource(R.color.passiveButton);
-        btn_statistic_lastYear.setBackgroundResource(R.color.passiveButton);
+        tv_show_overview_mileage = (TextView) findViewById(R.id.tv_menu_show_overview_mileage);
+        tv_show_overview_time = (TextView) findViewById(R.id.tv_menu_show_overview_time);
+        tv_show_overview_cost = (TextView) findViewById(R.id.tv_menu_show_overview_cost);
+        tv_show_overview_liter = (TextView) findViewById(R.id.tv_menu_show_overview_liter);
 
         cal = Calendar.getInstance();
         yearCal = cal.get(Calendar.YEAR);
@@ -84,9 +86,9 @@ public class MenuActivity extends AppCompatActivity {
         yearList = fmds.getlastYear(yearCal);
         updateDisplayedData(list);
 
-        Log.d(logTag,"onResume ist hier zuende.");
+        Log.d(LOGTAG,"onResume ist hier zuende.");
 
-        btn_newEntry.setOnClickListener(new OnClickListener() {
+        btn_add_new_entry.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MenuActivity.this, newEntryActivity.class);
@@ -94,7 +96,7 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
-        btn_showEntryList.setOnClickListener(new OnClickListener() {
+        btn_show_statistic_list.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MenuActivity.this, showEntriesActivity.class);
@@ -102,101 +104,130 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
-        btn_statistic_lastFill.setOnClickListener(new OnClickListener() {
+        btn_show_overview_last_fill.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                btn_statistic_lastFill.setBackgroundResource(R.color.activeButton);
-                btn_statistic_lastMonth.setBackgroundResource(R.color.passiveButton);
-                btn_statistic_lastYear.setBackgroundResource(R.color.passiveButton);
+                btn_show_overview_last_fill.setBackgroundResource(R.color.activeButton);
+                btn_show_overview_last_month.setBackgroundResource(R.color.passiveButton);
+                btn_show_overview_last_year.setBackgroundResource(R.color.passiveButton);
+                btn_show_overview_all.setBackgroundResource(R.color.passiveButton);
 
-                updateStatisticLastFill(list);
+                //updateStatisticLastFill(list);
             }
         });
 
-        btn_statistic_lastMonth.setOnClickListener(new OnClickListener() {
+        btn_show_overview_last_month.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                btn_statistic_lastFill.setBackgroundResource(R.color.passiveButton);
-                btn_statistic_lastMonth.setBackgroundResource(R.color.activeButton);
-                btn_statistic_lastYear.setBackgroundResource(R.color.passiveButton);
+                btn_show_overview_last_fill.setBackgroundResource(R.color.passiveButton);
+                btn_show_overview_last_month.setBackgroundResource(R.color.activeButton);
+                btn_show_overview_last_year.setBackgroundResource(R.color.passiveButton);
+                btn_show_overview_all.setBackgroundResource(R.color.passiveButton);
 
-                updateStatistic(monthList);
+                //updateStatistic(monthList);
             }
         });
 
-        btn_statistic_lastYear.setOnClickListener(new OnClickListener() {
+        btn_show_overview_last_year.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                btn_statistic_lastFill.setBackgroundResource(R.color.passiveButton);
-                btn_statistic_lastMonth.setBackgroundResource(R.color.passiveButton);
-                btn_statistic_lastYear.setBackgroundResource(R.color.activeButton);
+                btn_show_overview_last_fill.setBackgroundResource(R.color.passiveButton);
+                btn_show_overview_last_month.setBackgroundResource(R.color.passiveButton);
+                btn_show_overview_last_year.setBackgroundResource(R.color.activeButton);
+                btn_show_overview_all.setBackgroundResource(R.color.passiveButton);
 
-                updateStatistic(yearList);
+                //updateStatistic(yearList);
             }
         });
-    }
+
+        btn_show_overview_all.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btn_show_overview_last_fill.setBackgroundResource(R.color.passiveButton);
+                btn_show_overview_last_month.setBackgroundResource(R.color.passiveButton);
+                btn_show_overview_last_year.setBackgroundResource(R.color.passiveButton);
+                btn_show_overview_all.setBackgroundResource(R.color.activeButton);
+
+                updateOverviewAll(list);
+            }
+        });
+}
 
     private void updateDisplayedData(ArrayList<FillEntry> sortedList) {
         int listSize = sortedList.size();
 
-        btn_statistic_lastFill.setEnabled(false);
-        btn_statistic_lastMonth.setEnabled(false);
-        btn_statistic_lastYear.setEnabled(false);
+        btn_show_overview_last_fill.setEnabled(false);
+        btn_show_overview_last_month.setEnabled(false);
+        btn_show_overview_last_year.setEnabled(false);
+        btn_show_overview_all.setEnabled(false);
 
         if (listSize == 0) {
-            tv_actualMileage.setText("n/a");
-            tv_lastEntry.setText("n/a");
-            tv_actualConsumption.setText("n/a");
-            tv_actualConsumptionCost.setText("n/a");
-            tv_totalConsumption.setText("n/a");
-            tv_totalConsumptionCost.setText("n/a");
-        } else if (listSize == 1) {
-            tv_actualMileage.setText((String.valueOf(sortedList.get(0).getMileage())));
-            tv_lastEntry.setText(String.valueOf(sortedList.get(0).getDate()));
+            tv_show_last_mileage.setText("n/a");
+            tv_show_last_date.setText("n/a");
 
-            tv_actualConsumption.setText("n/a");
-            tv_actualConsumptionCost.setText("n/a");
-            tv_totalConsumption.setText("n/a");
-            tv_totalConsumptionCost.setText("n/a");
+            tv_show_overview_mileage.setText("n/a");
+            tv_show_overview_time.setText("n/a");
+            tv_show_overview_cost.setText("n/a");
+            tv_show_overview_liter.setText("n/a");
+        } else if (listSize == 1) {
+            btn_show_overview_all.setBackgroundResource(R.color.activeButton);
+
+            tv_show_last_mileage.setText(String.valueOf(sortedList.get(0).getMileage()));
+            tv_show_last_date.setText(String.valueOf(sortedList.get(0).getDate()));
+
+            tv_show_overview_mileage.setText(String.valueOf(sortedList.get(0).getMileage()));
+            tv_show_overview_time.setText("last fill"); //Müssen hier noch ausrechnen, wie viel tage das schon her ist
+            tv_show_overview_cost.setText(String.valueOf(sortedList.get(0).getPrice()));
+            tv_show_overview_liter.setText(String.valueOf(sortedList.get(0).getLiter()));
         } else {
-            btn_statistic_lastFill.setEnabled(true);
+            btn_show_overview_last_fill.setEnabled(true);
+            btn_show_overview_all.setEnabled(true);
 
             if (monthList.size() > 1) {
-                btn_statistic_lastMonth.setEnabled(true);
+                btn_show_overview_last_month.setEnabled(true);
             }
 
             if (yearList.size() > 1) {
-                btn_statistic_lastYear.setEnabled(true);
+                btn_show_overview_last_year.setEnabled(true);
             }
 
-            tv_actualMileage.setText((String.valueOf(sortedList.get(0).getMileage())));
-            tv_lastEntry.setText(String.valueOf(sortedList.get(0).getDate()));
+            tv_show_last_mileage.setText((String.valueOf(sortedList.get(0).getMileage())));
+            tv_show_last_date.setText(String.valueOf(sortedList.get(0).getDate()));
 
             int actualDistance = sortedList.get(0).getMileage() - sortedList.get(1).getMileage();
 
-            tv_actualConsumption.setText(String.valueOf(f.format((sortedList.get(0).getLiter() / actualDistance) * 100)));
-            tv_actualConsumptionCost.setText(String.valueOf(f.format((sortedList.get(0).getPrice() / actualDistance) * 100)));
+            tv_show_overview_mileage.setText(String.valueOf(actualDistance));
+            tv_show_overview_time.setText(""); //Müssen hier noch ausrechnen, wie viel tage das schon her ist
+            tv_show_overview_cost.setText(String.valueOf(f.format((sortedList.get(0).getPrice() / actualDistance) * 100)));
+            tv_show_overview_liter.setText(String.valueOf(f.format((sortedList.get(0).getLiter() / actualDistance) * 100)));
 
-            btn_statistic_lastFill.setBackgroundResource(R.color.activeButton);
-            
-            int totalDistance = sortedList.get(0).getMileage() - sortedList.get(listSize - 1).getMileage();
-
-            double sumCost = 0;
-            double sumLiter = 0;
-
-            for (FillEntry entry : sortedList) {
-                sumCost += entry.getPrice();
-                sumLiter += entry.getLiter();
-            }
-
-            sumCost -= sortedList.get(listSize - 1).getPrice();
-            sumLiter -=  sortedList.get(listSize - 1).getLiter();
-
-            tv_totalConsumption.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100)));
-            tv_totalConsumptionCost.setText(String.valueOf(f.format((sumCost / totalDistance) * 100)));
+            btn_show_overview_last_fill.setBackgroundResource(R.color.activeButton);
         }
     }
 
+    private void updateOverviewAll(ArrayList<FillEntry> sortedList) {
+        int listSize = sortedList.size();
+
+        int totalDistance = sortedList.get(0).getMileage() - sortedList.get(listSize - 1).getMileage();
+
+        double sumCost = 0;
+        double sumLiter = 0;
+
+        for (FillEntry entry : sortedList) {
+            sumCost += entry.getPrice();
+            sumLiter += entry.getLiter();
+        }
+
+        sumCost -= sortedList.get(listSize - 1).getPrice();
+        sumLiter -=  sortedList.get(listSize - 1).getLiter();
+
+        tv_show_overview_mileage.setText(String.valueOf(totalDistance + " km"));
+
+        tv_show_overview_liter.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100)));
+        tv_show_overview_cost.setText(String.valueOf(f.format((sumCost / totalDistance) * 100)));
+    }
+
+    /*
     private void updateStatisticLastFill(ArrayList<FillEntry> sortedList) {
         tv_actualMileage.setText((String.valueOf(sortedList.get(0).getMileage())));
         tv_lastEntry.setText(String.valueOf(sortedList.get(0).getDate()));
@@ -226,4 +257,5 @@ public class MenuActivity extends AppCompatActivity {
         tv_actualConsumption.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100)));
         tv_actualConsumptionCost.setText(String.valueOf(f.format((sumCost / totalDistance) * 100)));
     }
+    */
 }

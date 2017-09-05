@@ -36,9 +36,14 @@
     <string name="str_yes">JA</string>
     <string name="str_no">NEIN</string>
 
-    <color name="lightBlue">#60a4e0</color>
-    <color name="blue">#3e7eb7</color>
-    <color name="darkBlue">#124068</color>
+    <color name="whiteBlue">#7cd3f8</color>
+    <color name="lightBlue">#1a769d</color>
+    <color name="blue">#11688d</color>
+    <color name="darkBlue">#074762</color>
+    <color name="blackBlue">#163d4e</color>
 
-    <color name="lightBackground">#b7ddff</color>
+    <color name="lightBackground">#2e88ae</color>
+
+    <color name="activeButton">#1a769d</color>
+    <color name="passiveButton">#2e88ae</color>
 </resources>
