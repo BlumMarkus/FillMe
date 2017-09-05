@@ -122,7 +122,7 @@
             android:textColor="@color/blackBlue"
             android:textAlignment="center"
             android:gravity="center"
-            android:drawableStart="@drawable/date_icon" />
+            android:drawableStart="@drawable/calendar_icon" />
     </LinearLayout>
 
     <LinearLayout

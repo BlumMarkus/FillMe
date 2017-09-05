@@ -112,7 +112,7 @@ public class MenuActivity extends AppCompatActivity {
                 btn_show_overview_last_year.setBackgroundResource(R.color.passiveButton);
                 btn_show_overview_all.setBackgroundResource(R.color.passiveButton);
 
-                //updateStatisticLastFill(list);
+                updateOverviewLastFill(list);
             }
         });
 
@@ -124,7 +124,7 @@ public class MenuActivity extends AppCompatActivity {
                 btn_show_overview_last_year.setBackgroundResource(R.color.passiveButton);
                 btn_show_overview_all.setBackgroundResource(R.color.passiveButton);
 
-                //updateStatistic(monthList);
+                updateOverviewLastMonth(monthList);
             }
         });
 
@@ -136,7 +136,7 @@ public class MenuActivity extends AppCompatActivity {
                 btn_show_overview_last_year.setBackgroundResource(R.color.activeButton);
                 btn_show_overview_all.setBackgroundResource(R.color.passiveButton);
 
-                //updateStatistic(yearList);
+                updateOverviewLastYear(yearList);
             }
         });
 
@@ -176,7 +176,7 @@ public class MenuActivity extends AppCompatActivity {
             tv_show_last_date.setText(String.valueOf(sortedList.get(0).getDate()));
 
             tv_show_overview_mileage.setText(String.valueOf(sortedList.get(0).getMileage()));
-            tv_show_overview_time.setText("last fill"); //Müssen hier noch ausrechnen, wie viel tage das schon her ist
+            tv_show_overview_time.setText(""); //Müssen hier noch ausrechnen, wie viel tage das schon her ist
             tv_show_overview_cost.setText(String.valueOf(sortedList.get(0).getPrice()));
             tv_show_overview_liter.setText(String.valueOf(sortedList.get(0).getLiter()));
         } else {
@@ -222,9 +222,63 @@ public class MenuActivity extends AppCompatActivity {
         sumLiter -=  sortedList.get(listSize - 1).getLiter();
 
         tv_show_overview_mileage.setText(String.valueOf(totalDistance + " km"));
-
+        tv_show_overview_time.setText(""); //MÜssen wir noch ausrehcnen, wie viele Tage das schon her ist
         tv_show_overview_liter.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100)));
         tv_show_overview_cost.setText(String.valueOf(f.format((sumCost / totalDistance) * 100)));
+    }
+
+    private void updateOverviewLastFill(ArrayList<FillEntry> sortedList) {
+
+        int actualDistance = sortedList.get(0).getMileage() - sortedList.get(1).getMileage();
+
+        tv_show_overview_mileage.setText(String.valueOf(actualDistance + " km"));
+        tv_show_overview_time.setText(""); //MÜssen wir noch ausrehcnen, wie viele Tage das schon her ist
+        tv_show_overview_cost.setText(String.valueOf(f.format((sortedList.get(0).getPrice() / actualDistance) * 100)));
+        tv_show_overview_liter.setText(String.valueOf(f.format((sortedList.get(0).getLiter() / actualDistance) * 100)));
+    }
+
+    private void updateOverviewLastMonth(ArrayList<FillEntry> sortedList) {
+        int listSize = sortedList.size();
+
+        int totalDistance = sortedList.get(0).getMileage() - sortedList.get(listSize - 1).getMileage();
+
+        double sumCost = 0;
+        double sumLiter = 0;
+
+        for (FillEntry entry : sortedList) {
+            sumCost += entry.getPrice();
+            sumLiter += entry.getLiter();
+        }
+
+        sumCost -= sortedList.get(listSize - 1).getPrice();
+        sumLiter -=  sortedList.get(listSize - 1).getLiter();
+
+        tv_show_overview_mileage.setText(String.valueOf(totalDistance + " km"));
+        tv_show_overview_time.setText(""); //MÜssen wir noch ausrehcnen, wie viele Tage das schon her ist
+        tv_show_overview_cost.setText(String.valueOf(f.format((sumCost / totalDistance) * 100)));
+        tv_show_overview_liter.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100)));
+    }
+
+    private void updateOverviewLastYear(ArrayList<FillEntry> sortedList) {
+        int listSize = sortedList.size();
+
+        int totalDistance = sortedList.get(0).getMileage() - sortedList.get(listSize - 1).getMileage();
+
+        double sumCost = 0;
+        double sumLiter = 0;
+
+        for (FillEntry entry : sortedList) {
+            sumCost += entry.getPrice();
+            sumLiter += entry.getLiter();
+        }
+
+        sumCost -= sortedList.get(listSize - 1).getPrice();
+        sumLiter -=  sortedList.get(listSize - 1).getLiter();
+
+        tv_show_overview_mileage.setText(String.valueOf(totalDistance + " km"));
+        tv_show_overview_time.setText(""); //MÜssen wir noch ausrehcnen, wie viele Tage das schon her ist
+        tv_show_overview_cost.setText(String.valueOf(f.format((sumCost / totalDistance) * 100)));
+        tv_show_overview_liter.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100)));
     }
 
     /*
