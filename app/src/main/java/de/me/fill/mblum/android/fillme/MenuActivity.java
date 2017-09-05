@@ -21,14 +21,17 @@ public class MenuActivity extends AppCompatActivity {
 
     FillMeDataSource fmds;
     DecimalFormat f = new DecimalFormat("#0.00");
-    private Calendar cal;
-    private int yearCal;
-    private int monthCal;
+
+    private Calendar calendar;
+    private int actualCalendarDay;
+    private int actualCalendarMonth;
+    private int actualCalendarYear;
+
     private String LOGTAG = "MenuActivity";
 
-    private ArrayList<FillEntry> list;
-    private ArrayList<FillEntry> monthList;
-    private ArrayList<FillEntry> yearList;
+    private ArrayList<FillEntry> fullDataList;
+    private ArrayList<FillEntry> lastMonthList;
+    private ArrayList<FillEntry> lastYearList;
 
     private TextView tv_show_last_mileage;
     private TextView tv_show_last_date;
@@ -76,15 +79,22 @@ public class MenuActivity extends AppCompatActivity {
         tv_show_overview_cost = (TextView) findViewById(R.id.tv_menu_show_overview_cost);
         tv_show_overview_liter = (TextView) findViewById(R.id.tv_menu_show_overview_liter);
 
-        cal = Calendar.getInstance();
-        yearCal = cal.get(Calendar.YEAR);
-        monthCal = cal.get(Calendar.MONTH);
+        calendar = Calendar.getInstance();
+        actualCalendarDay = calendar.get(Calendar.DAY_OF_MONTH);
+        actualCalendarMonth = calendar.get(Calendar.MONTH) + 1;
+        actualCalendarYear = calendar.get(Calendar.YEAR);
 
         fmds = new FillMeDataSource(this);
-        list = fmds.getAllEntries();
-        monthList = fmds.getlastMonth(monthCal + 1, yearCal);
-        yearList = fmds.getlastYear(yearCal);
-        updateDisplayedData(list);
+        fullDataList = fmds.getAllEntries();
+        lastMonthList = fmds.getlastMonth(actualCalendarMonth, actualCalendarYear);
+        lastYearList = fmds.getlastYear(actualCalendarYear);
+
+        updateDisplayedData(fullDataList);
+
+        Log.d(LOGTAG, "Listen wurden geladen:");
+        Log.d(LOGTAG, "fullDataList(" + fullDataList.size() + "):" + fullDataList);
+        Log.d(LOGTAG, "lastMonthList(" + lastMonthList.size() + "):" + lastMonthList);
+        Log.d(LOGTAG, "lastYearList(" + lastYearList.size() + "):" + lastYearList);
 
         Log.d(LOGTAG,"onResume ist hier zuende.");
 
@@ -112,7 +122,7 @@ public class MenuActivity extends AppCompatActivity {
                 btn_show_overview_last_year.setBackgroundResource(R.color.passiveButton);
                 btn_show_overview_all.setBackgroundResource(R.color.passiveButton);
 
-                updateOverviewLastFill(list);
+                updateOverviewLastFill(fullDataList);
             }
         });
 
@@ -124,7 +134,7 @@ public class MenuActivity extends AppCompatActivity {
                 btn_show_overview_last_year.setBackgroundResource(R.color.passiveButton);
                 btn_show_overview_all.setBackgroundResource(R.color.passiveButton);
 
-                updateOverviewLastMonth(monthList);
+                updateOverviewLastMonth(lastMonthList);
             }
         });
 
@@ -136,7 +146,7 @@ public class MenuActivity extends AppCompatActivity {
                 btn_show_overview_last_year.setBackgroundResource(R.color.activeButton);
                 btn_show_overview_all.setBackgroundResource(R.color.passiveButton);
 
-                updateOverviewLastYear(yearList);
+                updateOverviewLastYear(lastYearList);
             }
         });
 
@@ -148,7 +158,7 @@ public class MenuActivity extends AppCompatActivity {
                 btn_show_overview_last_year.setBackgroundResource(R.color.passiveButton);
                 btn_show_overview_all.setBackgroundResource(R.color.activeButton);
 
-                updateOverviewAll(list);
+                updateOverviewAll(fullDataList);
             }
         });
 }
@@ -161,6 +171,11 @@ public class MenuActivity extends AppCompatActivity {
         btn_show_overview_last_year.setEnabled(false);
         btn_show_overview_all.setEnabled(false);
 
+        btn_show_overview_last_fill.setBackgroundResource(R.color.passiveButton);
+        btn_show_overview_last_month.setBackgroundResource(R.color.passiveButton);
+        btn_show_overview_last_year.setBackgroundResource(R.color.passiveButton);
+        btn_show_overview_all.setBackgroundResource(R.color.passiveButton);
+
         if (listSize == 0) {
             tv_show_last_mileage.setText("n/a");
             tv_show_last_date.setText("n/a");
@@ -172,34 +187,62 @@ public class MenuActivity extends AppCompatActivity {
         } else if (listSize == 1) {
             btn_show_overview_all.setBackgroundResource(R.color.activeButton);
 
-            tv_show_last_mileage.setText(String.valueOf(sortedList.get(0).getMileage()));
+            tv_show_last_mileage.setText(String.valueOf(sortedList.get(0).getMileage() + " km"));
             tv_show_last_date.setText(String.valueOf(sortedList.get(0).getDate()));
 
-            tv_show_overview_mileage.setText(String.valueOf(sortedList.get(0).getMileage()));
-            tv_show_overview_time.setText(""); //Müssen hier noch ausrechnen, wie viel tage das schon her ist
+            tv_show_overview_mileage.setText(String.valueOf(sortedList.get(0).getMileage() + " km"));
             tv_show_overview_cost.setText(String.valueOf(sortedList.get(0).getPrice()));
             tv_show_overview_liter.setText(String.valueOf(sortedList.get(0).getLiter()));
+
+            String newestDate = String.valueOf(sortedList.get(0).getDate());
+            String[] splittedNewestDate = newestDate.split("\\.");
+
+            Log.d(LOGTAG, "Splitten war erfolgreich! " + newestDate + "(" + splittedNewestDate.length + ") = " + splittedNewestDate[0] + "," + splittedNewestDate[1] + "," + splittedNewestDate[2]);
+
+            Calendar newestEntryDate = Calendar.getInstance();
+            newestEntryDate.set(Calendar.DAY_OF_MONTH , Integer.parseInt(splittedNewestDate[0]));
+            newestEntryDate.set(Calendar.MONTH , Integer.parseInt(splittedNewestDate[1]));
+            newestEntryDate.set(Calendar.YEAR , Integer.parseInt(splittedNewestDate[2]));
+
+            long dateDifference = calendar.getTimeInMillis() - newestEntryDate.getTimeInMillis();
+            long daysBetween = dateDifference / (24 * 60 * 60 * 1000);
+
+            tv_show_overview_time.setText(String.valueOf(daysBetween + " Tage"));
         } else {
             btn_show_overview_last_fill.setEnabled(true);
             btn_show_overview_all.setEnabled(true);
 
-            if (monthList.size() > 1) {
+            if (lastMonthList.size() > 1) {
                 btn_show_overview_last_month.setEnabled(true);
             }
 
-            if (yearList.size() > 1) {
+            if (lastYearList.size() > 1) {
                 btn_show_overview_last_year.setEnabled(true);
             }
 
-            tv_show_last_mileage.setText((String.valueOf(sortedList.get(0).getMileage())));
+            tv_show_last_mileage.setText((String.valueOf(sortedList.get(0).getMileage() +  " km")));
             tv_show_last_date.setText(String.valueOf(sortedList.get(0).getDate()));
 
             int actualDistance = sortedList.get(0).getMileage() - sortedList.get(1).getMileage();
 
-            tv_show_overview_mileage.setText(String.valueOf(actualDistance));
-            tv_show_overview_time.setText(""); //Müssen hier noch ausrechnen, wie viel tage das schon her ist
+            tv_show_overview_mileage.setText(String.valueOf(actualDistance + " km"));
             tv_show_overview_cost.setText(String.valueOf(f.format((sortedList.get(0).getPrice() / actualDistance) * 100)));
             tv_show_overview_liter.setText(String.valueOf(f.format((sortedList.get(0).getLiter() / actualDistance) * 100)));
+
+            String newestDate = String.valueOf(sortedList.get(0).getDate());
+            String[] splittedNewestDate = newestDate.split("\\.");
+
+            Log.d(LOGTAG, "Splitten war erfolgreich! " + newestDate + "(" + splittedNewestDate.length + ") = " + splittedNewestDate[0] + "," + splittedNewestDate[1] + "," + splittedNewestDate[2]);
+
+            Calendar newestEntryDate = Calendar.getInstance();
+            newestEntryDate.set(Calendar.DAY_OF_MONTH , Integer.parseInt(splittedNewestDate[0]));
+            newestEntryDate.set(Calendar.MONTH , Integer.parseInt(splittedNewestDate[1]));
+            newestEntryDate.set(Calendar.YEAR , Integer.parseInt(splittedNewestDate[2]));
+
+            long dateDifference = calendar.getTimeInMillis() - newestEntryDate.getTimeInMillis();
+            long daysBetween = dateDifference / (24 * 60 * 60 * 1000);
+
+            tv_show_overview_time.setText(String.valueOf(daysBetween + " Tage"));
 
             btn_show_overview_last_fill.setBackgroundResource(R.color.activeButton);
         }
@@ -222,19 +265,49 @@ public class MenuActivity extends AppCompatActivity {
         sumLiter -=  sortedList.get(listSize - 1).getLiter();
 
         tv_show_overview_mileage.setText(String.valueOf(totalDistance + " km"));
-        tv_show_overview_time.setText(""); //MÜssen wir noch ausrehcnen, wie viele Tage das schon her ist
         tv_show_overview_liter.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100)));
         tv_show_overview_cost.setText(String.valueOf(f.format((sumCost / totalDistance) * 100)));
+
+        String latestDate = String.valueOf(sortedList.get(listSize - 1).getDate());
+        String[] splittedLatestDate = latestDate.split("\\.");
+
+        Log.d(LOGTAG, "Splitten war erfolgreich! " + latestDate + "(" + splittedLatestDate.length + ") = " + splittedLatestDate[0] + "," + splittedLatestDate[1] + "," + splittedLatestDate[2]);
+
+        Calendar latestEntryDate = Calendar.getInstance();
+        latestEntryDate.set(Calendar.DAY_OF_MONTH , Integer.parseInt(splittedLatestDate[0]));
+        latestEntryDate.set(Calendar.MONTH , Integer.parseInt(splittedLatestDate[1]));
+        latestEntryDate.set(Calendar.YEAR , Integer.parseInt(splittedLatestDate[2]));
+
+        long dateDifference = calendar.getTimeInMillis() - latestEntryDate.getTimeInMillis();
+        long daysBetween = dateDifference / (24 * 60 * 60 * 1000);
+
+        tv_show_overview_time.setText(String.valueOf(daysBetween + " Tage"));
     }
 
     private void updateOverviewLastFill(ArrayList<FillEntry> sortedList) {
-
+        int listSize = sortedList.size();
         int actualDistance = sortedList.get(0).getMileage() - sortedList.get(1).getMileage();
 
         tv_show_overview_mileage.setText(String.valueOf(actualDistance + " km"));
-        tv_show_overview_time.setText(""); //MÜssen wir noch ausrehcnen, wie viele Tage das schon her ist
         tv_show_overview_cost.setText(String.valueOf(f.format((sortedList.get(0).getPrice() / actualDistance) * 100)));
         tv_show_overview_liter.setText(String.valueOf(f.format((sortedList.get(0).getLiter() / actualDistance) * 100)));
+
+        String newestDate = String.valueOf(sortedList.get(0).getDate());
+        String[] splittedNewestDate = newestDate.split("\\.");
+
+        Log.d(LOGTAG, "Splitten war erfolgreich! " + newestDate + "(" + splittedNewestDate.length + ") = " + splittedNewestDate[0] + "," + splittedNewestDate[1] + "," + splittedNewestDate[2]);
+
+        Calendar newestEntryDate = Calendar.getInstance();
+        newestEntryDate.set(Calendar.DAY_OF_MONTH , Integer.parseInt(splittedNewestDate[0]));
+        newestEntryDate.set(Calendar.MONTH , Integer.parseInt(splittedNewestDate[1]));
+        newestEntryDate.set(Calendar.YEAR , Integer.parseInt(splittedNewestDate[2]));
+
+        long dateDifference = calendar.getTimeInMillis() - newestEntryDate.getTimeInMillis();
+        long daysBetween = dateDifference / (24 * 60 * 60 * 1000);
+
+        tv_show_overview_time.setText(String.valueOf(daysBetween + " Tage"));
+
+        btn_show_overview_last_fill.setBackgroundResource(R.color.activeButton);
     }
 
     private void updateOverviewLastMonth(ArrayList<FillEntry> sortedList) {
@@ -254,9 +327,23 @@ public class MenuActivity extends AppCompatActivity {
         sumLiter -=  sortedList.get(listSize - 1).getLiter();
 
         tv_show_overview_mileage.setText(String.valueOf(totalDistance + " km"));
-        tv_show_overview_time.setText(""); //MÜssen wir noch ausrehcnen, wie viele Tage das schon her ist
         tv_show_overview_cost.setText(String.valueOf(f.format((sumCost / totalDistance) * 100)));
         tv_show_overview_liter.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100)));
+
+        String latestDate = String.valueOf(sortedList.get(listSize - 1).getDate());
+        String[] splittedLatestDate = latestDate.split("\\.");
+
+        Log.d(LOGTAG, "Splitten war erfolgreich! " + latestDate + "(" + splittedLatestDate.length + ") = " + splittedLatestDate[0] + "," + splittedLatestDate[1] + "," + splittedLatestDate[2]);
+
+        Calendar latestEntryDate = Calendar.getInstance();
+        latestEntryDate.set(Calendar.DAY_OF_MONTH , Integer.parseInt(splittedLatestDate[0]));
+        latestEntryDate.set(Calendar.MONTH , Integer.parseInt(splittedLatestDate[1]));
+        latestEntryDate.set(Calendar.YEAR , Integer.parseInt(splittedLatestDate[2]));
+
+        long dateDifference = calendar.getTimeInMillis() - latestEntryDate.getTimeInMillis();
+        long daysBetween = dateDifference / (24 * 60 * 60 * 1000);
+
+        tv_show_overview_time.setText(String.valueOf(daysBetween + " Tage"));
     }
 
     private void updateOverviewLastYear(ArrayList<FillEntry> sortedList) {
@@ -276,40 +363,22 @@ public class MenuActivity extends AppCompatActivity {
         sumLiter -=  sortedList.get(listSize - 1).getLiter();
 
         tv_show_overview_mileage.setText(String.valueOf(totalDistance + " km"));
-        tv_show_overview_time.setText(""); //MÜssen wir noch ausrehcnen, wie viele Tage das schon her ist
         tv_show_overview_cost.setText(String.valueOf(f.format((sumCost / totalDistance) * 100)));
         tv_show_overview_liter.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100)));
+
+        String latestDate = String.valueOf(sortedList.get(listSize - 1).getDate());
+        String[] splittedLatestDate = latestDate.split("\\.");
+
+        Log.d(LOGTAG, "Splitten war erfolgreich! " + latestDate + "(" + splittedLatestDate.length + ") = " + splittedLatestDate[0] + "," + splittedLatestDate[1] + "," + splittedLatestDate[2]);
+
+        Calendar latestEntryDate = Calendar.getInstance();
+        latestEntryDate.set(Calendar.DAY_OF_MONTH , Integer.parseInt(splittedLatestDate[0]));
+        latestEntryDate.set(Calendar.MONTH , Integer.parseInt(splittedLatestDate[1]));
+        latestEntryDate.set(Calendar.YEAR , Integer.parseInt(splittedLatestDate[2]));
+
+        long dateDifference = calendar.getTimeInMillis() - latestEntryDate.getTimeInMillis();
+        long daysBetween = dateDifference / (24 * 60 * 60 * 1000);
+
+        tv_show_overview_time.setText(String.valueOf(daysBetween + " Tage"));
     }
-
-    /*
-    private void updateStatisticLastFill(ArrayList<FillEntry> sortedList) {
-        tv_actualMileage.setText((String.valueOf(sortedList.get(0).getMileage())));
-        tv_lastEntry.setText(String.valueOf(sortedList.get(0).getDate()));
-
-        int actualDistance = sortedList.get(0).getMileage() - sortedList.get(1).getMileage();
-
-        tv_actualConsumption.setText(String.valueOf(f.format((sortedList.get(0).getLiter() / actualDistance) * 100)));
-        tv_actualConsumptionCost.setText(String.valueOf(f.format((sortedList.get(0).getPrice() / actualDistance) * 100)));
-    }
-
-    private void updateStatistic(ArrayList<FillEntry> sortedList) {
-        int listSize = sortedList.size();
-
-        int totalDistance = sortedList.get(0).getMileage() - sortedList.get(listSize - 1).getMileage();
-
-        double sumCost = 0;
-        double sumLiter = 0;
-
-        for (FillEntry entry : sortedList) {
-            sumCost += entry.getPrice();
-            sumLiter += entry.getLiter();
-        }
-
-        sumCost -= sortedList.get(listSize - 1).getPrice();
-        sumLiter -=  sortedList.get(listSize - 1).getLiter();
-
-        tv_actualConsumption.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100)));
-        tv_actualConsumptionCost.setText(String.valueOf(f.format((sumCost / totalDistance) * 100)));
-    }
-    */
 }
