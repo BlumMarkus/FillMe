@@ -3,7 +3,6 @@ package de.me.fill.mblum.android.fillme;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.RelativeLayout;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -15,7 +14,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
@@ -23,32 +21,25 @@ import java.util.Collections;
 
 public class ShowDiagram extends AppCompatActivity {
 
-    private RelativeLayout diagramLayout;
     private LineChart mChart;
-    private Description desc;
     private FillMeDataSource fmds;
-    private ArrayList<FillEntry> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_diagram);
 
-        diagramLayout = (RelativeLayout) findViewById(R.id.diagramLayout);
-
         mChart = (LineChart) findViewById(R.id.mChart);
         //customize line chart
-        desc = new Description();
+        Description desc = new Description();
         desc.setText("Liter pro 100 Kilometer");
         mChart.setDescription(desc);
         mChart.setNoDataText("Keine Daten vorhanden!");
 
         //enable value highlighting
-        mChart.setHighlightPerTapEnabled(true);
         mChart.setHighlightPerDragEnabled(true);
 
         mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
         mChart.setDrawGridBackground(false);
 
         mChart.setPinchZoom(true);
@@ -85,7 +76,7 @@ public class ShowDiagram extends AppCompatActivity {
     private void fillDiagram() {
         ArrayList<String> xDates = new ArrayList<>();
         ArrayList<Entry> yLiterPerKilometer = new ArrayList<>();
-        list = fmds.getAllEntries();
+        ArrayList<FillEntry> list = fmds.getAllEntries();
         Collections.reverse(list);
 
 
@@ -117,7 +108,7 @@ public class ShowDiagram extends AppCompatActivity {
 
 
     private LineDataSet createSet(ArrayList yData) {
-        LineDataSet set = new LineDataSet(yData, "DataSet 1");
+        LineDataSet set = new LineDataSet(yData, "");
         set.setCubicIntensity(0.2f);
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         set.setColor(ColorTemplate.getHoloBlue());
@@ -133,9 +124,9 @@ public class ShowDiagram extends AppCompatActivity {
         return set;
     }
 
-    public class MyXAxisValueFormatter implements IAxisValueFormatter{
+    private class MyXAxisValueFormatter implements IAxisValueFormatter{
         private  String[] mValues;
-        public MyXAxisValueFormatter(String[] values) {
+        private MyXAxisValueFormatter(String[] values) {
             this.mValues = values;
         }
 
