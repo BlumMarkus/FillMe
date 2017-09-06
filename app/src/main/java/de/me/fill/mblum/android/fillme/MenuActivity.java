@@ -114,6 +114,15 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
+        btn_show_statistic_diagram.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MenuActivity.this, ShowDiagram.class);
+                startActivity(intent);
+            }
+        });
+
+
         btn_show_overview_last_fill.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

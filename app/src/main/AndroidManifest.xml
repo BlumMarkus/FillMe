@@ -19,7 +19,8 @@
         <activity android:name=".newEntryActivity" />
         <activity android:name=".showEntriesActivity" />
         <activity android:name=".EditEntryActivity" />
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".ShowDiagram"></activity>
     </application>
 
 </manifest>
