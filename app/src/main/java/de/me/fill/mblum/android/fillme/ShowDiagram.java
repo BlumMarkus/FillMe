@@ -88,10 +88,9 @@ public class ShowDiagram extends AppCompatActivity {
         }
 
         //Y-Wert ist Liter pro 100 km
-        //i = -1, erster Entry 0 an der 1. Stelle haben muss
-        for (int i = (-1); i < list.size()-1; i++) {
-            if (i != (-1)){
-                yLiterPerKilometer.add(new Entry(i, (float)(list.get(i).getLiter()*100)/(list.get(i+1).getMileage()-list.get(i).getMileage())));
+        for (int i = 0; i < list.size(); i++) {
+            if (i != 0){
+                yLiterPerKilometer.add(new Entry(i-1, (float)(list.get(i).getLiter()*100)/(list.get(i).getMileage()-list.get(i-1).getMileage())));
             }
         }
 
