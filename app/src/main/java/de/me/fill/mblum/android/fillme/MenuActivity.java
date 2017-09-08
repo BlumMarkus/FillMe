@@ -55,12 +55,6 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         Log.d(LOGTAG,"onCreate wurde erfolgreich aufgerufen.");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(LOGTAG,"onResume wurde erfolgreich aufgerufen.");
 
         btn_add_new_entry = (ImageButton) findViewById(R.id.btn_menu_add_new_entry);
         btn_show_statistic_list = (ImageButton) findViewById(R.id.btn_menu_show_statistic_list);
@@ -78,6 +72,12 @@ public class MenuActivity extends AppCompatActivity {
         tv_show_overview_time = (TextView) findViewById(R.id.tv_menu_show_overview_time);
         tv_show_overview_cost = (TextView) findViewById(R.id.tv_menu_show_overview_cost);
         tv_show_overview_liter = (TextView) findViewById(R.id.tv_menu_show_overview_liter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(LOGTAG,"onResume wurde erfolgreich aufgerufen.");
 
         calendar = Calendar.getInstance();
         actualCalendarDay = calendar.get(Calendar.DAY_OF_MONTH);
@@ -208,15 +208,9 @@ public class MenuActivity extends AppCompatActivity {
 
             Log.d(LOGTAG, "Splitten war erfolgreich! " + newestDate + "(" + splittedNewestDate.length + ") = " + splittedNewestDate[0] + "," + splittedNewestDate[1] + "," + splittedNewestDate[2]);
 
-            Calendar newestEntryDate = Calendar.getInstance();
-            newestEntryDate.set(Calendar.DAY_OF_MONTH , Integer.parseInt(splittedNewestDate[0]));
-            newestEntryDate.set(Calendar.MONTH , Integer.parseInt(splittedNewestDate[1]));
-            newestEntryDate.set(Calendar.YEAR , Integer.parseInt(splittedNewestDate[2]));
+            String displayTime = getDateDifference( splittedNewestDate );
 
-            long dateDifference = calendar.getTimeInMillis() - newestEntryDate.getTimeInMillis();
-            long daysBetween = dateDifference / (24 * 60 * 60 * 1000);
-
-            tv_show_overview_time.setText(String.valueOf(daysBetween + " Tage"));
+            tv_show_overview_time.setText(String.valueOf(displayTime));
         } else {
             btn_show_overview_last_fill.setEnabled(true);
             btn_show_overview_all.setEnabled(true);
@@ -243,17 +237,9 @@ public class MenuActivity extends AppCompatActivity {
 
             Log.d(LOGTAG, "Splitten war erfolgreich! " + newestDate + "(" + splittedNewestDate.length + ") = " + splittedNewestDate[0] + "," + splittedNewestDate[1] + "," + splittedNewestDate[2]);
 
-            Calendar newestEntryDate = Calendar.getInstance();
-            newestEntryDate.set(Calendar.DAY_OF_MONTH , Integer.parseInt(splittedNewestDate[0]));
-            newestEntryDate.set(Calendar.MONTH , Integer.parseInt(splittedNewestDate[1]));
-            newestEntryDate.set(Calendar.YEAR , Integer.parseInt(splittedNewestDate[2]));
+            String displayTime = getDateDifference( splittedNewestDate );
 
-            long dateDifference = calendar.getTimeInMillis() - newestEntryDate.getTimeInMillis();
-            long daysBetween = dateDifference / (24 * 60 * 60 * 1000);
-
-            tv_show_overview_time.setText(String.valueOf(daysBetween + " Tage"));
-
-            btn_show_overview_last_fill.setBackgroundResource(R.color.activeButton);
+            tv_show_overview_time.setText(String.valueOf(displayTime));
         }
     }
 
@@ -282,15 +268,9 @@ public class MenuActivity extends AppCompatActivity {
 
         Log.d(LOGTAG, "Splitten war erfolgreich! " + latestDate + "(" + splittedLatestDate.length + ") = " + splittedLatestDate[0] + "," + splittedLatestDate[1] + "," + splittedLatestDate[2]);
 
-        Calendar latestEntryDate = Calendar.getInstance();
-        latestEntryDate.set(Calendar.DAY_OF_MONTH , Integer.parseInt(splittedLatestDate[0]));
-        latestEntryDate.set(Calendar.MONTH , Integer.parseInt(splittedLatestDate[1]));
-        latestEntryDate.set(Calendar.YEAR , Integer.parseInt(splittedLatestDate[2]));
+        String displayTime = getDateDifference( splittedLatestDate );
 
-        long dateDifference = calendar.getTimeInMillis() - latestEntryDate.getTimeInMillis();
-        long daysBetween = dateDifference / (24 * 60 * 60 * 1000);
-
-        tv_show_overview_time.setText(String.valueOf(daysBetween + " Tage"));
+        tv_show_overview_time.setText(String.valueOf(displayTime));
     }
 
     private void updateOverviewLastFill(ArrayList<FillEntry> sortedList) {
@@ -306,17 +286,9 @@ public class MenuActivity extends AppCompatActivity {
 
         Log.d(LOGTAG, "Splitten war erfolgreich! " + newestDate + "(" + splittedNewestDate.length + ") = " + splittedNewestDate[0] + "," + splittedNewestDate[1] + "," + splittedNewestDate[2]);
 
-        Calendar newestEntryDate = Calendar.getInstance();
-        newestEntryDate.set(Calendar.DAY_OF_MONTH , Integer.parseInt(splittedNewestDate[0]));
-        newestEntryDate.set(Calendar.MONTH , Integer.parseInt(splittedNewestDate[1]));
-        newestEntryDate.set(Calendar.YEAR , Integer.parseInt(splittedNewestDate[2]));
+        String displayTime = getDateDifference( splittedNewestDate );
 
-        long dateDifference = calendar.getTimeInMillis() - newestEntryDate.getTimeInMillis();
-        long daysBetween = dateDifference / (24 * 60 * 60 * 1000);
-
-        tv_show_overview_time.setText(String.valueOf(daysBetween + " Tage"));
-
-        btn_show_overview_last_fill.setBackgroundResource(R.color.activeButton);
+        tv_show_overview_time.setText(String.valueOf(displayTime));
     }
 
     private void updateOverviewLastMonth(ArrayList<FillEntry> sortedList) {
@@ -344,15 +316,9 @@ public class MenuActivity extends AppCompatActivity {
 
         Log.d(LOGTAG, "Splitten war erfolgreich! " + latestDate + "(" + splittedLatestDate.length + ") = " + splittedLatestDate[0] + "," + splittedLatestDate[1] + "," + splittedLatestDate[2]);
 
-        Calendar latestEntryDate = Calendar.getInstance();
-        latestEntryDate.set(Calendar.DAY_OF_MONTH , Integer.parseInt(splittedLatestDate[0]));
-        latestEntryDate.set(Calendar.MONTH , Integer.parseInt(splittedLatestDate[1]));
-        latestEntryDate.set(Calendar.YEAR , Integer.parseInt(splittedLatestDate[2]));
+        String displayTime = getDateDifference( splittedLatestDate );
 
-        long dateDifference = calendar.getTimeInMillis() - latestEntryDate.getTimeInMillis();
-        long daysBetween = dateDifference / (24 * 60 * 60 * 1000);
-
-        tv_show_overview_time.setText(String.valueOf(daysBetween + " Tage"));
+        tv_show_overview_time.setText(String.valueOf(displayTime));
     }
 
     private void updateOverviewLastYear(ArrayList<FillEntry> sortedList) {
@@ -380,14 +346,36 @@ public class MenuActivity extends AppCompatActivity {
 
         Log.d(LOGTAG, "Splitten war erfolgreich! " + latestDate + "(" + splittedLatestDate.length + ") = " + splittedLatestDate[0] + "," + splittedLatestDate[1] + "," + splittedLatestDate[2]);
 
-        Calendar latestEntryDate = Calendar.getInstance();
-        latestEntryDate.set(Calendar.DAY_OF_MONTH , Integer.parseInt(splittedLatestDate[0]));
-        latestEntryDate.set(Calendar.MONTH , Integer.parseInt(splittedLatestDate[1]));
-        latestEntryDate.set(Calendar.YEAR , Integer.parseInt(splittedLatestDate[2]));
+        String displayTime = getDateDifference( splittedLatestDate );
 
-        long dateDifference = calendar.getTimeInMillis() - latestEntryDate.getTimeInMillis();
-        long daysBetween = dateDifference / (24 * 60 * 60 * 1000);
+        tv_show_overview_time.setText(String.valueOf(displayTime));
+    }
 
-        tv_show_overview_time.setText(String.valueOf(daysBetween + " Tage"));
+    private String getDateDifference ( String[] splittedDifferenceDate ) {
+        Calendar dateForDifferentiation = Calendar.getInstance();
+        dateForDifferentiation.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splittedDifferenceDate[0]));
+        dateForDifferentiation.set(Calendar.MONTH, Integer.parseInt(splittedDifferenceDate[1]) - 1);
+        dateForDifferentiation.set(Calendar.YEAR, Integer.parseInt(splittedDifferenceDate[2]));
+
+        long dateDifference = calendar.getTimeInMillis() - dateForDifferentiation.getTimeInMillis();
+        int daysBetween = (int) dateDifference / (24 * 60 * 60 * 1000);
+
+        String displayComment = "";
+
+        if ( daysBetween == 0 ) {
+            displayComment = "heute"; // noch nicht perfekt, da ja der Tag ab 0:00 Uhr endet und nicht nach 24 Stunden
+        } else if ( daysBetween == 1 ) {
+            displayComment = "gestern";
+        } else if ( daysBetween % 7 == 0 ) {
+            if ( daysBetween / 7 ==  1 ) {
+                displayComment = daysBetween / 7 + " Woche";
+            } else {
+                displayComment = daysBetween / 7 + " Wochen";
+            }
+        } else {
+            displayComment = daysBetween + " Tage";
+        }
+
+        return displayComment;
     }
 }
