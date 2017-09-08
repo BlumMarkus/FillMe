@@ -1,9 +1,11 @@
 package de.me.fill.mblum.android.fillme;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -29,12 +31,17 @@ public class ShowDiagram extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_diagram);
 
-        mChart = (LineChart) findViewById(R.id.mChart);
+        mChart = (LineChart) findViewById(R.id.mChartConsumption);
         //customize line chart
         Description desc = new Description();
         desc.setText("Liter pro 100 Kilometer");
         mChart.setDescription(desc);
         mChart.setNoDataText("Keine Daten vorhanden!");
+
+        //no Data Label
+        Paint p = mChart.getPaint(Chart.PAINT_INFO);
+        p.setColor(Color.RED);
+        p.setTextSize(60);
 
         //enable value highlighting
         mChart.setHighlightPerDragEnabled(true);
@@ -44,6 +51,8 @@ public class ShowDiagram extends AppCompatActivity {
 
         mChart.setPinchZoom(true);
         mChart.setBackgroundColor(Color.LTGRAY);
+
+        mChart.animateXY(2000,2000);
 
         //datas
         LineData data = new LineData();
@@ -93,16 +102,19 @@ public class ShowDiagram extends AppCompatActivity {
                 yLiterPerKilometer.add(new Entry(i-1, (float)(list.get(i).getLiter()*100)/(list.get(i).getMileage()-list.get(i-1).getMileage())));
             }
         }
+        if (yLiterPerKilometer.size() != 0) {
+            LineDataSet dataSet = createSet(yLiterPerKilometer);
+            LineData data = new LineData(dataSet);
 
-        LineDataSet dataSet = createSet(yLiterPerKilometer);
-        LineData data = new LineData(dataSet);
-
-        mChart.setData(data);
-        XAxis xAxis = mChart.getXAxis();
-        String[] xValues = xDates.toArray(new String[xDates.size()]);
-        xAxis.setValueFormatter(new MyXAxisValueFormatter(xValues));
-        xAxis.setGranularity(1f);
-
+            mChart.setData(data);
+            XAxis xAxis = mChart.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            String[] xValues = xDates.toArray(new String[xDates.size()]);
+            xAxis.setValueFormatter(new MyXAxisValueFormatter(xValues));
+            xAxis.setGranularity(1f);
+        }
+        else
+            mChart.clear();
     }
 
 
@@ -131,7 +143,11 @@ public class ShowDiagram extends AppCompatActivity {
 
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
-            return mValues[(int)value];
+            int intValue = (int) value;
+
+            if (mValues.length > intValue && intValue >= 0) return mValues[intValue];
+
+            return "";
         }
     }
 }

@@ -15,11 +15,36 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:padding="3dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="21sp"
+                android:text="Liter pro 100 km"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/mChart"
+                android:id="@+id/mChartConsumption"
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+            </com.github.mikephil.charting.charts.LineChart>
+
+
+            <TextView
+                android:padding="3dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="30dp"
+                android:textSize="21sp"
+                android:text="Kosten pro Liter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/mChartCosts"
                 android:layout_width="match_parent"
                 android:layout_height="200dp">
             </com.github.mikephil.charting.charts.LineChart>
