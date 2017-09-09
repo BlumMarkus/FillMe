@@ -212,6 +212,8 @@ public class MenuActivity extends AppCompatActivity {
 
             tv_show_overview_time.setText(String.valueOf(displayTime));
         } else {
+            btn_show_overview_last_fill.setBackgroundResource(R.color.activeButton);
+
             btn_show_overview_last_fill.setEnabled(true);
             btn_show_overview_all.setEnabled(true);
 
@@ -354,25 +356,38 @@ public class MenuActivity extends AppCompatActivity {
     private String getDateDifference ( String[] splittedDifferenceDate ) {
         Calendar dateForDifferentiation = Calendar.getInstance();
         dateForDifferentiation.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splittedDifferenceDate[0]));
-        dateForDifferentiation.set(Calendar.MONTH, Integer.parseInt(splittedDifferenceDate[1]) - 1);
+        if ( splittedDifferenceDate[1].equals("0") ) {
+            splittedDifferenceDate[1] = "11";
+        } else {
+            splittedDifferenceDate[1] = String.valueOf(Integer.parseInt(splittedDifferenceDate[1]) - 1);
+        }
+        dateForDifferentiation.set(Calendar.MONTH, Integer.parseInt(splittedDifferenceDate[1]));
         dateForDifferentiation.set(Calendar.YEAR, Integer.parseInt(splittedDifferenceDate[2]));
 
+        int differentiationDay = dateForDifferentiation.get(Calendar.DAY_OF_MONTH);
+        int differentiationMonth = dateForDifferentiation.get(Calendar.MONTH);
+        int differentiationYear = dateForDifferentiation.get(Calendar.YEAR);
+
+        Log.d(LOGTAG, "Letzter Eintrag: " + differentiationDay + "," + differentiationMonth + "," + differentiationYear);
+        Log.d(LOGTAG, "Datum heute" + actualCalendarDay + "," + actualCalendarMonth + "," + actualCalendarYear);
+
         long dateDifference = calendar.getTimeInMillis() - dateForDifferentiation.getTimeInMillis();
-        int daysBetween = (int) dateDifference / (24 * 60 * 60 * 1000);
+        Log.d(LOGTAG, "Millisekunden dazwischen: " + dateDifference);
+        int daysBetween = (int) (dateDifference / ( 24 * 60 * 60 * 1000));
+
+        Log.d(LOGTAG, "daysBetween: " + daysBetween);
 
         String displayComment = "";
 
         if ( daysBetween == 0 ) {
-            displayComment = "heute"; // noch nicht perfekt, da ja der Tag ab 0:00 Uhr endet und nicht nach 24 Stunden
-        } else if ( daysBetween == 1 ) {
-            displayComment = "gestern";
-        } else if ( daysBetween % 7 == 0 ) {
-            if ( daysBetween / 7 ==  1 ) {
-                displayComment = daysBetween / 7 + " Woche";
+            if ( actualCalendarDay == differentiationDay ) {
+                displayComment = "heute";
             } else {
-                displayComment = daysBetween / 7 + " Wochen";
+                displayComment = "gestern";
             }
-        } else {
+        } else if ( daysBetween == 1 ) {
+            displayComment = daysBetween + " Tag";
+        }  else {
             displayComment = daysBetween + " Tage";
         }
 
