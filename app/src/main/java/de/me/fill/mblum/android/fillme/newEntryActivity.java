@@ -37,6 +37,9 @@ public class newEntryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newentry);
+
+        /*
+
         fmds = new FillMeDataSource(this);
 
         Button btn_accept = (Button) findViewById(R.id.btn_accept);
@@ -124,5 +127,7 @@ public class newEntryActivity extends AppCompatActivity {
                 }
             }
         });
+
+        */
     }
 }

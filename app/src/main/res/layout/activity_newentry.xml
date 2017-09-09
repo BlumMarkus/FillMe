@@ -80,8 +80,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/backgroundlightBlue"
-            app:srcCompat="@drawable/newEntry_back" />
+            android:background="@color/backgroundBlue"
+            app:srcCompat="@drawable/newentry_back" />
 
         <TextView
             android:id="@+id/txt_headlineNewEntry"
@@ -100,8 +100,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/backgroundlightBlue"
-            app:srcCompat="@drawable/newEntry_save" />
+            android:background="@color/backgroundBlue"
+            app:srcCompat="@drawable/newentry_save" />
     </LinearLayout>
 
     <RelativeLayout
@@ -134,6 +134,7 @@
             android:layout_width="250dp"
             android:layout_height="match_parent"
             android:textSize="25sp"
+            android:gravity="center"
             android:layout_below="@id/tv_newEntry_date_title"/>
 
         <Button
@@ -142,6 +143,7 @@
             android:layout_width="match_parent"
             android:text="@string/str_pickDate"
             android:textSize="12sp"
+            android:background="@color/backgroundBlue"
             android:layout_toEndOf="@id/tv_newEntry_date_field"
             android:layout_below="@id/tv_newEntry_date_title"/>
 
