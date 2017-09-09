@@ -23,71 +23,73 @@ import java.util.Collections;
 
 public class ShowDiagram extends AppCompatActivity {
 
-    private LineChart mChart;
     private FillMeDataSource fmds;
+    private ArrayList<FillEntry> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_diagram);
 
-        mChart = (LineChart) findViewById(R.id.mChartConsumption);
-        //customize line chart
+        LineChart mChartConsumption = (LineChart) findViewById(R.id.mChartConsumption);
+        LineChart mChartCosts = (LineChart) findViewById(R.id.mChartCosts);
+
+        setLineChartStyle(mChartConsumption, "Liter pro 100 Kilometer");
+        setLineChartStyle(mChartCosts, "€ pro Liter");
+
+        fmds = new FillMeDataSource(this);
+        list = fmds.getAllEntries();
+        Collections.reverse(list);
+
+        fillLpKChart(mChartConsumption);
+        fillEpLChart(mChartCosts);
+    }
+
+    private void setLineChartStyle(LineChart chart, String descriptionText){
         Description desc = new Description();
-        desc.setText("Liter pro 100 Kilometer");
-        mChart.setDescription(desc);
-        mChart.setNoDataText("Keine Daten vorhanden!");
+        desc.setText(descriptionText);
+        chart.setDescription(desc);
+        chart.setNoDataText("Keine Daten vorhanden!");
 
         //no Data Label
-        Paint p = mChart.getPaint(Chart.PAINT_INFO);
+        Paint p = chart.getPaint(Chart.PAINT_INFO);
         p.setColor(Color.RED);
         p.setTextSize(60);
 
         //enable value highlighting
-        mChart.setHighlightPerDragEnabled(true);
+        chart.setHighlightPerDragEnabled(false);
 
-        mChart.setDragEnabled(true);
-        mChart.setDrawGridBackground(false);
+        chart.setDragEnabled(true);
+        chart.setDrawGridBackground(false);
 
-        mChart.setPinchZoom(true);
-        mChart.setBackgroundColor(Color.LTGRAY);
+        chart.setBackgroundColor(Color.LTGRAY);
 
-        mChart.animateXY(2000,2000);
+        chart.animateXY(2000,2000);
 
-        //datas
-        LineData data = new LineData();
-        data.setValueTextColor(Color.WHITE);
+        //Zahl in Klammern ist die Anzahl bis zu welcher Datenmenge die Werte über den Punkten angezeigt werden
+        chart.setMaxVisibleValueCount(10);
 
-        mChart.setData(data);
-
-        Legend l = mChart.getLegend();
+        Legend l = chart.getLegend();
         l.setForm(Legend.LegendForm.LINE);
         l.setTextColor(Color.WHITE);
 
-        XAxis x1 = mChart.getXAxis();
+        XAxis x1 = chart.getXAxis();
         x1.setTextColor(Color.WHITE);
         x1.setDrawGridLines(false);
         x1.setAvoidFirstLastClipping(true);
 
-        YAxis y1 = mChart.getAxisLeft();
+        YAxis y1 = chart.getAxisLeft();
         y1.setTextColor(Color.WHITE);
-        y1.setDrawGridLines(false);
         y1.setDrawGridLines(true);
         y1.setAxisMinimum(0);
 
-        YAxis y12 = mChart.getAxisRight();
+        YAxis y12 = chart.getAxisRight();
         y12.setEnabled(false);
-
-        fmds = new FillMeDataSource(this);
-        fillDiagram();
     }
 
-    private void fillDiagram() {
+    private void fillLpKChart(LineChart mChart) {
         ArrayList<String> xDates = new ArrayList<>();
         ArrayList<Entry> yLiterPerKilometer = new ArrayList<>();
-        ArrayList<FillEntry> list = fmds.getAllEntries();
-        Collections.reverse(list);
-
 
         //X Wert ist das Datum von jedem Eintrag
         for (FillEntry entry: list) {
@@ -102,9 +104,35 @@ public class ShowDiagram extends AppCompatActivity {
                 yLiterPerKilometer.add(new Entry(i-1, (float)(list.get(i).getLiter()*100)/(list.get(i).getMileage()-list.get(i-1).getMileage())));
             }
         }
+        fillChartWithData(mChart, xDates, yLiterPerKilometer);
+    }
+
+    private void fillEpLChart(LineChart mChart) {
+        ArrayList<String> xDates = new ArrayList<>();
+        ArrayList<Entry> yLiterPerKilometer = new ArrayList<>();
+
+        //X Wert ist das Datum von jedem Eintrag
+        for (FillEntry entry: list) {
+            if (entry != list.get(0)) {
+                xDates.add(entry.getDate());
+            }
+        }
+
+        //Y-Wert ist Euro pro Liter
+        for (int i = 0; i < list.size(); i++) {
+            if (i != 0){
+                yLiterPerKilometer.add(new Entry(i-1, (float)(list.get(i).getPrice()/list.get(i).getLiter())));
+            }
+        }
+        fillChartWithData(mChart, xDates, yLiterPerKilometer);
+
+    }
+
+    private void fillChartWithData(LineChart mChart, ArrayList<String> xDates, ArrayList<Entry> yLiterPerKilometer)    {
         if (yLiterPerKilometer.size() != 0) {
             LineDataSet dataSet = createSet(yLiterPerKilometer);
             LineData data = new LineData(dataSet);
+            data.setValueTextColor(Color.WHITE);
 
             mChart.setData(data);
             XAxis xAxis = mChart.getXAxis();
@@ -113,10 +141,7 @@ public class ShowDiagram extends AppCompatActivity {
             xAxis.setValueFormatter(new MyXAxisValueFormatter(xValues));
             xAxis.setGranularity(1f);
         }
-        else
-            mChart.clear();
     }
-
 
     private LineDataSet createSet(ArrayList yData) {
         LineDataSet set = new LineDataSet(yData, "");
@@ -131,6 +156,7 @@ public class ShowDiagram extends AppCompatActivity {
         set.setHighLightColor(Color.rgb(244, 117, 177));
         set.setValueTextColor(Color.WHITE);
         set.setValueTextSize(10f);
+        set.setDrawValues(true);
 
         return set;
     }
