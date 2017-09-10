@@ -40,6 +40,7 @@ public class MenuActivity extends AppCompatActivity {
     private ImageButton btn_add_new_entry;
     private ImageButton btn_show_statistic_list;
     private ImageButton btn_show_statistic_diagram;
+    private ImageButton btn_menu_exit_app;
 
     private ImageButton btn_show_overview_last_fill;
     private ImageButton btn_show_overview_last_month;
@@ -55,6 +56,7 @@ public class MenuActivity extends AppCompatActivity {
         btn_add_new_entry = (ImageButton) findViewById(R.id.btn_menu_add_new_entry);
         btn_show_statistic_list = (ImageButton) findViewById(R.id.btn_menu_show_statistic_list);
         btn_show_statistic_diagram = (ImageButton) findViewById(R.id.btn_menu_show_statistic_diagram);
+        btn_menu_exit_app = (ImageButton) findViewById(R.id.btn_menu_exit_app);
 
         btn_show_overview_last_fill = (ImageButton) findViewById(R.id.btn_menu_show_overview_last_fill);
         btn_show_overview_last_month = (ImageButton) findViewById(R.id.btn_menu_show_overview_last_month);
@@ -115,6 +117,14 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MenuActivity.this, ShowDiagramActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        btn_menu_exit_app.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                System.exit(0);
             }
         });
 
