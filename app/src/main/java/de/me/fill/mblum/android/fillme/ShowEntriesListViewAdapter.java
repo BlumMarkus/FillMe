@@ -1,7 +1,6 @@
 package de.me.fill.mblum.android.fillme;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,7 +9,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class ListViewAdapter extends BaseAdapter {
+public class ShowEntriesListViewAdapter extends BaseAdapter {
 
     SimpleDateFormat dateFormat;
     ArrayList<FillEntry> list;
@@ -26,7 +25,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     private String status;
 
-    public ListViewAdapter(Context context, ArrayList<FillEntry> list) {
+    public ShowEntriesListViewAdapter(Context context, ArrayList<FillEntry> list) {
         this.context = context;
         this.list = list;
     }
@@ -48,7 +47,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View customView = View.inflate(context, R.layout.custom_list, null);
+        View customView = View.inflate(context, R.layout.format_listview_showentries, null);
 
         tv_date = (TextView) customView.findViewById(R.id.tv_date);
         tv_mileage = (TextView) customView.findViewById(R.id.tv_mileage);

@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
-public class newEntryActivity extends AppCompatActivity {
+public class NewEntryActivity extends AppCompatActivity {
 
     FillEntry fillEntry;
     FillMeDataSource fmds;
@@ -74,7 +74,7 @@ public class newEntryActivity extends AppCompatActivity {
                 actualDateMonth = actualDateCalendar.get(Calendar.MONTH);
                 actualDateDayOfMonth = actualDateCalendar.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog dialog = new DatePickerDialog(newEntryActivity.this,android.R.style.Theme_DeviceDefault_Light_Dialog,mDateSetListener,actualDateYear,actualDateMonth,actualDateDayOfMonth);
+                DatePickerDialog dialog = new DatePickerDialog(NewEntryActivity.this,android.R.style.Theme_DeviceDefault_Light_Dialog,mDateSetListener,actualDateYear,actualDateMonth,actualDateDayOfMonth);
                 dialog.show();
             }
         });
@@ -95,7 +95,7 @@ public class newEntryActivity extends AppCompatActivity {
                 String workerDate = tv_newEntry_date_field.getText().toString();
 
                 if (workerDate.equals("")) {
-                    Toast.makeText(newEntryActivity.this, "Datumfeld darf nicht leer sein!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewEntryActivity.this, "Datumfeld darf nicht leer sein!", Toast.LENGTH_SHORT).show();
                     Log.d(LOGTAG, "Usereingabe im Feld 'tv_date' nicht erfüllt!");
                 } else {
                     Log.d(LOGTAG, workerDate + " wurde erfolgreich aus dem TextView tv_date übertragen.");
@@ -103,7 +103,7 @@ public class newEntryActivity extends AppCompatActivity {
                     EditText input_mileage = (EditText) findViewById(R.id.input_newEntry_mileage);
                     String workerMileage = input_mileage.getText().toString();
                     if ( workerMileage.equals("") ) {
-                        Toast.makeText(newEntryActivity.this, "Kilometerstand darf nicht leer sein!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NewEntryActivity.this, "Kilometerstand darf nicht leer sein!", Toast.LENGTH_SHORT).show();
                         Log.d(LOGTAG, "Usereingabe im Feld 'input_Mileage' nicht erfüllt!");
                     } else {
                         Log.d(LOGTAG, workerMileage + " wurde erfolgreich aus dem EditText input_mileage übertragen.");
@@ -111,7 +111,7 @@ public class newEntryActivity extends AppCompatActivity {
                         EditText input_amount = (EditText) findViewById(R.id.input_newEntry_cost);
                         String workerAmount = input_amount.getText().toString();
                         if ( workerAmount.equals("") ) {
-                            Toast.makeText(newEntryActivity.this, "Betrag darf nicht leer sein!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NewEntryActivity.this, "Betrag darf nicht leer sein!", Toast.LENGTH_SHORT).show();
                             Log.d(LOGTAG, "Usereingabe im Feld 'input_Amount' nicht erfüllt!");
                         } else {
                             Log.d(LOGTAG, workerAmount + " wurde erfolgreich aus dem EditText input_amount übertragen.");
@@ -119,7 +119,7 @@ public class newEntryActivity extends AppCompatActivity {
                             EditText input_liter = (EditText) findViewById(R.id.input_newEntry_liter);
                             String workerLiter = input_liter.getText().toString();
                             if ( workerLiter.equals("") ) {
-                                Toast.makeText(newEntryActivity.this, "Literfeld darf nicht leer sein!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(NewEntryActivity.this, "Literfeld darf nicht leer sein!", Toast.LENGTH_SHORT).show();
                                 Log.d(LOGTAG, "Usereingabe im Feld 'input_Liter' nicht erfüllt!");
                             } else {
                                 Log.d(LOGTAG, workerLiter + " wurde erfolgreich aus dem EditText input_liter übertragen.");
@@ -134,9 +134,9 @@ public class newEntryActivity extends AppCompatActivity {
                                 boolean result = fmds.writeEntry(fillEntry);
 
                                 if (result) {
-                                    Toast.makeText(newEntryActivity.this, "Datenbankeintrag erfolgreich", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(NewEntryActivity.this, "Datenbankeintrag erfolgreich", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(newEntryActivity.this, "Datenbankeintrag fehlgeschlagen", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(NewEntryActivity.this, "Datenbankeintrag fehlgeschlagen", Toast.LENGTH_SHORT).show();
                                 }
 
                                 Log.d(LOGTAG,"Activity wird nun geschlossen.");
@@ -158,7 +158,7 @@ public class newEntryActivity extends AppCompatActivity {
         btn_menu_statistic_list.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(newEntryActivity.this, showEntriesActivity.class);
+                Intent intent = new Intent(NewEntryActivity.this, ShowEntriesActivity.class);
                 startActivity(intent);
             }
         });
@@ -166,7 +166,7 @@ public class newEntryActivity extends AppCompatActivity {
         btn_menu_statistic_diagram.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(newEntryActivity.this, ShowDiagramActivity.class);
+                Intent intent = new Intent(NewEntryActivity.this, ShowDiagramActivity.class);
                 startActivity(intent);
             }
         });
