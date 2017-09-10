@@ -1,11 +1,15 @@
 package de.me.fill.mblum.android.fillme;
 
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import java.util.ArrayList;
 
@@ -13,8 +17,15 @@ public class showEntriesActivity extends AppCompatActivity {
 
     private FillMeDataSource fmds;
     private ArrayList<FillEntry> list;
-    private ListView lv_showAllEntries;
+
+    private ListView lv_showEntries_all;
     private ListViewAdapter listViewAdapter;
+
+    private ImageButton btn_showEntries_show_statistic_diagram;
+    private ImageButton btn_showEntries_add_new_entry;
+    private ImageButton btn_showEntries_show_settings;
+    private ImageButton btn_showEntries_exit_app;
+    private ImageButton btn_showEntries_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,20 +37,62 @@ public class showEntriesActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        lv_showAllEntries = (ListView) findViewById(R.id.lv_showAllEntries);
+        lv_showEntries_all = (ListView) findViewById(R.id.lv_showEntries_all);
+
+        btn_showEntries_show_statistic_diagram = (ImageButton) findViewById(R.id.btn_showEntries_show_statistic_diagram);
+        btn_showEntries_add_new_entry = (ImageButton) findViewById(R.id.btn_showEntries_add_new_entry);
+        btn_showEntries_show_settings = (ImageButton) findViewById(R.id.btn_showEntries_show_settings);
+        btn_showEntries_exit_app = (ImageButton) findViewById(R.id.btn_showEntries_exit_app);
+        btn_showEntries_back = (ImageButton) findViewById(R.id.btn_showEntries_back);
 
         fmds = new FillMeDataSource(this);
         list = fmds.getAllEntries();
 
         listViewAdapter = new ListViewAdapter(this, list);
-        lv_showAllEntries.setAdapter(listViewAdapter);
+        lv_showEntries_all.setAdapter(listViewAdapter);
 
-        lv_showAllEntries.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lv_showEntries_all.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent(showEntriesActivity.this, EditEntryActivity.class);
                 intent.putExtra("clickedItemID", v.getTag().toString());
                 startActivity(intent);
+            }
+        });
+
+        btn_showEntries_show_statistic_diagram.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(showEntriesActivity.this, ShowDiagramActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_showEntries_add_new_entry.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btn_showEntries_show_settings.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btn_showEntries_exit_app.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btn_showEntries_back.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

@@ -56,6 +56,6 @@
     <color name="backgroundWhite">#fcffff</color>
     <color name="backgroundOrange">#f77b55</color>
     <color name="backgroundBlue">#20b4b4</color>
-    <color name="backgroundlightBlue">#4ec3c3</color>
+    <color name="backgroundlightBlue">#c2efef</color>
     <color name="darkBackground">#021520</color>
 </resources>

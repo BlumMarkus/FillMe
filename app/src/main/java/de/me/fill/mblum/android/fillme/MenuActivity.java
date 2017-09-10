@@ -4,12 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -117,7 +113,7 @@ public class MenuActivity extends AppCompatActivity {
         btn_show_statistic_diagram.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MenuActivity.this, ShowDiagram.class);
+                Intent intent = new Intent(MenuActivity.this, ShowDiagramActivity.class);
                 startActivity(intent);
             }
         });

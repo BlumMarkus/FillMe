@@ -23,7 +23,7 @@
 
 
         <ImageButton
-            android:id="@+id/btn_menu_show_statistic_list"
+            android:id="@+id/btn_newEntry_show_statistic_list"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -31,7 +31,7 @@
             app:srcCompat="@drawable/menu_show_list"/>
 
         <ImageButton
-            android:id="@+id/btn_menu_show_statistic_diagram"
+            android:id="@+id/btn_newEntry_show_statistic_diagram"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -39,15 +39,15 @@
             app:srcCompat="@drawable/menu_show_statistics" />
 
         <ImageButton
-            android:id="@+id/btn_menu_add_new_entry"
+            android:id="@+id/btn_newEntry_add_new_entry"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/backgroundBlue"
-            app:srcCompat="@drawable/menu_add_new" />
+            app:srcCompat="@drawable/newentry_add_new" />
 
         <ImageButton
-            android:id="@+id/btm_menu_show_settings"
+            android:id="@+id/btn_newEntry_show_settings"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -55,7 +55,7 @@
             app:srcCompat="@drawable/menu_show_settings" />
 
         <ImageButton
-            android:id="@+id/btn_menu_exit_app"
+            android:id="@+id/btn_newEntry_exit_app"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -109,7 +109,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        android:layout_weight="4"
+        android:layout_weight="3"
         android:background="@color/backgroundlightBlue"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -141,6 +141,10 @@
             android:id="@+id/btn_newEntry_date_select"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:text="@string/str_pickDate"
             android:textSize="12sp"
             android:background="@color/backgroundBlue"

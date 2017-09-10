@@ -21,7 +21,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ShowDiagram extends AppCompatActivity {
+public class ShowDiagramActivity extends AppCompatActivity {
 
     private FillMeDataSource fmds;
     private ArrayList<FillEntry> list;

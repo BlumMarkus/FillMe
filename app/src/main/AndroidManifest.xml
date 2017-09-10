@@ -20,7 +20,7 @@
         <activity android:name=".showEntriesActivity" />
         <activity android:name=".EditEntryActivity" />
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".ShowDiagram"></activity>
+        <activity android:name=".ShowDiagramActivity"></activity>
     </application>
 
 </manifest>
