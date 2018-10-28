@@ -144,8 +144,8 @@ public class EditEntryActivity extends AppCompatActivity {
                 int id = clickedItemId;
                 String date = tv_date.getText().toString();
                 int mileage = Integer.parseInt(tv_mileage.getText().toString());
-                double liter = Double.parseDouble(tv_amount.getText().toString());
-                double price = Double.parseDouble(tv_liter.getText().toString());
+                double liter = Double.parseDouble(tv_liter.getText().toString());
+                double price = Double.parseDouble(tv_amount.getText().toString());
                 int status = 1;
 
                 fillEntry = new FillEntry(id, date, mileage, liter, price, status);
