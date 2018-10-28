@@ -1,5 +1,6 @@
 package de.me.fill.mblum.android.fillme;
 
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -40,6 +41,7 @@ public class MenuActivity extends AppCompatActivity {
     private ImageButton btn_add_new_entry;
     private ImageButton btn_show_statistic_list;
     private ImageButton btn_show_statistic_diagram;
+    private ImageButton btn_show_settings;
     private ImageButton btn_menu_exit_app;
 
     private ImageButton btn_show_overview_last_fill;
@@ -56,6 +58,7 @@ public class MenuActivity extends AppCompatActivity {
         btn_add_new_entry = (ImageButton) findViewById(R.id.btn_menu_add_new_entry);
         btn_show_statistic_list = (ImageButton) findViewById(R.id.btn_menu_show_statistic_list);
         btn_show_statistic_diagram = (ImageButton) findViewById(R.id.btn_menu_show_statistic_diagram);
+        btn_show_settings = (ImageButton) findViewById(R.id.btn_menu_show_settings);
         btn_menu_exit_app = (ImageButton) findViewById(R.id.btn_menu_exit_app);
 
         btn_show_overview_last_fill = (ImageButton) findViewById(R.id.btn_menu_show_overview_last_fill);
@@ -116,6 +119,14 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MenuActivity.this, ShowDiagramActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_show_settings.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MenuActivity.this, SettingsActivity.class);
                 startActivity(intent);
             }
         });
