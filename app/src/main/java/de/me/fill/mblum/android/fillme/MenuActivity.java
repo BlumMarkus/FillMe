@@ -102,7 +102,7 @@ public class MenuActivity extends AppCompatActivity {
         btn_add_new_entry.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MenuActivity.this, newEntryActivity.class);
+                Intent intent = new Intent(MenuActivity.this, NewEntryActivity.class);
                 startActivity(intent);
             }
         });
@@ -110,7 +110,7 @@ public class MenuActivity extends AppCompatActivity {
         btn_show_statistic_list.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MenuActivity.this, showEntriesActivity.class);
+                Intent intent = new Intent(MenuActivity.this, ShowEntriesActivity.class);
                 startActivity(intent);
             }
         });

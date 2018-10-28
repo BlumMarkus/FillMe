@@ -16,8 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".newEntryActivity" />
-        <activity android:name=".showEntriesActivity" />
+        <activity android:name=".NewEntryActivity" />
+        <activity android:name=".ShowEntriesActivity" />
         <activity android:name=".EditEntryActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".ShowDiagramActivity"></activity>
