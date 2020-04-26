@@ -36,10 +36,10 @@ public class ShowEntriesActivity extends AppCompatActivity {
 
         lv_showEntries_all = (ListView) findViewById(R.id.lv_showEntries_all);
 
-        btn_showEntries_show_statistic_diagram = (ImageButton) findViewById(R.id.btn_showEntries_show_statistic_diagram);
-        btn_showEntries_add_new_entry = (ImageButton) findViewById(R.id.btn_showEntries_add_new_entry);
-        btn_showEntries_show_settings = (ImageButton) findViewById(R.id.btn_showEntries_show_settings);
-        btn_showEntries_exit_app = (ImageButton) findViewById(R.id.btn_showEntries_exit_app);
+        btn_showEntries_show_statistic_diagram = (ImageButton) findViewById(R.id.btn_menu_show_statistic_diagram);
+        btn_showEntries_add_new_entry = (ImageButton) findViewById(R.id.btn_menu_add_new_entry);
+        btn_showEntries_show_settings = (ImageButton) findViewById(R.id.btn_menu_show_settings);
+        btn_showEntries_exit_app = (ImageButton) findViewById(R.id.btn_menu_exit_app);
         btn_showEntries_back = (ImageButton) findViewById(R.id.btn_showEntries_back);
 
         fmds = new FillMeDataSource(this);

@@ -49,11 +49,11 @@ public class ShowEntriesListViewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View customView = View.inflate(context, R.layout.format_listview_showentries, null);
 
-        tv_date = (TextView) customView.findViewById(R.id.tv_date);
-        tv_mileage = (TextView) customView.findViewById(R.id.tv_mileage);
-        tv_status = (TextView) customView.findViewById(R.id.tv_status);
-        tv_price = (TextView) customView.findViewById(R.id.tv_price);
-        tv_liter = (TextView) customView.findViewById(R.id.tv_liter);
+        tv_date = (TextView) customView.findViewById(R.id.tv_showEntries_date);
+        tv_mileage = (TextView) customView.findViewById(R.id.tv_showEntries_mileage);
+        tv_status = (TextView) customView.findViewById(R.id.tv_showEntries_status);
+        tv_price = (TextView) customView.findViewById(R.id.tv_showEntries_price);
+        tv_liter = (TextView) customView.findViewById(R.id.tv_showEntries_liter);
 
         if (list.get(position).getStatus() == 1) {
             status = "Usereingabe";
