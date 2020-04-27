@@ -41,9 +41,6 @@ public class NewEntryActivity extends AppCompatActivity {
     private ImageButton btn_newEntry_save;
     private ImageButton btn_newEntry_back;
 
-    private ImageButton btn_menu_statistic_list;
-    private ImageButton btn_menu_statistic_diagram;
-    private ImageButton btn_menu_settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +55,6 @@ public class NewEntryActivity extends AppCompatActivity {
         btn_newEntry_select_date = (Button) findViewById(R.id.btn_newEntry_date_select);
         btn_newEntry_save = (ImageButton) findViewById(R.id.btn_newEntry_save);
         btn_newEntry_back = (ImageButton) findViewById(R.id.btn_newEntry_back);
-
-        btn_menu_statistic_list = (ImageButton) findViewById(R.id.btn_menu_show_statistic_list);
-        btn_menu_statistic_diagram = (ImageButton) findViewById(R.id.btn_menu_show_statistic_diagram);
 
         tv_newEntry_date_field = (TextView) findViewById(R.id.tv_newEntry_date_field);
 
@@ -152,22 +146,6 @@ public class NewEntryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-
-        btn_menu_statistic_list.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(NewEntryActivity.this, ShowEntriesActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btn_menu_statistic_diagram.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(NewEntryActivity.this, ShowDiagramActivity.class);
-                startActivity(intent);
             }
         });
     }
