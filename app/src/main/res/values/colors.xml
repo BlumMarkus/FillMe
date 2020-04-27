@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#1E86E2</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!-- Used in New Entry XML -->
+    <color name="colorTitle">#EBF6FF</color>
+    <color name="colorBackgroundGray">#F5F5F5</color>
+    <color name="colorBackgroundWhite">#FFFFFF</color>
+    <color name="colorPrimaryText">#616161</color>
+
+    <!-- Used for previous versions -->
+    <color name="whiteBlue">#7cd3f8</color>
+    <color name="lightBlue">#1a769d</color>
+    <color name="blue">#11688d</color>
+    <color name="darkBlue">#074762</color>
+    <color name="blackBlue">#163d4e</color>
+
+    <color name="lightBackground">#2e88ae</color>
+
+    <color name="activeButton">#20b4b4</color>
+    <color name="passiveButton">#4ec3c3</color>
+
+    <color name="title">#cfffff</color>
+    <color name="text">#074762</color>
+    <color name="brightText">#7cd3f8</color>
+    <color name="darkText">#163d4e</color>
+
+    <color name="background">#435058</color>
+    <color name="backgroundWhite">#fcffff</color>
+    <color name="backgroundOrange">#f77b55</color>
+    <color name="backgroundBlue">#20b4b4</color>
+    <color name="backgroundlightBlue">#c2efef</color>
+    <color name="darkBackground">#021520</color>
 </resources>

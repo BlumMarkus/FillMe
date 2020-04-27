@@ -1,194 +1,306 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v7.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackgroundGray"
     android:orientation="vertical"
     tools:context="de.me.fill.mblum.android.fillme.NewEntryActivity">
 
+    <!-- Header Area -->
     <LinearLayout
-        android:id="@+id/newEntry_layout_headline"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/header_small"
         android:orientation="horizontal"
-        android:layout_weight="1.2"
-        android:background="@color/backgroundBlue"
         app:layout_constraintTop_toBottomOf="parent">
 
-        <ImageButton
-            android:id="@+id/btn_newEntry_back"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/backgroundBlue"
-            app:srcCompat="@drawable/newentry_back" />
+            android:text="" />
 
         <TextView
-            android:id="@+id/txt_headlineNewEntry"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="5"
-            android:text="@string/str_headlineNewEntry"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="@color/title"
+            android:paddingTop="15sp"
+            android:text="@string/str_newEntry_title"
             android:textAlignment="center"
-            android:paddingTop="15dp"/>
+            android:textColor="@color/colorTitle"
+            android:textSize="20sp" />
 
         <ImageButton
-            android:id="@+id/btn_newEntry_save"
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_newEntry_cancel"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/backgroundBlue"
-            app:srcCompat="@drawable/newentry_save" />
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/str_description_btn_cancel"
+            android:paddingBottom="10sp"
+            app:srcCompat="@drawable/cancel_button" />
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/newEntry_layout_date"
+    <!-- Date Area -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_weight="2"
-        android:background="@color/backgroundlightBlue"
-        app:layout_constraintTop_toBottomOf="@id/newEntry_layout_headline">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginRight="12sp"
+        android:layout_marginBottom="0sp"
+        android:background="@drawable/radius_layout_bg"
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_newEntry_date_title"
+            android:layout_width="45sp"
+            android:layout_height="45sp"
+            android:layout_margin="8sp"
+            android:background="@drawable/radius_layout_rounded"
+            android:gravity="center"
+            android:text="@string/str_counter_1"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="18sp" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Datum"
-            android:textSize="16sp"
-            android:textColor="@color/text"
-            android:padding="7dp"
-            android:layout_alignParentTop="true"
-            android:gravity="center_vertical"
-            android:drawableStart="@drawable/calendar_icon"
-            android:drawablePadding="5dp"/>
+            android:orientation="vertical"
+            android:paddingTop="8sp">
 
-        <TextView
-            android:id="@+id/tv_newEntry_date_field"
-            android:layout_width="250dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="45sp"
+                    android:gravity="center_vertical"
+                    android:labelFor="@id/btn_newEntry_date_select"
+                    android:text="@string/str_newEntry_dateTitle"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_newEntry_selected_date"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="12sp">
+
+                <Button
+                    android:id="@+id/btn_newEntry_date_today"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40sp"
+                    android:background="@drawable/radius_layout_button"
+                    android:text="@string/str_newEntry_dateToday"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/btn_newEntry_date_select"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40sp"
+                    android:layout_marginStart="12sp"
+                    android:background="@drawable/radius_layout_button"
+                    android:text="@string/str_newEntry_dateSelect"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Mileage Area -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginRight="12sp"
+        android:layout_marginBottom="0sp"
+        android:background="@drawable/radius_layout_bg"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textSize="25sp"
-            android:gravity="center"
-            android:layout_below="@id/tv_newEntry_date_title"/>
+            android:padding="8sp">
 
-        <Button
-            android:id="@+id/btn_newEntry_date_select"
+            <TextView
+                android:layout_width="45sp"
+                android:layout_height="45sp"
+                android:background="@drawable/radius_layout_rounded"
+                android:gravity="center"
+                android:text="@string/str_counter_2"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8sp"
+            android:paddingBottom="8sp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45sp"
+                android:gravity="center_vertical"
+                android:labelFor="@id/input_newEntry_mileage"
+                android:text="@string/str_newEntry_mileageTitle"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/input_newEntry_mileage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textColorLink="@android:color/holo_blue_bright"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Price Area -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginRight="12sp"
+        android:layout_marginBottom="0sp"
+        android:background="@drawable/radius_layout_bg"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:padding="8sp">
+
+            <TextView
+                android:layout_width="45sp"
+                android:layout_height="45sp"
+                android:background="@drawable/radius_layout_rounded"
+                android:gravity="center"
+                android:text="@string/str_counter_3"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:text="@string/str_pickDate"
-            android:textSize="12sp"
-            android:background="@color/backgroundBlue"
-            android:layout_toEndOf="@id/tv_newEntry_date_field"
-            android:layout_below="@id/tv_newEntry_date_title"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8sp"
+            android:paddingBottom="8sp">
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45sp"
+                android:gravity="center_vertical"
+                android:labelFor="@id/input_newEntry_cost"
+                android:text="@string/str_newEntry_costTitle"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp" />
 
-    <LinearLayout
-        android:id="@+id/newEntry_layout_mileage"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="3"
-        android:background="@color/backgroundlightBlue"
-        app:layout_constraintTop_toBottomOf="@id/newEntry_layout_date">
+            <EditText
+                android:id="@+id/input_newEntry_cost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:inputType="numberDecimal"
+                android:textAlignment="center"
+                android:textColorLink="@android:color/holo_blue_bright"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tv_newEntry_mileage_title"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="Kilometerstand"
-            android:textSize="16sp"
-            android:textColor="@color/text"
-            android:gravity="center_vertical"
-            android:drawableStart="@drawable/car_icon"
-            android:drawablePadding="5dp"/>
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/input_newEntry_mileage"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:ems="10"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:textColorLink="@android:color/holo_blue_bright"
-            android:textSize="25sp" />
     </LinearLayout>
 
+    <!-- Liter Area -->
     <LinearLayout
-        android:id="@+id/newEntry_layout_cost"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="3"
-        android:background="@color/backgroundlightBlue"
-        app:layout_constraintTop_toBottomOf="@id/newEntry_layout_date">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginRight="12sp"
+        android:layout_marginBottom="0sp"
+        android:background="@drawable/radius_layout_bg"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_newEntry_cost_title"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="Betrag"
-            android:textSize="16sp"
-            android:textColor="@color/text"
-            android:gravity="center_vertical"
-            android:drawableStart="@drawable/euro_icon"
-            android:drawablePadding="5dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="8sp">
 
-        <EditText
-            android:id="@+id/input_newEntry_cost"
+            <TextView
+                android:layout_width="45sp"
+                android:layout_height="45sp"
+                android:background="@drawable/radius_layout_rounded"
+                android:gravity="center"
+                android:text="@string/str_counter_4"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:ems="10"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:textColorLink="@android:color/holo_blue_bright"
-            android:textSize="25sp" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8sp"
+            android:paddingBottom="8sp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45sp"
+                android:gravity="center_vertical"
+                android:labelFor="@id/input_newEntry_liter"
+                android:text="@string/str_newEntry_literTitle"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/input_newEntry_liter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:inputType="numberDecimal"
+                android:textAlignment="center"
+                android:textColorLink="@color/colorPrimaryText"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/newEntry_layout_liter"
+    <Button
+        android:id="@+id/btn_newEntry_confirm"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="3"
-        android:background="@color/backgroundlightBlue"
-        app:layout_constraintTop_toBottomOf="@id/newEntry_layout_date">
-
-        <TextView
-            android:id="@+id/tv_newEntry_liter_title"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="Liter"
-            android:textSize="16sp"
-            android:textColor="@color/text"
-            android:gravity="center_vertical"
-            android:drawableStart="@drawable/gasstation_icon"
-            android:drawablePadding="5dp"/>
-
-        <EditText
-            android:id="@+id/input_newEntry_liter"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:ems="10"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:textColorLink="@android:color/holo_blue_bright"
-            android:textSize="25sp" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:text="@string/str_confirm"
+        android:layout_margin="15sp"
+        android:background="@drawable/radius_layout_rounded"/>
 </android.support.v7.widget.LinearLayoutCompat>

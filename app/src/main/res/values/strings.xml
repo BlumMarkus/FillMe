@@ -22,6 +22,10 @@
     <string name="str_UnitTotalConsumption">l pro 100 km</string>
     <string name="str_UnitTotalConsumptionCost">€ pro 100 km</string>
 
+    <string name="str_newEntry_title">Eintrag hinzufügen</string>
+
+    <string name="str_description_btn_cancel">Zurück</string>
+
     <string name="str_headlineNewEntry">Neuer Eintrag</string>
     <string name="str_pickDate">auswählen</string>
     <string name="str_date">Datum</string>
@@ -33,29 +37,21 @@
     <string name="str_save">speichern</string>
     <string name="str_delete">löschen</string>
 
+    <!-- Button strings -->
     <string name="str_yes">JA</string>
     <string name="str_no">NEIN</string>
+    <string name="str_confirm">Bestätigen</string>
+    <string name="str_cancel">Abbrechen</string>
 
-    <color name="whiteBlue">#7cd3f8</color>
-    <color name="lightBlue">#1a769d</color>
-    <color name="blue">#11688d</color>
-    <color name="darkBlue">#074762</color>
-    <color name="blackBlue">#163d4e</color>
-
-    <color name="lightBackground">#2e88ae</color>
-
-    <color name="activeButton">#20b4b4</color>
-    <color name="passiveButton">#4ec3c3</color>
-
-    <color name="title">#cfffff</color>
-    <color name="text">#074762</color>
-    <color name="brightText">#7cd3f8</color>
-    <color name="darkText">#163d4e</color>
-
-    <color name="background">#435058</color>
-    <color name="backgroundWhite">#fcffff</color>
-    <color name="backgroundOrange">#f77b55</color>
-    <color name="backgroundBlue">#20b4b4</color>
-    <color name="backgroundlightBlue">#c2efef</color>
-    <color name="darkBackground">#021520</color>
+    <!-- New Entry Strings -->
+    <string name="str_newEntry_dateTitle">Datum wählen:</string>
+    <string name="str_newEntry_dateToday">Heute</string>
+    <string name="str_newEntry_dateSelect">Kalender</string>
+    <string name="str_newEntry_mileageTitle">Kilometerstand:</string>
+    <string name="str_newEntry_costTitle">Preis:</string>
+    <string name="str_newEntry_literTitle">Liter:</string>
+    <string name="str_counter_1">1</string>
+    <string name="str_counter_2">2</string>
+    <string name="str_counter_3">3</string>
+    <string name="str_counter_4">4</string>
 </resources>

@@ -1,9 +1,8 @@
 package de.me.fill.mblum.android.fillme;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,24 +22,17 @@ public class NewEntryActivity extends AppCompatActivity {
     private String LOGTAG = "newEntryActivity";
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-    private Calendar actualDateCalendar;
-
-    private int actualDateYear;
-    private int actualDateMonth;
-    private int actualDateDayOfMonth;
-    private String date;
 
     private int status; // 1 = Usereingabe | 0 = generiert
     private int mileage;
     private double amount;
     private double liter;
 
+    private int currentDateYear;
+    private int currentDateMonth;
+    private int currentDateDayOfMonth;
+
     private TextView tv_newEntry_date_field;
-
-    private Button btn_newEntry_select_date;
-    private ImageButton btn_newEntry_save;
-    private ImageButton btn_newEntry_back;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,23 +44,31 @@ public class NewEntryActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        btn_newEntry_select_date = (Button) findViewById(R.id.btn_newEntry_date_select);
-        btn_newEntry_save = (ImageButton) findViewById(R.id.btn_newEntry_save);
-        btn_newEntry_back = (ImageButton) findViewById(R.id.btn_newEntry_back);
-
-        tv_newEntry_date_field = (TextView) findViewById(R.id.tv_newEntry_date_field);
+        Button btn_newEntry_select_today = findViewById(R.id.btn_newEntry_date_today);
+        Button btn_newEntry_select_date = findViewById(R.id.btn_newEntry_date_select);
+        Button btn_newEntry_confirm = findViewById(R.id.btn_newEntry_confirm);
+        ImageButton btn_newEntry_cancel = findViewById(R.id.btn_newEntry_cancel);
+        tv_newEntry_date_field = findViewById(R.id.tv_newEntry_selected_date);
 
         fmds = new FillMeDataSource(this);
+
+        Calendar currentDateCalendar = Calendar.getInstance();
+        currentDateYear = currentDateCalendar.get(Calendar.YEAR);
+        currentDateMonth = currentDateCalendar.get(Calendar.MONTH);
+        currentDateDayOfMonth = currentDateCalendar.get(Calendar.DAY_OF_MONTH);
+
+        btn_newEntry_select_today.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv_newEntry_date_field.setText(String.format("%02d", currentDateDayOfMonth) + "." + String.format("%02d", currentDateMonth + 1) + "." + String.format("%02d", currentDateYear));
+                Log.d(LOGTAG, "Datum an TextView übergeben: Jahr: " + currentDateYear + ", Monat: " + currentDateMonth + ", Tag: " + currentDateDayOfMonth);
+            }
+        });
 
         btn_newEntry_select_date.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                actualDateCalendar = Calendar.getInstance();
-                actualDateYear = actualDateCalendar.get(Calendar.YEAR);
-                actualDateMonth = actualDateCalendar.get(Calendar.MONTH);
-                actualDateDayOfMonth = actualDateCalendar.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog dialog = new DatePickerDialog(NewEntryActivity.this,android.R.style.Theme_DeviceDefault_Light_Dialog,mDateSetListener,actualDateYear,actualDateMonth,actualDateDayOfMonth);
+                DatePickerDialog dialog = new DatePickerDialog(NewEntryActivity.this, android.R.style.Theme_DeviceDefault_Light_Dialog, mDateSetListener, currentDateYear, currentDateMonth, currentDateDayOfMonth);
                 dialog.show();
             }
         });
@@ -77,54 +77,61 @@ public class NewEntryActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
-                date = String.format("%02d", dayOfMonth) + "." + String.format("%02d", month) + "." + String.format("%04d", year);
-                tv_newEntry_date_field.setText(date);
-                Log.d(LOGTAG,"Datum an TextView übergeben: Jahr: " + year + ", Monat: " + month + ", Tag: " + dayOfMonth);
+                tv_newEntry_date_field.setText(String.format("%02d", dayOfMonth) + "." + String.format("%02d", month) + "." + String.format("%04d", year));
+                Log.d(LOGTAG, "Datum an TextView übergeben: Jahr: " + year + ", Monat: " + month + ", Tag: " + dayOfMonth);
             }
         };
 
-        btn_newEntry_save.setOnClickListener(new OnClickListener() {
+        btn_newEntry_cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                String workerDate = tv_newEntry_date_field.getText().toString();
+                finish();
+            }
+        });
 
-                if (workerDate.equals("")) {
+        btn_newEntry_confirm.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText input_mileage = findViewById(R.id.input_newEntry_mileage);
+                EditText input_amount = findViewById(R.id.input_newEntry_cost);
+                EditText input_liter = findViewById(R.id.input_newEntry_liter);
+
+                String dateInput = tv_newEntry_date_field.getText().toString();
+                String mileageInput = input_mileage.getText().toString();
+                String amountInput = input_amount.getText().toString();
+                String literInput = input_liter.getText().toString();
+
+                if (dateInput.equals("")) {
                     Toast.makeText(NewEntryActivity.this, "Datumfeld darf nicht leer sein!", Toast.LENGTH_SHORT).show();
                     Log.d(LOGTAG, "Usereingabe im Feld 'tv_date' nicht erfüllt!");
                 } else {
-                    Log.d(LOGTAG, workerDate + " wurde erfolgreich aus dem TextView tv_date übertragen.");
+                    Log.d(LOGTAG, dateInput + " wurde erfolgreich aus dem TextView tv_date übertragen.");
 
-                    EditText input_mileage = (EditText) findViewById(R.id.input_newEntry_mileage);
-                    String workerMileage = input_mileage.getText().toString();
-                    if ( workerMileage.equals("") ) {
+                    if (mileageInput.equals("")) {
                         Toast.makeText(NewEntryActivity.this, "Kilometerstand darf nicht leer sein!", Toast.LENGTH_SHORT).show();
                         Log.d(LOGTAG, "Usereingabe im Feld 'input_Mileage' nicht erfüllt!");
                     } else {
-                        Log.d(LOGTAG, workerMileage + " wurde erfolgreich aus dem EditText input_mileage übertragen.");
+                        Log.d(LOGTAG, mileageInput + " wurde erfolgreich aus dem EditText input_mileage übertragen.");
 
-                        EditText input_amount = (EditText) findViewById(R.id.input_newEntry_cost);
-                        String workerAmount = input_amount.getText().toString();
-                        if ( workerAmount.equals("") ) {
+                        if (amountInput.equals("")) {
                             Toast.makeText(NewEntryActivity.this, "Betrag darf nicht leer sein!", Toast.LENGTH_SHORT).show();
                             Log.d(LOGTAG, "Usereingabe im Feld 'input_Amount' nicht erfüllt!");
                         } else {
-                            Log.d(LOGTAG, workerAmount + " wurde erfolgreich aus dem EditText input_amount übertragen.");
+                            Log.d(LOGTAG, amountInput + " wurde erfolgreich aus dem EditText input_amount übertragen.");
 
-                            EditText input_liter = (EditText) findViewById(R.id.input_newEntry_liter);
-                            String workerLiter = input_liter.getText().toString();
-                            if ( workerLiter.equals("") ) {
+                            if (literInput.equals("")) {
                                 Toast.makeText(NewEntryActivity.this, "Literfeld darf nicht leer sein!", Toast.LENGTH_SHORT).show();
                                 Log.d(LOGTAG, "Usereingabe im Feld 'input_Liter' nicht erfüllt!");
                             } else {
-                                Log.d(LOGTAG, workerLiter + " wurde erfolgreich aus dem EditText input_liter übertragen.");
+                                Log.d(LOGTAG, literInput + " wurde erfolgreich aus dem EditText input_liter übertragen.");
 
-                                mileage = Integer.parseInt(workerMileage);
-                                amount = Double.parseDouble(workerAmount);
-                                liter = Double.parseDouble(workerLiter);
+                                mileage = Integer.parseInt(mileageInput);
+                                amount = Double.parseDouble(amountInput);
+                                liter = Double.parseDouble(literInput);
                                 status = 1; // = Usereingabe
 
-                                fillEntry = new FillEntry(date, mileage, liter, amount, status);
-                                Log.d(LOGTAG, "Neues Objekt fillEntry (" + date + "," + mileage + "," + liter + "," + amount + ", " + status +") erstellt.");
+                                fillEntry = new FillEntry(dateInput, mileage, liter, amount, status);
+                                Log.d(LOGTAG, "Neues Objekt fillEntry (" + dateInput + "," + mileage + "," + liter + "," + amount + ", " + status + ") erstellt.");
                                 boolean result = fmds.writeEntry(fillEntry);
 
                                 if (result) {
@@ -133,19 +140,12 @@ public class NewEntryActivity extends AppCompatActivity {
                                     Toast.makeText(NewEntryActivity.this, "Datenbankeintrag fehlgeschlagen", Toast.LENGTH_SHORT).show();
                                 }
 
-                                Log.d(LOGTAG,"Activity wird nun geschlossen.");
+                                Log.d(LOGTAG, "Activity wird nun geschlossen.");
                                 finish();
                             }
                         }
                     }
                 }
-            }
-        });
-
-        btn_newEntry_back.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
             }
         });
     }
