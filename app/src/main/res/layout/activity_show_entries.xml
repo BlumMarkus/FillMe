@@ -5,48 +5,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackgroundGray"
     android:orientation="vertical"
     tools:context="de.me.fill.mblum.android.fillme.ShowEntriesActivity">
 
+    <!-- Header Area -->
     <LinearLayout
-        android:id="@+id/showEntries_layout_headline"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/header_small"
         android:orientation="horizontal"
-        android:layout_weight="2"
-        android:background="@color/backgroundBlue"
+        android:layout_marginBottom="12sp"
         app:layout_constraintTop_toBottomOf="parent">
 
-        <ImageButton
-            android:id="@+id/btn_showEntries_back"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/backgroundBlue"
-            app:srcCompat="@drawable/newentry_back" />
+            android:text="" />
 
         <TextView
-            android:id="@+id/tv_showEntries_headline"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="5"
-            android:text="Einträge anzeigen"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="@color/title"
+            android:paddingTop="15sp"
+            android:text="@string/str_showEntries_title"
             android:textAlignment="center"
-            android:paddingTop="15dp"/>
+            android:textColor="@color/colorTitle"
+            android:textSize="20sp" />
 
-        <TextView
+        <ImageButton
+            android:id="@+id/btn_showEntries_cancel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/str_description_btn_cancel"
+            android:paddingBottom="10sp"
+            app:srcCompat="@drawable/cancel_button" />
     </LinearLayout>
 
+    <!-- Entry list -->
     <ListView
         android:id="@+id/lv_showEntries_all"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="18"
-        android:background="@color/backgroundlightBlue"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="8sp"
+        android:background="@drawable/radius_layout_bg"/>
 </android.support.v7.widget.LinearLayoutCompat>

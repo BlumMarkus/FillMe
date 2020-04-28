@@ -6,26 +6,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ShowEntriesListViewAdapter extends BaseAdapter {
 
-    SimpleDateFormat dateFormat;
-    ArrayList<FillEntry> list;
-    Context context;
+    private ArrayList<FillEntry> list;
+    private Context context;
 
     private String LOG_TAG = "ListViewAdapter";
 
-    private TextView tv_date;
-    private TextView tv_mileage;
-    private TextView tv_status;
-    private TextView tv_price;
-    private TextView tv_liter;
-
-    private String status;
-
-    public ShowEntriesListViewAdapter(Context context, ArrayList<FillEntry> list) {
+    ShowEntriesListViewAdapter(Context context, ArrayList<FillEntry> list) {
         this.context = context;
         this.list = list;
     }
@@ -49,23 +40,20 @@ public class ShowEntriesListViewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View customView = View.inflate(context, R.layout.format_listview_showentries, null);
 
-        tv_date = (TextView) customView.findViewById(R.id.tv_showEntries_date);
-        tv_mileage = (TextView) customView.findViewById(R.id.tv_showEntries_mileage);
-        tv_status = (TextView) customView.findViewById(R.id.tv_showEntries_status);
-        tv_price = (TextView) customView.findViewById(R.id.tv_showEntries_price);
-        tv_liter = (TextView) customView.findViewById(R.id.tv_showEntries_liter);
+        TextView tv_dayOfMonth = customView.findViewById(R.id.tv_showEntries_dayOfMonth);
+        TextView tv_monthShort = customView.findViewById(R.id.tv_showEntries_monthShort);
+        TextView tv_mileage = customView.findViewById(R.id.tv_showEntries_mileage);
+        TextView tv_price = customView.findViewById(R.id.tv_showEntries_price);
+        TextView tv_liter = customView.findViewById(R.id.tv_showEntries_liter);
 
-        if (list.get(position).getStatus() == 1) {
-            status = "Usereingabe";
-        } else {
-            status = "Generiert";
-        }
+        tv_dayOfMonth.setText(String.valueOf(list.get(position).getDayOfMonth()));
+        tv_monthShort.setText(String.valueOf(list.get(position).getMonthShort()));
+        tv_mileage.setText(String.valueOf(list.get(position).getMileage()));
 
-        tv_date.setText(String.valueOf(list.get(position).getDate()));
-        tv_mileage.setText(String.valueOf(list.get(position).getMileage() + " km"));
-        tv_status.setText(status);
-        tv_price.setText(String.valueOf(list.get(position).getPrice() + " €"));
-        tv_liter.setText(String.valueOf(list.get(position).getLiter() + " l"));
+        DecimalFormat format = new DecimalFormat("0.00");
+
+        tv_price.setText(String.valueOf(format.format(list.get(position).getPrice())));
+        tv_liter.setText(String.valueOf(format.format(list.get(position).getLiter())));
 
         customView.setTag(list.get(position).getID());
 

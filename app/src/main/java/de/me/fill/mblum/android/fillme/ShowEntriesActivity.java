@@ -1,24 +1,17 @@
 package de.me.fill.mblum.android.fillme;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+
 import java.util.ArrayList;
 
 public class ShowEntriesActivity extends AppCompatActivity {
-
-    private FillMeDataSource fmds;
-    private ArrayList<FillEntry> list;
-
-    private ListView lv_showEntries_all;
-    private ShowEntriesListViewAdapter showEntriesListViewAdapter;
-
-    private ImageButton btn_showEntries_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +23,13 @@ public class ShowEntriesActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        lv_showEntries_all = (ListView) findViewById(R.id.lv_showEntries_all);
+        ListView lv_showEntries_all = findViewById(R.id.lv_showEntries_all);
+        ImageButton btn_newEntry_cancel = findViewById(R.id.btn_showEntries_cancel);
 
-        btn_showEntries_back = (ImageButton) findViewById(R.id.btn_showEntries_back);
+        FillMeDataSource fmds = new FillMeDataSource(this);
+        ArrayList<FillEntry> list = fmds.getAllEntries();
 
-        fmds = new FillMeDataSource(this);
-        list = fmds.getAllEntries();
-
-        showEntriesListViewAdapter = new ShowEntriesListViewAdapter(this, list);
+        ShowEntriesListViewAdapter showEntriesListViewAdapter = new ShowEntriesListViewAdapter(this, list);
         lv_showEntries_all.setAdapter(showEntriesListViewAdapter);
 
         lv_showEntries_all.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -49,7 +41,7 @@ public class ShowEntriesActivity extends AppCompatActivity {
             }
         });
 
-        btn_showEntries_back.setOnClickListener(new OnClickListener() {
+        btn_newEntry_cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

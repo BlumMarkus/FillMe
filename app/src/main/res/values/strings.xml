@@ -14,7 +14,10 @@
     <string name="str_DataLastMonth">Dieser Monat</string>
     <string name="str_DataLastYear">Dieses Jahr</string>
 
-    <string name="str_UnitActualMileage">km</string>
+    <!-- Unit strings -->
+    <string name="str_UnitMileage">km</string>
+    <string name="str_UnitPrice">Euro</string>
+    <string name="str_UnitAmount">Liter</string>
     <string name="str_UnitEuro">€</string>
     <string name="str_UnitLiter">l</string>
     <string name="str_UnitActualConsumption">l pro 100 km</string>
@@ -22,9 +25,10 @@
     <string name="str_UnitTotalConsumption">l pro 100 km</string>
     <string name="str_UnitTotalConsumptionCost">€ pro 100 km</string>
 
+    <!-- Titles -->
     <string name="str_newEntry_title">Eintrag hinzufügen</string>
+    <string name="str_showEntries_title">Einträge anzeigen</string>
 
-    <string name="str_description_btn_cancel">Zurück</string>
 
     <string name="str_headlineNewEntry">Neuer Eintrag</string>
     <string name="str_pickDate">auswählen</string>
@@ -42,6 +46,7 @@
     <string name="str_no">NEIN</string>
     <string name="str_confirm">Bestätigen</string>
     <string name="str_cancel">Abbrechen</string>
+    <string name="str_description_btn_cancel">Zurück</string>
 
     <!-- New Entry Strings -->
     <string name="str_newEntry_dateTitle">Datum wählen:</string>
