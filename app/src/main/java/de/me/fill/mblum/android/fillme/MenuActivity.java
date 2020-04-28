@@ -22,6 +22,7 @@ public class MenuActivity extends AppCompatActivity {
     private Calendar calendar;
     private int actualCalendarDay;
     private int actualCalendarMonth;
+    private int lastCalendarMonth;
     private int actualCalendarYear;
 
     private String LOGTAG = "MenuActivity";
@@ -84,10 +85,18 @@ public class MenuActivity extends AppCompatActivity {
         actualCalendarDay = calendar.get(Calendar.DAY_OF_MONTH);
         actualCalendarMonth = calendar.get(Calendar.MONTH) + 1;
         actualCalendarYear = calendar.get(Calendar.YEAR);
+        if(actualCalendarMonth != 1)
+        {
+            lastCalendarMonth = actualCalendarMonth-1;
+        }
+        else
+        {
+            lastCalendarMonth = 12;
+        }
 
         fmds = new FillMeDataSource(this);
         fullDataList = fmds.getAllEntries();
-        lastMonthList = fmds.getlastMonth(actualCalendarMonth, actualCalendarYear);
+        lastMonthList = fmds.getlastMonth(lastCalendarMonth, actualCalendarYear);
         lastYearList = fmds.getlastYear(actualCalendarYear);
 
         updateDisplayedData(fullDataList);
@@ -234,38 +243,25 @@ public class MenuActivity extends AppCompatActivity {
             btn_show_overview_last_fill.setEnabled(true);
             btn_show_overview_all.setEnabled(true);
 
-            if (lastMonthList.size() > 1) {
+            if (lastMonthList.size() >= 1) {
                 btn_show_overview_last_month.setEnabled(true);
             }
 
-            if (lastYearList.size() > 1) {
+            if (lastYearList.size() >= 1) {
                 btn_show_overview_last_year.setEnabled(true);
             }
 
-            tv_show_last_mileage.setText((String.valueOf(sortedList.get(0).getMileage() +  " km")));
+            tv_show_last_mileage.setText(String.valueOf(sortedList.get(0).getMileage() + " km"));
             tv_show_last_date.setText(String.valueOf(sortedList.get(0).getDate()));
 
-            int actualDistance = sortedList.get(0).getMileage() - sortedList.get(1).getMileage();
-
-            tv_show_overview_mileage.setText(String.valueOf(actualDistance + " km"));
-            tv_show_overview_cost.setText(String.valueOf(f.format((sortedList.get(0).getPrice() / actualDistance) * 100)));
-            tv_show_overview_liter.setText(String.valueOf(f.format((sortedList.get(0).getLiter() / actualDistance) * 100)));
-
-            String newestDate = String.valueOf(sortedList.get(0).getDate());
-            String[] splittedNewestDate = newestDate.split("\\.");
-
-            Log.d(LOGTAG, "Splitten war erfolgreich! " + newestDate + "(" + splittedNewestDate.length + ") = " + splittedNewestDate[0] + "," + splittedNewestDate[1] + "," + splittedNewestDate[2]);
-
-            String displayTime = getDateDifference( splittedNewestDate );
-
-            tv_show_overview_time.setText(String.valueOf(displayTime));
+            updateOverviewLastFill(fullDataList);
         }
     }
 
     private void updateOverviewAll(ArrayList<FillEntry> sortedList) {
-        int listSize = sortedList.size();
+        int listSize = sortedList.size()-1;
 
-        int totalDistance = sortedList.get(0).getMileage() - sortedList.get(listSize - 1).getMileage();
+        int totalDistance = sortedList.get(0).getMileage();
 
         double sumCost = 0;
         double sumLiter = 0;
@@ -275,14 +271,11 @@ public class MenuActivity extends AppCompatActivity {
             sumLiter += entry.getLiter();
         }
 
-        sumCost -= sortedList.get(listSize - 1).getPrice();
-        sumLiter -=  sortedList.get(listSize - 1).getLiter();
-
         tv_show_overview_mileage.setText(String.valueOf(totalDistance + " km"));
-        tv_show_overview_liter.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100)));
-        tv_show_overview_cost.setText(String.valueOf(f.format((sumCost / totalDistance) * 100)));
+        tv_show_overview_liter.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100))+ " / 100 km");
+        tv_show_overview_cost.setText(String.valueOf(f.format(sumCost)));
 
-        String latestDate = String.valueOf(sortedList.get(listSize - 1).getDate());
+        String latestDate = String.valueOf(sortedList.get(listSize).getDate());
         String[] splittedLatestDate = latestDate.split("\\.");
 
         Log.d(LOGTAG, "Splitten war erfolgreich! " + latestDate + "(" + splittedLatestDate.length + ") = " + splittedLatestDate[0] + "," + splittedLatestDate[1] + "," + splittedLatestDate[2]);
@@ -293,12 +286,12 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void updateOverviewLastFill(ArrayList<FillEntry> sortedList) {
-        int listSize = sortedList.size();
+        int listSize = sortedList.size()-1;
         int actualDistance = sortedList.get(0).getMileage() - sortedList.get(1).getMileage();
 
         tv_show_overview_mileage.setText(String.valueOf(actualDistance + " km"));
-        tv_show_overview_cost.setText(String.valueOf(f.format((sortedList.get(0).getPrice() / actualDistance) * 100)));
-        tv_show_overview_liter.setText(String.valueOf(f.format((sortedList.get(0).getLiter() / actualDistance) * 100)));
+        tv_show_overview_cost.setText(String.valueOf(f.format(sortedList.get(0).getPrice())));
+        tv_show_overview_liter.setText(String.valueOf(f.format((sortedList.get(0).getLiter() / actualDistance) *100)) + " / 100 km");
 
         String newestDate = String.valueOf(sortedList.get(0).getDate());
         String[] splittedNewestDate = newestDate.split("\\.");
@@ -310,64 +303,60 @@ public class MenuActivity extends AppCompatActivity {
         tv_show_overview_time.setText(String.valueOf(displayTime));
     }
 
-    private void updateOverviewLastMonth(ArrayList<FillEntry> sortedList) {
-        int listSize = sortedList.size();
-
-        int totalDistance = sortedList.get(0).getMileage() - sortedList.get(listSize - 1).getMileage();
-
+    private void updateOverviewLastMonth(ArrayList<FillEntry> sortedList)
+    {
+        int listSize = sortedList.size()-1;
+        int monthBeforeLastMonth = 0;
+        if(lastCalendarMonth != 1)
+        {
+            monthBeforeLastMonth = lastCalendarMonth-1;
+        }
+        else
+        {
+            monthBeforeLastMonth = 12;
+        }
+        ArrayList<FillEntry> monthBeforeLastMonthSortedList = fmds.getlastMonth(monthBeforeLastMonth, actualCalendarYear);
         double sumCost = 0;
         double sumLiter = 0;
+        int totalDistance = 0;
+
+        if(listSize+1 == 1)
+        {
+            totalDistance = sortedList.get(0).getMileage() - monthBeforeLastMonthSortedList.get(0).getMileage();
+        }
+        else
+        {
+            totalDistance = sortedList.get(0).getMileage() - sortedList.get(listSize).getMileage();
+        }
 
         for (FillEntry entry : sortedList) {
             sumCost += entry.getPrice();
             sumLiter += entry.getLiter();
         }
 
-        sumCost -= sortedList.get(listSize - 1).getPrice();
-        sumLiter -=  sortedList.get(listSize - 1).getLiter();
-
         tv_show_overview_mileage.setText(String.valueOf(totalDistance + " km"));
-        tv_show_overview_cost.setText(String.valueOf(f.format((sumCost / totalDistance) * 100)));
-        tv_show_overview_liter.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100)));
-
-        String latestDate = String.valueOf(sortedList.get(listSize - 1).getDate());
-        String[] splittedLatestDate = latestDate.split("\\.");
-
-        Log.d(LOGTAG, "Splitten war erfolgreich! " + latestDate + "(" + splittedLatestDate.length + ") = " + splittedLatestDate[0] + "," + splittedLatestDate[1] + "," + splittedLatestDate[2]);
-
-        String displayTime = getDateDifference( splittedLatestDate );
-
-        tv_show_overview_time.setText(String.valueOf(displayTime));
+        tv_show_overview_cost.setText(String.valueOf(f.format(sumCost )));
+        tv_show_overview_liter.setText(String.valueOf(f.format((sumLiter / totalDistance) *100)) + " / 100 km");
+        tv_show_overview_time.setText(GetLastMonthName());
     }
 
     private void updateOverviewLastYear(ArrayList<FillEntry> sortedList) {
-        int listSize = sortedList.size();
-
-        int totalDistance = sortedList.get(0).getMileage() - sortedList.get(listSize - 1).getMileage();
+        int listSize = sortedList.size()-1;
 
         double sumCost = 0;
         double sumLiter = 0;
+        int totalDistance = sortedList.get(0).getMileage() - sortedList.get(listSize).getMileage();
 
         for (FillEntry entry : sortedList) {
             sumCost += entry.getPrice();
             sumLiter += entry.getLiter();
         }
 
-        sumCost -= sortedList.get(listSize - 1).getPrice();
-        sumLiter -=  sortedList.get(listSize - 1).getLiter();
-
         tv_show_overview_mileage.setText(String.valueOf(totalDistance + " km"));
-        tv_show_overview_cost.setText(String.valueOf(f.format((sumCost / totalDistance) * 100)));
-        tv_show_overview_liter.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100)));
+        tv_show_overview_cost.setText(String.valueOf(f.format(sumCost)));
+        tv_show_overview_liter.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100)) + " / 100 km");
 
-        String latestDate = String.valueOf(sortedList.get(listSize - 1).getDate());
-        String[] splittedLatestDate = latestDate.split("\\.");
-
-        Log.d(LOGTAG, "Splitten war erfolgreich! " + latestDate + "(" + splittedLatestDate.length + ") = " + splittedLatestDate[0] + "," + splittedLatestDate[1] + "," + splittedLatestDate[2]);
-
-        String displayTime = getDateDifference( splittedLatestDate );
-
-        tv_show_overview_time.setText(String.valueOf(displayTime));
+        tv_show_overview_time.setText(String.valueOf(actualCalendarYear));
     }
 
     private String getDateDifference ( String[] splittedDifferenceDate ) {
@@ -396,6 +385,8 @@ public class MenuActivity extends AppCompatActivity {
 
         String displayComment = "";
 
+
+
         if ( daysBetween == 0 ) {
             if ( actualCalendarDay == differentiationDay ) {
                 displayComment = "heute";
@@ -405,9 +396,40 @@ public class MenuActivity extends AppCompatActivity {
         } else if ( daysBetween == 1 ) {
             displayComment = daysBetween + " Tag";
         }  else {
-            displayComment = daysBetween + " Tage";
+            displayComment = "Vor " + daysBetween + " Tagen";
         }
 
         return displayComment;
+    }
+
+    private String GetLastMonthName()
+    {
+        switch (lastCalendarMonth) {
+            case 1:
+                return "Januar";
+            case 2:
+                return "Februar";
+            case 3:
+                return "März";
+            case 4:
+                return "April";
+            case 5:
+                return "Mai";
+            case 6:
+                return "Juni";
+            case 7:
+                return "Juli";
+            case 8:
+                return "August";
+            case 9:
+                return "September";
+            case 10:
+                return "Oktober";
+            case 11:
+                return "November";
+            case 12:
+                return "Dezember";
+        }
+        return "";
     }
 }

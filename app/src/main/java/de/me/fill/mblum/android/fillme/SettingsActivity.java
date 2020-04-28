@@ -65,23 +65,5 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void export_Data()
     {
-        File sd = Environment.getExternalStorageDirectory();
-        File data = Environment.getDataDirectory();
-        FileChannel source=null;
-        FileChannel destination=null;
-        String currentDBPath = "/data/"+ "com.authorwjf.sqliteexport" +"/databases/"+ "dbHelper.TABLE_FILLENTRY";
-        String backupDBPath = "dbHelper.TABLE_FILLENTRY";
-        File currentDB = new File(data, currentDBPath);
-        File backupDB = new File(sd, backupDBPath);
-        try {
-            source = new FileInputStream(currentDB).getChannel();
-            destination = new FileOutputStream(backupDB).getChannel();
-            destination.transferFrom(source, 0, source.size());
-            source.close();
-            destination.close();
-            Toast.makeText(this, "DB Exported!", Toast.LENGTH_LONG).show();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
     }
 }
