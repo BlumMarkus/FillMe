@@ -29,7 +29,6 @@
     <string name="str_newEntry_title">Eintrag hinzufügen</string>
     <string name="str_showEntries_title">Einträge anzeigen</string>
 
-
     <string name="str_headlineNewEntry">Neuer Eintrag</string>
     <string name="str_pickDate">auswählen</string>
     <string name="str_date">Datum</string>
@@ -44,12 +43,13 @@
     <!-- Button strings -->
     <string name="str_yes">JA</string>
     <string name="str_no">NEIN</string>
+    <string name="str_ok">OK</string>
     <string name="str_confirm">Bestätigen</string>
     <string name="str_cancel">Abbrechen</string>
     <string name="str_description_btn_cancel">Zurück</string>
 
     <!-- New Entry Strings -->
-    <string name="str_newEntry_dateTitle">Datum wählen:</string>
+    <string name="str_newEntry_dateTitle">Datum:</string>
     <string name="str_newEntry_dateToday">Heute</string>
     <string name="str_newEntry_dateSelect">Kalender</string>
     <string name="str_newEntry_mileageTitle">Kilometerstand:</string>
