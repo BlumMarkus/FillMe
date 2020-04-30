@@ -95,7 +95,7 @@ public class MenuActivity extends AppCompatActivity {
         }
 
         fmds = new FillMeDataSource(this);
-        fullDataList = fmds.getAllEntries("DESC");
+        fullDataList = fmds.getAllEntries(true);
         lastMonthList = fmds.getlastMonth(lastCalendarMonth, actualCalendarYear);
         lastYearList = fmds.getlastYear(actualCalendarYear);
 

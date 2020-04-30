@@ -24,7 +24,7 @@ public class SettingsActivity extends AppCompatActivity {
     private TextView tv_Export_Data;
     private FillMeDataSource fmds;
     private FillMeDbHelper fmdh;
-    private String sqlInsertStatement;
+    private StringBuilder data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,29 +75,23 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void export_Data()
     {
-
-        sqlInsertStatement = "";
+        data = new StringBuilder();
         ArrayList<FillEntry> list = new ArrayList<>();
-        list = fmds.getAllEntries("ASC");
+        list = fmds.getAllEntries(false);
 
-        sqlInsertStatement = CreateSQLInsertStatement(sqlInsertStatement);
+        //Header
+        data.append(String.format("%s,%s,%s,%s,%s", fmdh.COLUMN_DATE,fmdh.COLUMN_MILEAGE,fmdh.COLUMN_LITER,fmdh.COLUMN_PRICE, fmdh.COLUMN_STATUS));
 
-        for (int i = 0; i < list.size(); i++)
-        {
-            if (i < list.size()-1)
-            {
-                sqlInsertStatement = AddValueToStatement(sqlInsertStatement, list.get(i).getDate(), list.get(i).getMileage(), list.get(i).getLiter(), list.get(i).getPrice(), list.get(i).getStatus(), false);
-            }
-            else
-            {
-                sqlInsertStatement = AddValueToStatement(sqlInsertStatement, list.get(i).getDate(), list.get(i).getMileage(), list.get(i).getLiter(), list.get(i).getPrice(), list.get(i).getStatus(), true);
-            };
+        //data
+        for (FillEntry entry : list){
+            String fillEntryString = String.format("\n%s,%s,%s,%s,%s", entry.getDate(), entry.getMileage(),entry.getLiter(),entry.getPrice(),entry.getStatus());
+            data.append(fillEntryString);
         }
 
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
         {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                GenerateNoteOnSD(this, "Export_Database.txt", sqlInsertStatement);
+                GenerateCSVOnSD(this, "Export_Database.csv", data);
             } else {
                 // Request permission from the user
                 ActivityCompat.requestPermissions(this,
@@ -110,7 +104,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    private void GenerateNoteOnSD(Context context, String sFileName, String sBody) {
+    private void GenerateCSVOnSD(Context context, String sFileName, StringBuilder sBody) {
         try {
             File root = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "FillMe_Database");
             if (!root.exists()) {
@@ -127,44 +121,11 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    private String CreateSQLInsertStatement (String statement)
-    {
-        statement += "INSERT INTO " + fmdh.TABLE_FILLENTRY
-                + " (" + fmdh.COLUMN_DATE
-                + "," + fmdh.COLUMN_MILEAGE
-                + "," + fmdh.COLUMN_LITER
-                + "," + fmdh.COLUMN_PRICE
-                + "," + fmdh.COLUMN_STATUS + ") "
-                + "VALUES ";
-        return statement;
-    }
-
-    private String AddValueToStatement (String statement, String date, int mileage, Double liter, Double price, int status, Boolean isLast)
-    {
-        statement += "('"
-                + date + "','"
-                + mileage + "','"
-                + liter + "','"
-                + price + "','"
-                + status + "')";
-
-        if(isLast)
-        {
-            statement += ";";
-        }
-        else
-        {
-            statement += ",";
-        }
-
-        return statement;
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case 0:
-                GenerateNoteOnSD(this, "Export_Database.txt", sqlInsertStatement);
+                GenerateCSVOnSD(this, "Export_Database.csv", data);
         }
     }
 }

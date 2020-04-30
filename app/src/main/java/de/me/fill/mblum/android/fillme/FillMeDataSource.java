@@ -179,9 +179,14 @@ class FillMeDataSource {
         return list;
     }
 
-    ArrayList<FillEntry> getAllEntries(String descOrAsc) {
+    ArrayList<FillEntry> getAllEntries(Boolean isDesc) {
         Cursor cursor;
         ArrayList<FillEntry> list = new ArrayList<>();
+        String descOrAsc = "ASC";
+
+        if (isDesc){
+            descOrAsc = "DESC";
+        }
 
         open();
 
