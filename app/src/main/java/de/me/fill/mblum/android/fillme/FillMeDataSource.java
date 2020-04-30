@@ -179,7 +179,7 @@ class FillMeDataSource {
         return list;
     }
 
-    ArrayList<FillEntry> getAllEntries() {
+    ArrayList<FillEntry> getAllEntries(String descOrAsc) {
         Cursor cursor;
         ArrayList<FillEntry> list = new ArrayList<>();
 
@@ -193,7 +193,7 @@ class FillMeDataSource {
                 FillMeDbHelper.COLUMN_PRICE + ", " +
                 FillMeDbHelper.COLUMN_STATUS +
                 " FROM " + FillMeDbHelper.TABLE_FILLENTRY +
-                " ORDER BY " + FillMeDbHelper.COLUMN_MILEAGE + " DESC ";
+                " ORDER BY " + FillMeDbHelper.COLUMN_MILEAGE + " " + descOrAsc;
         cursor = db.rawQuery(sql, null);
         Log.d(logTag, "Eintrag wurden erfolgreich aus der Datenbanktabelle " + FillMeDbHelper.TABLE_FILLENTRY + " ausgelesen.");
 
