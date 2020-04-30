@@ -88,18 +88,17 @@ public class SettingsActivity extends AppCompatActivity {
             data.append(fillEntryString);
         }
 
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
-        {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 GenerateCSVOnSD(this, "Export_Database.csv", data);
-            } else {
+            }
+            else {
                 // Request permission from the user
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
             }
         }
-        else
-        {
+        else {
             Toast.makeText(this, "Sie benötigen ein SD-Karte", Toast.LENGTH_SHORT).show();
         }
     }
@@ -116,7 +115,8 @@ public class SettingsActivity extends AppCompatActivity {
             writer.flush();
             writer.close();
             Toast.makeText(context, "Datenbank wurde in "+ '"'+ "Downloads/FillMe_Database" + '"' + " exportiert!", Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
