@@ -6,7 +6,7 @@
 
     <!-- Used in New Entry XML -->
     <color name="colorTitle">#EBF6FF</color>
-    <color name="colorBackgroundGray">#F5F5F5</color>
+    <color name="colorBackgroundGray">#EBEBEB</color>
     <color name="colorBackgroundWhite">#FFFFFF</color>
     <color name="colorPrimaryText">#616161</color>
 
