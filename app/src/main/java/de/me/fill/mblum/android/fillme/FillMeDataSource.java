@@ -273,6 +273,13 @@ class FillMeDataSource {
         close();
     }
 
+    public void deleteAllData()
+    {
+        open();
+        db.execSQL("delete from "+ FillMeDbHelper.TABLE_FILLENTRY);
+        close();
+    }
+
     private FillEntry cursorToEntry(Cursor cursor) {
         int idIndex = cursor.getColumnIndex(FillMeDbHelper.COLUMN_ID);
         int dateIndex = cursor.getColumnIndex(FillMeDbHelper.COLUMN_DATE);
