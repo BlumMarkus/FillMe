@@ -28,6 +28,7 @@
     <!-- Titles -->
     <string name="str_newEntry_title">Eintrag hinzufügen</string>
     <string name="str_showEntries_title">Einträge anzeigen</string>
+    <string name="str_settings_title">Einstellungen</string>
 
     <string name="str_headlineNewEntry">Neuer Eintrag</string>
     <string name="str_pickDate">auswählen</string>
@@ -59,4 +60,10 @@
     <string name="str_counter_2">2</string>
     <string name="str_counter_3">3</string>
     <string name="str_counter_4">4</string>
+
+    <!-- Setting Strings -->
+    <string name="str_settings_dataExportImport_title">Daten export/import</string>
+    <string name="str_settings_dataExportImport_overwriteData">Daten überschreiben</string>
+    <string name="str_exportData">Daten exportieren</string>
+    <string name="str_importData">Daten importieren</string>
 </resources>
