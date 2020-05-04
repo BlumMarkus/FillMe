@@ -73,6 +73,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int rquestcode, int resultCode, Intent intent) {
+        if (intent == null)
+            return;
         if (rquestcode == 1) {
             selectedFile = intent;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
