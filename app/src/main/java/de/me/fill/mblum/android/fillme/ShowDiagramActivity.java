@@ -38,7 +38,7 @@ public class ShowDiagramActivity extends AppCompatActivity {
         setLineChartStyle(mChartCosts, "€ pro Liter");
 
         fmds = new FillMeDataSource(this);
-        list = fmds.getAllEntries("DESC");
+        list = fmds.getAllEntries(true);
         Collections.reverse(list);
 
         fillLpKChart(mChartConsumption);
