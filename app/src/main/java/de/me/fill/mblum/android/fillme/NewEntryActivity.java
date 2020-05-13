@@ -360,18 +360,6 @@ public class NewEntryActivity extends AppCompatActivity {
     }
 
     /**
-     * Set height of a view to given value
-     *
-     * @param layout View to change to
-     * @param height Height
-     */
-    private void setHeightOf(View layout, int height) {
-        ViewGroup.LayoutParams layoutParams = layout.getLayoutParams();
-        layoutParams.height = height;
-        layout.setLayoutParams(layoutParams);
-    }
-
-    /**
      * Set width of a view to given value
      *
      * @param layout View to change to
@@ -380,6 +368,18 @@ public class NewEntryActivity extends AppCompatActivity {
     private void setWidthOf(View layout, int width) {
         ViewGroup.LayoutParams layoutParams = layout.getLayoutParams();
         layoutParams.width = width;
+        layout.setLayoutParams(layoutParams);
+    }
+
+    /**
+     * Set height of a view to given value
+     *
+     * @param layout View to change to
+     * @param height Height
+     */
+    private void setHeightOf(View layout, int height) {
+        ViewGroup.LayoutParams layoutParams = layout.getLayoutParams();
+        layoutParams.height = height;
         layout.setLayoutParams(layoutParams);
     }
 }

@@ -52,12 +52,14 @@
     <!-- Menu Strings -->
     <string name="str_menu_headline_welcome">Willkommen zurück!</string>
     <string name="str_menu_newEntry_btn_description">Neuen Eintrag erstellen</string>
+    <string name="str_menu_settings_btn_description">Einstellungen öffnen</string>
     <string name="str_menu_vom">vom</string>
     <string name="str_menu_statistic_title">Übersicht</string>
     <string name="str_menu_lastActivity_title">Letzte Aktivitäten</string>
     <string name="str_menu_unit_consumption">Liter/100km</string>
     <string name="str_menu_unit_literPrice">Euro/Liter</string>
     <string name="str_menu_graphic_status_description">Grafische Anzeige</string>
+    <string name="str_menu_average_icon_desciription">Durchschnitt Grafik</string>
 
     <!-- New Entry Strings -->
     <string name="str_newEntry_dateTitle">Datum:</string>

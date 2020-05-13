@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -27,7 +29,7 @@ import java.util.ArrayList;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private FillMeDataSource fmds;
+    private FillMeDataSource dataSource;
     private StringBuilder data;
 
     public static final int rquestcode = 1;
@@ -48,7 +50,7 @@ public class SettingsActivity extends AppCompatActivity {
         Button btn_settings_exportData = findViewById(R.id.btn_settings_exportData);
         Button btn_settings_importData = findViewById(R.id.btn_settings_importData);
 
-        fmds = new FillMeDataSource(this);
+        dataSource = new FillMeDataSource(this);
 
         btn_settings_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +76,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int rquestcode, int resultCode, Intent intent) {
+        super.onActivityResult(resultCode, resultCode, intent);
+
         if (intent == null)
             return;
         if (rquestcode == 1) {
@@ -104,7 +108,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case 0:
                 generateCSVOnSD(this, "Export_Database.csv", data);
@@ -132,7 +136,6 @@ public class SettingsActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Sie benötigen ein SD-Karte", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     /**
@@ -140,8 +143,7 @@ public class SettingsActivity extends AppCompatActivity {
      */
     private void exportData() {
         data = new StringBuilder();
-        ArrayList<FillEntry> list = new ArrayList<>();
-        list = fmds.getAllEntries(false);
+        ArrayList<FillEntry> list = dataSource.getAllEntries(false);
 
         //Header
         data.append(String.format("%s,%s,%s,%s,%s", FillMeDbHelper.FILLENTRY_COLUMN_DATE, FillMeDbHelper.FILLENTRY_COLUMN_MILEAGE, FillMeDbHelper.FILLENTRY_COLUMN_LITER, FillMeDbHelper.FILLENTRY_COLUMN_PRICE, FillMeDbHelper.FILLENTRY_COLUMN_STATUS));
@@ -168,9 +170,9 @@ public class SettingsActivity extends AppCompatActivity {
     /**
      * Creates the .csv file and fills it with the given data.
      *
-     * @param context Current context
+     * @param context   Current context
      * @param sFileName Name of the csv file
-     * @param sBody Content of the file
+     * @param sBody     Content of the file
      */
     private void generateCSVOnSD(Context context, String sFileName, StringBuilder sBody) {
         try {
@@ -190,29 +192,32 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void readAndImportFile(Intent intent) {
+
         if (intent == null)
             return;
-        fmds.deleteAllData();
-        ArrayList<FillEntry> fillEntryArrayList = new ArrayList<>();
+
         try {
             Uri uri = intent.getData();
-            File myFile = new File(uri.getPath());
-            String filepath = myFile.getAbsolutePath();
-            filepath = filepath.substring(filepath.indexOf(":")+1);
-            filepath.trim();
+            String filePath = uri.getPath();
+            filePath = filePath.substring(filePath.indexOf(":") + 1);
 
-            File csvFile = new File(filepath);
+            if (Build.VERSION.SDK_INT < 29) {
+                filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + '/' + filePath;
+            }
+
+            File csvFile = new File(filePath);
             FileReader reader = new FileReader(csvFile);
             BufferedReader buffer = new BufferedReader(reader);
 
-            String line = "";
+            dataSource.deleteAllData();
+
+            String line;
             buffer.readLine();
 
             while ((line = buffer.readLine()) != null) {
                 String[] tokens = line.split(",");
                 FillEntry fillEntry = new FillEntry(tokens[0], Integer.parseInt(tokens[1]), Double.parseDouble(tokens[2]), Double.parseDouble(tokens[3]), Integer.parseInt(tokens[4]));
-                fillEntryArrayList.add(fillEntry);
-                fmds.writeEntry(fillEntry);
+                dataSource.writeEntry(fillEntry);
             }
             Toast.makeText(this, "Datenbank wurde erfolreich Importiert!", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {

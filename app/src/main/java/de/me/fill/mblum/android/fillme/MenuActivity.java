@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +22,7 @@ import com.anychart.enums.HoverMode;
 import com.anychart.enums.Position;
 import com.anychart.enums.TooltipPositionMode;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,8 +32,24 @@ public class MenuActivity extends AppCompatActivity {
 
     private String LOGTAG = "MenuActivity";
 
+    private LayoutHelper layoutHelper;
+    private FillEntriesHelper fillEntriesHelper;
+
+    private LinearLayout layout_menu_lastActivity_1;
+    private LinearLayout layout_menu_lastActivity_2;
+    private LinearLayout layout_menu_lastActivity_3;
+
     private TextView tv_menu_last_entry_mileage;
     private TextView tv_menu_last_entry_date;
+
+    DecimalFormat consumptionFormat;
+    DecimalFormat literPriceFormat;
+
+    private int doublePositiveDrawable;
+    private int positiveDrawable;
+    private int neutralDrawable;
+    private int negativeDrawable;
+    private int doubleNegativeDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +62,35 @@ public class MenuActivity extends AppCompatActivity {
         super.onResume();
 
         ImageButton btn_menu_add_new_entry = findViewById(R.id.btn_menu_add_new_entry);
-        ImageButton btn_menu_settings = findViewById(R.id.btn_menu_show_settings);
+        ImageButton btn_menu_settings = findViewById(R.id.btn_menu_settings);
         TextView tv_menu_statistic_title = findViewById(R.id.tv_menu_statistic_title);
         TextView tv_menu_lastActivity_title = findViewById(R.id.tv_menu_lastActivity_title);
 
         tv_menu_last_entry_mileage = findViewById(R.id.tv_menu_last_entry_mileage);
         tv_menu_last_entry_date = findViewById(R.id.tv_menu_last_entry_date);
 
+        layout_menu_lastActivity_1 = findViewById(R.id.layout_menu_lastActivity_1);
+        layout_menu_lastActivity_2 = findViewById(R.id.layout_menu_lastActivity_2);
+        layout_menu_lastActivity_3 = findViewById(R.id.layout_menu_lastActivity_3);
+
+        doublePositiveDrawable = R.drawable.positive_double_cirlce_green;
+        positiveDrawable = R.drawable.positive_circle_green;
+        neutralDrawable = R.drawable.neutral_line_icon;
+        negativeDrawable = R.drawable.negative_circle_red;
+        doubleNegativeDrawable = R.drawable.negative_double_circle_red;
+
         FillMeDataSource dataSource = new FillMeDataSource(this);
         ArrayList<FillEntry> allEntries = dataSource.getAllEntries(true);
 
+        consumptionFormat = new DecimalFormat("0.00");
+        literPriceFormat = new DecimalFormat("0.000");
+
+        layoutHelper = new LayoutHelper();
+
         int allEntriesSize = allEntries.size();
+
+        fillEntriesHelper = new FillEntriesHelper();
+        allEntries = fillEntriesHelper.setOptionalFillEntryValues(allEntries);
 
         updateStatistic(allEntries);
         updateLastEntryData(allEntries, allEntriesSize);
@@ -114,15 +151,15 @@ public class MenuActivity extends AppCompatActivity {
     private void updateStatistic(ArrayList<FillEntry> allEntriesList) {
         Cartesian cartesian = AnyChart.column();
         DateHelper dateHelper = new DateHelper();
-        FillEntriesHelper fillEntriesHelper = new FillEntriesHelper(allEntriesList);
+        FillEntriesHelper fillEntriesHelper = new FillEntriesHelper();
 
         AnyChartView anyChartView = findViewById(R.id.chart_menu_statistic);
         anyChartView.setProgressBar(findViewById(R.id.progress_bar_menu_statistic));
 
-
         Date now = Calendar.getInstance().getTime();
         Calendar calcCalendar = Calendar.getInstance();
         calcCalendar.setTime(now);
+        calcCalendar.add(Calendar.MONTH, -12);
 
         List<DataEntry> chartData = new ArrayList<>();
 
@@ -130,14 +167,12 @@ public class MenuActivity extends AppCompatActivity {
         double value;
 
         for (int i = 0; i < 12; i++) {
-            calcCalendar.add(Calendar.MONTH, -1);
+            xAxisName = dateHelper.getMonthShort(calcCalendar.get(Calendar.MONTH));
+            value = fillEntriesHelper.getConsumptionAvgMonth(calcCalendar.get(Calendar.MONTH), calcCalendar.get(Calendar.YEAR), allEntriesList);
 
-            xAxisName = dateHelper.getMonthShort(calcCalendar.get(Calendar.MONTH) + 1);
-            value = fillEntriesHelper.getConsumptionAvgMonth(calcCalendar.get(Calendar.MONTH) + 1, calcCalendar.get(Calendar.YEAR));
+            chartData.add(new ValueDataEntry(xAxisName, value));
 
-            if (value != 0) {
-                chartData.add(new ValueDataEntry(xAxisName, value));
-            }
+            calcCalendar.add(Calendar.MONTH, +1);
         }
 
         Column column = cartesian.column(chartData);
@@ -169,45 +204,141 @@ public class MenuActivity extends AppCompatActivity {
      * @param allEntriesSize size of the given arrayList
      */
     private void updateLastActivityList(ArrayList<FillEntry> allEntriesList, int allEntriesSize) {
-        ArrayList<FillEntry> lastActivityEntries = new ArrayList<>();
+        double consumptionAverage = fillEntriesHelper.getConsumptionAvg(allEntriesList);
+        double literPriceAverage = fillEntriesHelper.getLiterPriceAvg(allEntriesList);
 
-        if (allEntriesSize > 3) {
-            for (int counter = 0; counter < allEntriesSize; counter++) {
-                lastActivityEntries.add(counter, allEntriesList.get(counter));
-            }
-        } else {
-            lastActivityEntries = allEntriesList;
+        if (allEntriesSize >= 3) {
+            displayFirstActivity(allEntriesList.get(0), consumptionAverage, literPriceAverage);
+            displaySecondActivity(allEntriesList.get(1), consumptionAverage, literPriceAverage);
+            displayThirdActivity(allEntriesList.get(2), consumptionAverage, literPriceAverage);
+            displayAverage(consumptionAverage, literPriceAverage);
+        } else if (allEntriesSize == 2) {
+            displayFirstActivity(allEntriesList.get(0), consumptionAverage, literPriceAverage);
+            displaySecondActivity(allEntriesList.get(1), consumptionAverage, literPriceAverage);
+            displayAverage(consumptionAverage, literPriceAverage);
+        } else if (allEntriesSize == 1) {
+            displayFirstActivity(allEntriesList.get(0), consumptionAverage, literPriceAverage);
+            displayAverage(consumptionAverage, literPriceAverage);
         }
+    }
 
-        // TextView tv_menu_lastActivity_monthShort = customView.findViewById(R.id.tv_menu_lastActivity_monthShort);
-        // TextView tv_menu_lastActivity_dayOfMonth = customView.findViewById(R.id.tv_menu_lastActivity_dayOfMonth);
-        // ImageView iv_menu_lastActivity_consumptionStatus = customView.findViewById(R.id.iv_menu_lastActivity_consumptionStatus);
-        // TextView tv_menu_lastActivity_consumption = customView.findViewById(R.id.tv_menu_lastActivity_consumption);
-        // ImageView iv_menu_lastActivity_literPriceStatus = customView.findViewById(R.id.iv_menu_lastActivity_literPriceStatus);
-        // TextView tv_menu_lastActivity_literPrice = customView.findViewById(R.id.tv_menu_lastActivity_literPrice);
-//
-        // DecimalFormat consumptionFormat = new DecimalFormat("0.0");
-        // DecimalFormat literPriceFormat = new DecimalFormat("0.000");
-//
-        // String consumptionText;
-        // int objectListSize = objectList.size() - 1;
-//
-        // if (position + 1 <= objectListSize) {
-        //     int mileageOfEntryBefore = objectList.get(position + 1).getMileage();
-        //     double drivenKilometers = mileageOfEntryBefore - objectList.get(position).getMileage();
-        //     double consumption = objectList.get(position).getLiter() / (drivenKilometers / 100);
-        //     consumptionText = String.valueOf(consumptionFormat.format(consumption));
-        // } else {
-        //     consumptionText = "n/a";
-        // }
-//
-        // tv_menu_lastActivity_monthShort.setText(String.valueOf(objectList.get(position).getMonthShort()));
-        // tv_menu_lastActivity_dayOfMonth.setText(String.valueOf(objectList.get(position).getDayOfMonth()));
-        // tv_menu_lastActivity_consumption.setText(consumptionText);
-        // tv_menu_lastActivity_literPrice.setText(literPriceFormat.format(objectList.get(position).getLiterPrice()));
-//
-        // customView.setTag(objectList.get(position).getID());
-//
-        // return customView;
+    /**
+     * Displays the last entry the user entered
+     *
+     * @param fillEntryObject fillEntry object
+     */
+    private void displayFirstActivity(FillEntry fillEntryObject, double avgConsumption, double avgLiterPrice) {
+        TextView tv_menu_lastActivity_1_monthShort = findViewById(R.id.tv_menu_lastActivity_1_monthShort);
+        TextView tv_menu_lastActivity_1_dayOfMonth = findViewById(R.id.tv_menu_lastActivity_1_dayOfMonth);
+        ImageView iv_menu_lastActivity_1_consumptionStatus = findViewById(R.id.iv_menu_lastActivity_1_consumptionStatus);
+        TextView tv_menu_lastActivity_1_consumption = findViewById(R.id.tv_menu_lastActivity_1_consumption);
+        ImageView iv_menu_lastActivity_1_literPriceStatus = findViewById(R.id.iv_menu_lastActivity_1_literPriceStatus);
+        TextView tv_menu_lastActivity_1_literPrice = findViewById(R.id.tv_menu_lastActivity_1_literPrice);
+
+        double literAmount = fillEntryObject.getLiter();
+        double drivenMileage = fillEntryObject.getDrivenMileage();
+        double consumption = literAmount / (drivenMileage / 100);
+
+        tv_menu_lastActivity_1_monthShort.setText(fillEntryObject.getMonthShort());
+        tv_menu_lastActivity_1_dayOfMonth.setText(fillEntryObject.getDayOfMonth());
+
+        tv_menu_lastActivity_1_consumption.setText(consumptionFormat.format(consumption));
+        tv_menu_lastActivity_1_literPrice.setText(literPriceFormat.format(fillEntryObject.getLiterPrice()));
+
+        iv_menu_lastActivity_1_consumptionStatus.setBackground(getDrawable(getDrawableIdOfGivenValues(avgConsumption, consumption)));
+        iv_menu_lastActivity_1_literPriceStatus.setBackground(getDrawable(getDrawableIdOfGivenValues(avgLiterPrice, fillEntryObject.getLiterPrice())));
+
+        layoutHelper.setHeightOf(layout_menu_lastActivity_1, LinearLayout.LayoutParams.WRAP_CONTENT);
+    }
+
+    /**
+     * Displays the before last entry the user entered
+     *
+     * @param fillEntryObject fillEntry object
+     */
+    private void displaySecondActivity(FillEntry fillEntryObject, double avgConsumption, double avgLiterPrice) {
+        TextView tv_menu_lastActivity_2_monthShort = findViewById(R.id.tv_menu_lastActivity_2_monthShort);
+        TextView tv_menu_lastActivity_2_dayOfMonth = findViewById(R.id.tv_menu_lastActivity_2_dayOfMonth);
+        ImageView iv_menu_lastActivity_2_consumptionStatus = findViewById(R.id.iv_menu_lastActivity_2_consumptionStatus);
+        TextView tv_menu_lastActivity_2_consumption = findViewById(R.id.tv_menu_lastActivity_2_consumption);
+        ImageView iv_menu_lastActivity_2_literPriceStatus = findViewById(R.id.iv_menu_lastActivity_2_literPriceStatus);
+        TextView tv_menu_lastActivity_2_literPrice = findViewById(R.id.tv_menu_lastActivity_2_literPrice);
+
+        double literAmount = fillEntryObject.getLiter();
+        double drivenMileage = fillEntryObject.getDrivenMileage();
+        double consumption = literAmount / (drivenMileage / 100);
+
+        tv_menu_lastActivity_2_monthShort.setText(fillEntryObject.getMonthShort());
+        tv_menu_lastActivity_2_dayOfMonth.setText(fillEntryObject.getDayOfMonth());
+
+        tv_menu_lastActivity_2_consumption.setText(consumptionFormat.format(consumption));
+        tv_menu_lastActivity_2_literPrice.setText(literPriceFormat.format(fillEntryObject.getLiterPrice()));
+
+        iv_menu_lastActivity_2_consumptionStatus.setBackground(getDrawable(getDrawableIdOfGivenValues(avgConsumption, consumption)));
+        iv_menu_lastActivity_2_literPriceStatus.setBackground(getDrawable(getDrawableIdOfGivenValues(avgLiterPrice, fillEntryObject.getLiterPrice())));
+
+        layoutHelper.setHeightOf(layout_menu_lastActivity_2, LinearLayout.LayoutParams.WRAP_CONTENT);
+    }
+
+    /**
+     * Displays the 3rd before last entry the user entered
+     *
+     * @param fillEntryObject fillEntry object
+     */
+    private void displayThirdActivity(FillEntry fillEntryObject, double avgConsumption, double avgLiterPrice) {
+        TextView tv_menu_lastActivity_3_monthShort = findViewById(R.id.tv_menu_lastActivity_3_monthShort);
+        TextView tv_menu_lastActivity_3_dayOfMonth = findViewById(R.id.tv_menu_lastActivity_3_dayOfMonth);
+        ImageView iv_menu_lastActivity_3_consumptionStatus = findViewById(R.id.iv_menu_lastActivity_3_consumptionStatus);
+        TextView tv_menu_lastActivity_3_consumption = findViewById(R.id.tv_menu_lastActivity_3_consumption);
+        ImageView iv_menu_lastActivity_3_literPriceStatus = findViewById(R.id.iv_menu_lastActivity_3_literPriceStatus);
+        TextView tv_menu_lastActivity_3_literPrice = findViewById(R.id.tv_menu_lastActivity_3_literPrice);
+
+        double literAmount = fillEntryObject.getLiter();
+        double drivenMileage = fillEntryObject.getDrivenMileage();
+        double consumption = literAmount / (drivenMileage / 100);
+
+        tv_menu_lastActivity_3_monthShort.setText(fillEntryObject.getMonthShort());
+        tv_menu_lastActivity_3_dayOfMonth.setText(fillEntryObject.getDayOfMonth());
+
+        tv_menu_lastActivity_3_consumption.setText(consumptionFormat.format(consumption));
+        tv_menu_lastActivity_3_literPrice.setText(literPriceFormat.format(fillEntryObject.getLiterPrice()));
+
+        iv_menu_lastActivity_3_consumptionStatus.setBackground(getDrawable(getDrawableIdOfGivenValues(avgConsumption, consumption)));
+        iv_menu_lastActivity_3_literPriceStatus.setBackground(getDrawable(getDrawableIdOfGivenValues(avgLiterPrice, fillEntryObject.getLiterPrice())));
+
+        layoutHelper.setHeightOf(layout_menu_lastActivity_3, LinearLayout.LayoutParams.WRAP_CONTENT);
+    }
+
+    private void displayAverage(double avgConsumption, double avgLiterPrice) {
+        LinearLayout layout_menu_lastActivity_avg = findViewById(R.id.layout_menu_lastActivity_avg);
+        TextView tv_menu_lastActivity_avg_consumption = findViewById(R.id.tv_menu_lastActivity_avg_consumption);
+        TextView tv_menu_lastActivity_avg_literPrice = findViewById(R.id.tv_menu_lastActivity_avg_literPrice);
+
+        tv_menu_lastActivity_avg_consumption.setText(consumptionFormat.format(avgConsumption));
+        tv_menu_lastActivity_avg_literPrice.setText(literPriceFormat.format(avgLiterPrice));
+
+        layoutHelper.setHeightOf(layout_menu_lastActivity_avg, LinearLayout.LayoutParams.WRAP_CONTENT);
+    }
+
+    /**
+     * Returns the drawable based on the given average and entity value
+     *
+     * @param average Average of the given value
+     * @param value   Value of the object
+     */
+    int getDrawableIdOfGivenValues(double average, double value) {
+        double index = value / (average / 100);
+
+        if (index > 120) {
+            return doubleNegativeDrawable;
+        } else if (index > 105) {
+            return negativeDrawable;
+        } else if (index > 95) {
+            return neutralDrawable;
+        } else if (index > 80) {
+            return positiveDrawable;
+        } else {
+            return doublePositiveDrawable;
+        }
     }
 }

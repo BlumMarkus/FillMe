@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,14 +15,41 @@
         android:background="@drawable/header"
         android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="20sp"
-            android:text="@string/str_menu_headline_welcome"
-            android:textColor="@color/colorWhiteText"
-            android:textSize="20sp" />
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_menu_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15sp"
+                android:background="#00FFFFFF"
+                android:contentDescription="@string/str_menu_settings_btn_description"
+                android:padding="18sp"
+                android:src="@drawable/settings_icon" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="20sp"
+                android:text="@string/str_menu_headline_welcome"
+                android:textColor="@color/colorWhiteText"
+                android:textSize="20sp" />
+
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#00FFFFFF"
+                android:contentDescription="@string/str_menu_settings_btn_description"
+                android:padding="18sp"
+                android:src="@drawable/settings_icon"
+                android:visibility="invisible" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -101,8 +127,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8sp"
-        android:background="@color/colorBackgroundGray">
+        android:background="@color/colorBackgroundGray"
+        android:padding="8sp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -169,8 +195,11 @@
                     android:textStyle="bold" />
 
                 <LinearLayout
+                    android:id="@+id/layout_menu_lastActivity_1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:baselineAligned="false">
 
                     <LinearLayout
                         android:layout_width="0sp"
@@ -182,7 +211,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_menu_lastActivity_monthShort"
+                            android:id="@+id/tv_menu_lastActivity_1_monthShort"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -191,7 +220,7 @@
                             tools:ignore="SmallSp" />
 
                         <TextView
-                            android:id="@+id/tv_menu_lastActivity_dayOfMonth"
+                            android:id="@+id/tv_menu_lastActivity_1_dayOfMonth"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -206,14 +235,14 @@
                         android:gravity="center">
 
                         <ImageView
-                            android:id="@+id/iv_menu_lastActivity_consumptionStatus"
+                            android:id="@+id/iv_menu_lastActivity_1_consumptionStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:contentDescription="@string/str_menu_graphic_status_description" />
 
                         <TextView
-                            android:id="@+id/tv_menu_lastActivity_consumption"
+                            android:id="@+id/tv_menu_lastActivity_1_consumption"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginStart="4sp"
@@ -237,14 +266,283 @@
                         android:gravity="center">
 
                         <ImageView
-                            android:id="@+id/iv_menu_lastActivity_literPriceStatus"
+                            android:id="@+id/iv_menu_lastActivity_1_literPriceStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:contentDescription="@string/str_menu_graphic_status_description" />
 
                         <TextView
-                            android:id="@+id/tv_menu_lastActivity_literPrice"
+                            android:id="@+id/tv_menu_lastActivity_1_literPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="4sp"
+                            android:layout_marginEnd="4sp"
+                            android:gravity="center"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="@string/str_menu_unit_literPrice"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_menu_lastActivity_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:baselineAligned="false">
+
+                    <LinearLayout
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8sp"
+                        android:layout_marginEnd="4sp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_menu_lastActivity_2_monthShort"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="bottom|center_horizontal"
+                            android:textSize="10sp"
+                            tools:ignore="SmallSp" />
+
+                        <TextView
+                            android:id="@+id/tv_menu_lastActivity_2_dayOfMonth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="top|center_horizontal"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/iv_menu_lastActivity_2_consumptionStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/str_menu_graphic_status_description" />
+
+                        <TextView
+                            android:id="@+id/tv_menu_lastActivity_2_consumption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="4sp"
+                            android:layout_marginEnd="4sp"
+                            android:gravity="center"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="@string/str_menu_unit_consumption"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/iv_menu_lastActivity_2_literPriceStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/str_menu_graphic_status_description" />
+
+                        <TextView
+                            android:id="@+id/tv_menu_lastActivity_2_literPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="4sp"
+                            android:layout_marginEnd="4sp"
+                            android:gravity="center"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="@string/str_menu_unit_literPrice"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_menu_lastActivity_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:baselineAligned="false">
+
+                    <LinearLayout
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8sp"
+                        android:layout_marginEnd="4sp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_menu_lastActivity_3_monthShort"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="bottom|center_horizontal"
+                            android:textSize="10sp"
+                            tools:ignore="SmallSp" />
+
+                        <TextView
+                            android:id="@+id/tv_menu_lastActivity_3_dayOfMonth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="top|center_horizontal"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/iv_menu_lastActivity_3_consumptionStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/str_menu_graphic_status_description" />
+
+                        <TextView
+                            android:id="@+id/tv_menu_lastActivity_3_consumption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="4sp"
+                            android:layout_marginEnd="4sp"
+                            android:gravity="center"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="@string/str_menu_unit_consumption"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/iv_menu_lastActivity_3_literPriceStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/str_menu_graphic_status_description" />
+
+                        <TextView
+                            android:id="@+id/tv_menu_lastActivity_3_literPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="4sp"
+                            android:layout_marginEnd="4sp"
+                            android:gravity="center"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="@string/str_menu_unit_literPrice"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_menu_lastActivity_avg"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:baselineAligned="false">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8sp"
+                        android:layout_marginEnd="4sp"
+                        android:layout_weight="1"
+                        android:padding="8sp"
+                        android:src="@drawable/average_icon"
+                        android:contentDescription="@string/str_menu_average_icon_desciription" />
+
+                    <LinearLayout
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/str_menu_graphic_status_description" />
+
+                        <TextView
+                            android:id="@+id/tv_menu_lastActivity_avg_consumption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="4sp"
+                            android:layout_marginEnd="4sp"
+                            android:gravity="center"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="@string/str_menu_unit_consumption"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/str_menu_graphic_status_description" />
+
+                        <TextView
+                            android:id="@+id/tv_menu_lastActivity_avg_literPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginStart="4sp"
@@ -263,24 +561,4 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/icon_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/background"
-        android:orientation="horizontal"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="parent">
-
-
-        <ImageButton
-            android:id="@+id/btn_menu_show_settings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/background"
-            app:srcCompat="@drawable/menu_show_settings" />
-    </LinearLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>
