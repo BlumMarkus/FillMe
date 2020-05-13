@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_newEntry_complete"
@@ -64,7 +64,7 @@
                 android:layout_marginTop="20sp"
                 android:layout_marginRight="12sp"
                 android:layout_marginBottom="0sp"
-                android:background="@drawable/radius_layout_bg"
+                android:background="@drawable/shape_radius_layout_bg"
                 android:orientation="horizontal">
 
                 <TextView
@@ -72,7 +72,7 @@
                     android:layout_width="45sp"
                     android:layout_height="45sp"
                     android:layout_margin="8sp"
-                    android:background="@drawable/radius_layout_rounded"
+                    android:background="@drawable/shape_radius_layout_rounded"
                     android:gravity="center"
                     android:text="@string/str_counter_1"
                     android:textColor="@color/colorPrimaryText"
@@ -133,7 +133,7 @@
                             android:id="@+id/btn_newEntry_date_today"
                             android:layout_width="wrap_content"
                             android:layout_height="40sp"
-                            android:background="@drawable/radius_layout_button"
+                            android:background="@drawable/shape_radius_layout_button"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:text="@string/str_newEntry_dateToday"
@@ -145,7 +145,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="40sp"
                             android:layout_marginStart="12sp"
-                            android:background="@drawable/radius_layout_button"
+                            android:background="@drawable/shape_radius_layout_button"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:text="@string/str_newEntry_dateSelect"
@@ -166,7 +166,7 @@
                 android:layout_marginTop="20sp"
                 android:layout_marginRight="12sp"
                 android:layout_marginBottom="0sp"
-                android:background="@drawable/radius_layout_bg"
+                android:background="@drawable/shape_radius_layout_bg"
                 android:orientation="horizontal">
 
 
@@ -175,7 +175,7 @@
                     android:layout_width="45sp"
                     android:layout_height="45sp"
                     android:layout_margin="8sp"
-                    android:background="@drawable/radius_layout_rounded"
+                    android:background="@drawable/shape_radius_layout_rounded"
                     android:gravity="center"
                     android:text="@string/str_counter_2"
                     android:textColor="@color/colorPrimaryText"
@@ -254,7 +254,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginEnd="8sp"
                             android:layout_weight="1"
-                            android:background="@drawable/radius_layout_button"
+                            android:background="@drawable/shape_radius_layout_button"
                             android:text="@string/str_ok"
                             android:textSize="12sp"
                             android:visibility="invisible" />
@@ -271,7 +271,7 @@
                 android:layout_marginTop="20sp"
                 android:layout_marginRight="12sp"
                 android:layout_marginBottom="0sp"
-                android:background="@drawable/radius_layout_bg"
+                android:background="@drawable/shape_radius_layout_bg"
                 android:orientation="horizontal">
 
                 <TextView
@@ -279,7 +279,7 @@
                     android:layout_width="45sp"
                     android:layout_height="45sp"
                     android:layout_margin="8sp"
-                    android:background="@drawable/radius_layout_rounded"
+                    android:background="@drawable/shape_radius_layout_rounded"
                     android:gravity="center"
                     android:text="@string/str_counter_3"
                     android:textColor="@color/colorPrimaryText"
@@ -355,7 +355,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginEnd="8sp"
                             android:layout_weight="1"
-                            android:background="@drawable/radius_layout_button"
+                            android:background="@drawable/shape_radius_layout_button"
                             android:text="@string/str_ok"
                             android:textSize="12sp"
                             android:visibility="invisible" />
@@ -372,7 +372,7 @@
                 android:layout_marginTop="20sp"
                 android:layout_marginRight="12sp"
                 android:layout_marginBottom="0sp"
-                android:background="@drawable/radius_layout_bg"
+                android:background="@drawable/shape_radius_layout_bg"
                 android:orientation="horizontal">
 
                 <TextView
@@ -380,7 +380,7 @@
                     android:layout_width="45sp"
                     android:layout_height="45sp"
                     android:layout_margin="8sp"
-                    android:background="@drawable/radius_layout_rounded"
+                    android:background="@drawable/shape_radius_layout_rounded"
                     android:gravity="center"
                     android:text="@string/str_counter_4"
                     android:textColor="@color/colorPrimaryText"
@@ -457,7 +457,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginEnd="8sp"
                             android:layout_weight="1"
-                            android:background="@drawable/radius_layout_button"
+                            android:background="@drawable/shape_radius_layout_button"
                             android:text="@string/str_ok"
                             android:textSize="12sp"
                             android:visibility="invisible" />
@@ -470,10 +470,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15sp"
-                android:background="@drawable/radius_layout_rounded"
+                android:background="@drawable/shape_radius_layout_rounded"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:text="@string/str_confirm" />
         </LinearLayout>
     </ScrollView>
-</android.support.v7.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>

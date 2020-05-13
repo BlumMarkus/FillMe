@@ -8,14 +8,15 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -143,11 +144,11 @@ public class SettingsActivity extends AppCompatActivity {
         list = fmds.getAllEntries(false);
 
         //Header
-        data.append(String.format("%s,%s,%s,%s,%s", FillMeDbHelper.COLUMN_DATE, FillMeDbHelper.COLUMN_MILEAGE, FillMeDbHelper.COLUMN_LITER, FillMeDbHelper.COLUMN_PRICE, FillMeDbHelper.COLUMN_STATUS));
+        data.append(String.format("%s,%s,%s,%s,%s", FillMeDbHelper.FILLENTRY_COLUMN_DATE, FillMeDbHelper.FILLENTRY_COLUMN_MILEAGE, FillMeDbHelper.FILLENTRY_COLUMN_LITER, FillMeDbHelper.FILLENTRY_COLUMN_PRICE, FillMeDbHelper.FILLENTRY_COLUMN_STATUS));
 
         //data
         for (FillEntry entry : list) {
-            String fillEntryString = String.format("\n%s,%s,%s,%s,%s", entry.getDate(), entry.getMileage(), entry.getLiter(), entry.getPrice(), entry.getStatus());
+            String fillEntryString = String.format("\n%s,%s,%s,%s,%s", entry.getStringDate(), entry.getMileage(), entry.getLiter(), entry.getPrice(), entry.getStatus());
             data.append(fillEntryString);
         }
 

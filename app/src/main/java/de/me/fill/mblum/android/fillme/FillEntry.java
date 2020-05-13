@@ -1,8 +1,10 @@
 package de.me.fill.mblum.android.fillme;
 
+import java.util.Calendar;
+
 /**
  * Class FillEntry
- *
+ * <p>
  * Stores the data of an input.
  */
 class FillEntry {
@@ -13,6 +15,7 @@ class FillEntry {
     private double liter;
     private double price;
     private int status;
+    private int drivenMileage;
 
     /**
      * Constructor with id.
@@ -32,6 +35,7 @@ class FillEntry {
         this.liter = liter;
         this.price = price;
         this.status = status;
+        this.drivenMileage = 0;
     }
 
     /**
@@ -50,13 +54,26 @@ class FillEntry {
         this.liter = liter;
         this.price = price;
         this.status = status;
+        this.drivenMileage = 0;
     }
 
     int getID() {
         return id;
     }
 
-    String getDate() {
+    String getStringDate() {
+        return date;
+    }
+
+    Calendar getDate() {
+        Calendar date = Calendar.getInstance();
+
+        int year = Integer.parseInt(this.date.substring(6, 10));
+        int month = Integer.parseInt(this.date.substring(3, 5));
+        int day = Integer.parseInt(this.date.substring(0, 2));
+
+        date.set(year, month, day);
+
         return date;
     }
 
@@ -119,21 +136,65 @@ class FillEntry {
         return mileage;
     }
 
+    /**
+     * Returns the amount of liter
+     *
+     * @return liter amount
+     */
     double getLiter() {
         liter = liter * 100;
         liter = Math.round(liter);
         liter = liter / 100;
+
         return liter;
     }
 
+    /**
+     * Returns the price paid for the hole fuel tank
+     *
+     * @return full price
+     */
     double getPrice() {
         price = price * 100;
         price = Math.round(price);
         price = price / 100;
+
         return price;
+    }
+
+    /**
+     * Returns the price paid for a liter
+     *
+     * @return price paid for liter
+     */
+    double getLiterPrice() {
+        double literPrice = price / liter;
+        literPrice = literPrice * 1000;
+        literPrice = Math.round(literPrice);
+        literPrice = literPrice / 1000;
+
+        return literPrice;
     }
 
     int getStatus() {
         return status;
+    }
+
+    /**
+     * Returns driven mileage if set before (current mileage - mileage new entry)
+     *
+     * @return driven mileage
+     */
+    public int getDrivenMileage() {
+        return drivenMileage;
+    }
+
+    /**
+     * Sets last mileage (current mileage - mileage new entry)
+     *
+     * @param drivenMileage last
+     */
+    public void setDrivenMileage(int drivenMileage) {
+        this.drivenMileage = drivenMileage;
     }
 }

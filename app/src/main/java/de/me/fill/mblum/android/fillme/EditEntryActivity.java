@@ -1,11 +1,10 @@
 package de.me.fill.mblum.android.fillme;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +13,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class EditEntryActivity extends AppCompatActivity {
 
@@ -72,9 +73,9 @@ public class EditEntryActivity extends AppCompatActivity {
         btn_save = (Button) findViewById(R.id.btn_accept);
         btn_datePicker = (Button) findViewById(R.id.btn_SelectDate);
 
-        Log.d(LOG_TAG, clickedEntry.getDate());
+        Log.d(LOG_TAG, clickedEntry.getStringDate());
 
-        tv_date.setText(String.valueOf(clickedEntry.getDate()));
+        tv_date.setText(String.valueOf(clickedEntry.getStringDate()));
         tv_mileage.setText(String.valueOf(clickedEntry.getMileage()));
         tv_amount.setText(String.valueOf(clickedEntry.getPrice()));
         tv_liter.setText(String.valueOf(clickedEntry.getLiter()));

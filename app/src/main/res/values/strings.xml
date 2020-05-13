@@ -49,6 +49,16 @@
     <string name="str_cancel">Abbrechen</string>
     <string name="str_description_btn_cancel">Zurück</string>
 
+    <!-- Menu Strings -->
+    <string name="str_menu_headline_welcome">Willkommen zurück!</string>
+    <string name="str_menu_newEntry_btn_description">Neuen Eintrag erstellen</string>
+    <string name="str_menu_vom">vom</string>
+    <string name="str_menu_statistic_title">Übersicht</string>
+    <string name="str_menu_lastActivity_title">Letzte Aktivitäten</string>
+    <string name="str_menu_unit_consumption">Liter/100km</string>
+    <string name="str_menu_unit_literPrice">Euro/Liter</string>
+    <string name="str_menu_graphic_status_description">Grafische Anzeige</string>
+
     <!-- New Entry Strings -->
     <string name="str_newEntry_dateTitle">Datum:</string>
     <string name="str_newEntry_dateToday">Heute</string>
@@ -62,6 +72,7 @@
     <string name="str_counter_4">4</string>
 
     <!-- Setting Strings -->
+    <string name="str_settings_menuDisplay_title">Menü Anzeige</string>
     <string name="str_settings_dataExportImport_title">Daten export/import</string>
     <string name="str_settings_dataExportImport_overwriteData">Daten überschreiben</string>
     <string name="str_exportData">Daten exportieren</string>

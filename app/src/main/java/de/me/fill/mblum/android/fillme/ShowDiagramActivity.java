@@ -2,8 +2,9 @@ package de.me.fill.mblum.android.fillme;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -94,7 +95,7 @@ public class ShowDiagramActivity extends AppCompatActivity {
         //X Wert ist das Datum von jedem Eintrag
         for (FillEntry entry: list) {
             if (entry != list.get(0)) {
-                xDates.add(entry.getDate());
+                xDates.add(entry.getStringDate());
             }
         }
 
@@ -114,7 +115,7 @@ public class ShowDiagramActivity extends AppCompatActivity {
         //X Wert ist das Datum von jedem Eintrag
         for (FillEntry entry: list) {
             if (entry != list.get(0)) {
-                xDates.add(entry.getDate());
+                xDates.add(entry.getStringDate());
             }
         }
 

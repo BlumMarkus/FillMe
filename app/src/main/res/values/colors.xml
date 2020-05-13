@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Primary Colors -->
     <color name="colorPrimary">#1E86E2</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorGrey">#DBDBDB</color>
+
+    <!-- Text color -->
+    <color name="colorPrimaryText">#616161</color>
+    <color name="colorWhiteText">#EBF6FF</color>
 
     <!-- Used in New Entry XML -->
     <color name="colorTitle">#EBF6FF</color>
     <color name="colorBackgroundGray">#EBEBEB</color>
     <color name="colorBackgroundWhite">#FFFFFF</color>
-    <color name="colorPrimaryText">#616161</color>
 
     <!-- Used for previous versions -->
     <color name="whiteBlue">#7cd3f8</color>

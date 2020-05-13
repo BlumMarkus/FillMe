@@ -1,435 +1,213 @@
 package de.me.fill.mblum.android.fillme;
 
-import android.provider.ContactsContract;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.content.Intent;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Cartesian;
+import com.anychart.core.cartesian.series.Column;
+import com.anychart.enums.Anchor;
+import com.anychart.enums.HoverMode;
+import com.anychart.enums.Position;
+import com.anychart.enums.TooltipPositionMode;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
 
-    FillMeDataSource fmds;
-    DecimalFormat f = new DecimalFormat("#0.00");
-
-    private Calendar calendar;
-    private int actualCalendarDay;
-    private int actualCalendarMonth;
-    private int lastCalendarMonth;
-    private int actualCalendarYear;
-
     private String LOGTAG = "MenuActivity";
 
-    private ArrayList<FillEntry> fullDataList;
-    private ArrayList<FillEntry> lastMonthList;
-    private ArrayList<FillEntry> lastYearList;
-
-    private TextView tv_show_last_mileage;
-    private TextView tv_show_last_date;
-
-    private TextView tv_show_overview_mileage;
-    private TextView tv_show_overview_time;
-    private TextView tv_show_overview_cost;
-    private TextView tv_show_overview_liter;
-
-    private ImageButton btn_add_new_entry;
-    private ImageButton btn_show_statistic_list;
-    private ImageButton btn_show_statistic_diagram;
-    private ImageButton btn_show_settings;
-    private ImageButton btn_menu_exit_app;
-
-    private ImageButton btn_show_overview_last_fill;
-    private ImageButton btn_show_overview_last_month;
-    private ImageButton btn_show_overview_last_year;
-    private ImageButton btn_show_overview_all;
+    private TextView tv_menu_last_entry_mileage;
+    private TextView tv_menu_last_entry_date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        Log.d(LOGTAG,"onCreate wurde erfolgreich aufgerufen.");
-
-        btn_add_new_entry = (ImageButton) findViewById(R.id.btn_menu_add_new_entry);
-        btn_show_statistic_list = (ImageButton) findViewById(R.id.btn_menu_show_statistic_list);
-        btn_show_statistic_diagram = (ImageButton) findViewById(R.id.btn_menu_show_statistic_diagram);
-        btn_show_settings = (ImageButton) findViewById(R.id.btn_menu_show_settings);
-        btn_menu_exit_app = (ImageButton) findViewById(R.id.btn_menu_exit_app);
-
-        btn_show_overview_last_fill = (ImageButton) findViewById(R.id.btn_menu_show_overview_last_fill);
-        btn_show_overview_last_month = (ImageButton) findViewById(R.id.btn_menu_show_overview_last_month);
-        btn_show_overview_last_year = (ImageButton) findViewById(R.id.btn_menu_show_overview_last_year);
-        btn_show_overview_all = (ImageButton) findViewById(R.id.btn_menu_show_overview_all);
-
-        tv_show_last_mileage = (TextView) findViewById(R.id.tv_menu_show_last_mileage);
-        tv_show_last_date = (TextView) findViewById(R.id.tv_menu_show_last_date);
-
-        tv_show_overview_mileage = (TextView) findViewById(R.id.tv_menu_show_overview_mileage);
-        tv_show_overview_time = (TextView) findViewById(R.id.tv_menu_show_overview_time);
-        tv_show_overview_cost = (TextView) findViewById(R.id.tv_menu_show_overview_cost);
-        tv_show_overview_liter = (TextView) findViewById(R.id.tv_menu_show_overview_liter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(LOGTAG,"onResume wurde erfolgreich aufgerufen.");
 
-        calendar = Calendar.getInstance();
-        actualCalendarDay = calendar.get(Calendar.DAY_OF_MONTH);
-        actualCalendarMonth = calendar.get(Calendar.MONTH) + 1;
-        actualCalendarYear = calendar.get(Calendar.YEAR);
-        if(actualCalendarMonth != 1)
-        {
-            lastCalendarMonth = actualCalendarMonth-1;
-        }
-        else
-        {
-            lastCalendarMonth = 12;
-        }
+        ImageButton btn_menu_add_new_entry = findViewById(R.id.btn_menu_add_new_entry);
+        ImageButton btn_menu_settings = findViewById(R.id.btn_menu_show_settings);
+        TextView tv_menu_statistic_title = findViewById(R.id.tv_menu_statistic_title);
+        TextView tv_menu_lastActivity_title = findViewById(R.id.tv_menu_lastActivity_title);
 
-        fmds = new FillMeDataSource(this);
-        fullDataList = fmds.getAllEntries(true);
-        lastMonthList = fmds.getlastMonth(lastCalendarMonth, actualCalendarYear);
-        lastYearList = fmds.getlastYear(actualCalendarYear);
+        tv_menu_last_entry_mileage = findViewById(R.id.tv_menu_last_entry_mileage);
+        tv_menu_last_entry_date = findViewById(R.id.tv_menu_last_entry_date);
 
-        updateDisplayedData(fullDataList);
+        FillMeDataSource dataSource = new FillMeDataSource(this);
+        ArrayList<FillEntry> allEntries = dataSource.getAllEntries(true);
 
-        Log.d(LOGTAG, "Listen wurden geladen:");
-        Log.d(LOGTAG, "fullDataList(" + fullDataList.size() + "):" + fullDataList);
-        Log.d(LOGTAG, "lastMonthList(" + lastMonthList.size() + "):" + lastMonthList);
-        Log.d(LOGTAG, "lastYearList(" + lastYearList.size() + "):" + lastYearList);
+        int allEntriesSize = allEntries.size();
 
-        Log.d(LOGTAG,"onResume ist hier zuende.");
+        updateStatistic(allEntries);
+        updateLastEntryData(allEntries, allEntriesSize);
+        updateLastActivityList(allEntries, allEntriesSize);
 
-        btn_add_new_entry.setOnClickListener(new OnClickListener() {
+        btn_menu_add_new_entry.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MenuActivity.this, NewEntryActivity.class);
-                startActivity(intent);
+            public void onClick(View view) {
+                Intent newEntryActivity = new Intent(MenuActivity.this, NewEntryActivity.class);
+                startActivity(newEntryActivity);
             }
         });
 
-        btn_show_statistic_list.setOnClickListener(new OnClickListener() {
+        tv_menu_statistic_title.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MenuActivity.this, ShowEntriesActivity.class);
-                startActivity(intent);
+            public void onClick(View view) {
+                Intent ShowDiagramActivity = new Intent(MenuActivity.this, ShowDiagramActivity.class);
+                startActivity(ShowDiagramActivity);
             }
         });
 
-        btn_show_statistic_diagram.setOnClickListener(new OnClickListener() {
+        tv_menu_lastActivity_title.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MenuActivity.this, ShowDiagramActivity.class);
-                startActivity(intent);
+            public void onClick(View view) {
+                Intent showEntriesActivity = new Intent(MenuActivity.this, ShowEntriesActivity.class);
+                startActivity(showEntriesActivity);
             }
         });
 
-        btn_show_settings.setOnClickListener(new OnClickListener() {
+        btn_menu_settings.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MenuActivity.this, SettingsActivity.class);
-                startActivity(intent);
+            public void onClick(View view) {
+                Intent settingsActivity = new Intent(MenuActivity.this, SettingsActivity.class);
+                startActivity(settingsActivity);
             }
         });
+    }
 
-        btn_menu_exit_app.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                System.exit(0);
-            }
-        });
-
-
-        btn_show_overview_last_fill.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn_show_overview_last_fill.setBackgroundResource(R.color.activeButton);
-                btn_show_overview_last_month.setBackgroundResource(R.color.passiveButton);
-                btn_show_overview_last_year.setBackgroundResource(R.color.passiveButton);
-                btn_show_overview_all.setBackgroundResource(R.color.passiveButton);
-
-                updateOverviewLastFill(fullDataList);
-            }
-        });
-
-        btn_show_overview_last_month.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn_show_overview_last_fill.setBackgroundResource(R.color.passiveButton);
-                btn_show_overview_last_month.setBackgroundResource(R.color.activeButton);
-                btn_show_overview_last_year.setBackgroundResource(R.color.passiveButton);
-                btn_show_overview_all.setBackgroundResource(R.color.passiveButton);
-
-                updateOverviewLastMonth(lastMonthList);
-            }
-        });
-
-        btn_show_overview_last_year.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn_show_overview_last_fill.setBackgroundResource(R.color.passiveButton);
-                btn_show_overview_last_month.setBackgroundResource(R.color.passiveButton);
-                btn_show_overview_last_year.setBackgroundResource(R.color.activeButton);
-                btn_show_overview_all.setBackgroundResource(R.color.passiveButton);
-
-                updateOverviewLastYear(lastYearList);
-            }
-        });
-
-        btn_show_overview_all.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn_show_overview_last_fill.setBackgroundResource(R.color.passiveButton);
-                btn_show_overview_last_month.setBackgroundResource(R.color.passiveButton);
-                btn_show_overview_last_year.setBackgroundResource(R.color.passiveButton);
-                btn_show_overview_all.setBackgroundResource(R.color.activeButton);
-
-                updateOverviewAll(fullDataList);
-            }
-        });
-}
-
-    private void updateDisplayedData(ArrayList<FillEntry> sortedList) {
-        int listSize = sortedList.size();
-
-        btn_show_overview_last_fill.setEnabled(false);
-        btn_show_overview_last_month.setEnabled(false);
-        btn_show_overview_last_year.setEnabled(false);
-        btn_show_overview_all.setEnabled(false);
-
-        btn_show_overview_last_fill.setBackgroundResource(R.color.passiveButton);
-        btn_show_overview_last_month.setBackgroundResource(R.color.passiveButton);
-        btn_show_overview_last_year.setBackgroundResource(R.color.passiveButton);
-        btn_show_overview_all.setBackgroundResource(R.color.passiveButton);
-
+    /**
+     * Displays the last entries in menu.
+     *
+     * @param allEntriesList list that contains all fillEntry objects stored in database
+     * @param listSize       size of the given arrayList
+     */
+    private void updateLastEntryData(ArrayList<FillEntry> allEntriesList, int listSize) {
         if (listSize == 0) {
-            tv_show_last_mileage.setText("n/a");
-            tv_show_last_date.setText("n/a");
-
-            tv_show_overview_mileage.setText("n/a");
-            tv_show_overview_time.setText("n/a");
-            tv_show_overview_cost.setText("n/a");
-            tv_show_overview_liter.setText("n/a");
-        } else if (listSize == 1) {
-            btn_show_overview_all.setBackgroundResource(R.color.activeButton);
-
-            tv_show_last_mileage.setText(String.valueOf(sortedList.get(0).getMileage() + " km"));
-            tv_show_last_date.setText(String.valueOf(sortedList.get(0).getDate()));
-
-            tv_show_overview_mileage.setText(String.valueOf(sortedList.get(0).getMileage() + " km"));
-            tv_show_overview_cost.setText(String.valueOf(sortedList.get(0).getPrice()));
-            tv_show_overview_liter.setText(String.valueOf(sortedList.get(0).getLiter()));
-
-            String newestDate = String.valueOf(sortedList.get(0).getDate());
-            String[] splittedNewestDate = newestDate.split("\\.");
-
-            Log.d(LOGTAG, "Splitten war erfolgreich! " + newestDate + "(" + splittedNewestDate.length + ") = " + splittedNewestDate[0] + "," + splittedNewestDate[1] + "," + splittedNewestDate[2]);
-
-            String displayTime = getDateDifference( splittedNewestDate );
-
-            tv_show_overview_time.setText(String.valueOf(displayTime));
+            tv_menu_last_entry_mileage.setText("n/a");
+            tv_menu_last_entry_date.setText("n/a");
         } else {
-            btn_show_overview_last_fill.setBackgroundResource(R.color.activeButton);
+            tv_menu_last_entry_mileage.setText(String.valueOf(allEntriesList.get(0).getMileage()));
+            tv_menu_last_entry_date.setText(String.valueOf(allEntriesList.get(0).getStringDate()));
+        }
+    }
 
-            btn_show_overview_last_fill.setEnabled(true);
-            btn_show_overview_all.setEnabled(true);
+    /**
+     * Displays a chart for consumption of the last 12 month (current month not included)
+     */
+    private void updateStatistic(ArrayList<FillEntry> allEntriesList) {
+        Cartesian cartesian = AnyChart.column();
+        DateHelper dateHelper = new DateHelper();
+        FillEntriesHelper fillEntriesHelper = new FillEntriesHelper(allEntriesList);
 
-            if (lastMonthList.size() >= 1) {
-                btn_show_overview_last_month.setEnabled(true);
+        AnyChartView anyChartView = findViewById(R.id.chart_menu_statistic);
+        anyChartView.setProgressBar(findViewById(R.id.progress_bar_menu_statistic));
+
+
+        Date now = Calendar.getInstance().getTime();
+        Calendar calcCalendar = Calendar.getInstance();
+        calcCalendar.setTime(now);
+
+        List<DataEntry> chartData = new ArrayList<>();
+
+        String xAxisName;
+        double value;
+
+        for (int i = 0; i < 12; i++) {
+            calcCalendar.add(Calendar.MONTH, -1);
+
+            xAxisName = dateHelper.getMonthShort(calcCalendar.get(Calendar.MONTH) + 1);
+            value = fillEntriesHelper.getConsumptionAvgMonth(calcCalendar.get(Calendar.MONTH) + 1, calcCalendar.get(Calendar.YEAR));
+
+            if (value != 0) {
+                chartData.add(new ValueDataEntry(xAxisName, value));
             }
+        }
 
-            if (lastYearList.size() >= 1) {
-                btn_show_overview_last_year.setEnabled(true);
+        Column column = cartesian.column(chartData);
+
+        column.tooltip()
+                .titleFormat("{%X}")
+                .position(Position.CENTER_BOTTOM)
+                .anchor(Anchor.CENTER_BOTTOM)
+                .offsetX(0d)
+                .offsetY(5d)
+                .format("{%Value}{groupsSeparator: } l");
+
+        cartesian.animation(true);
+
+        cartesian.yScale().minimum(0d);
+        cartesian.yAxis(0).title("Liter/100km");
+        cartesian.yAxis(0).labels().format("{%Value}{groupsSeparator: } l");
+
+        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+        cartesian.interactivity().hoverMode(HoverMode.BY_X);
+
+        anyChartView.setChart(cartesian);
+    }
+
+    /**
+     * Sends the arrayList to the listView to display the last activity in menu activity.
+     *
+     * @param allEntriesList list that contains all fillEntry objects stored in database
+     * @param allEntriesSize size of the given arrayList
+     */
+    private void updateLastActivityList(ArrayList<FillEntry> allEntriesList, int allEntriesSize) {
+        ArrayList<FillEntry> lastActivityEntries = new ArrayList<>();
+
+        if (allEntriesSize > 3) {
+            for (int counter = 0; counter < allEntriesSize; counter++) {
+                lastActivityEntries.add(counter, allEntriesList.get(counter));
             }
-
-            tv_show_last_mileage.setText(String.valueOf(sortedList.get(0).getMileage() + " km"));
-            tv_show_last_date.setText(String.valueOf(sortedList.get(0).getDate()));
-
-            updateOverviewLastFill(fullDataList);
-        }
-    }
-
-    private void updateOverviewAll(ArrayList<FillEntry> sortedList) {
-        int listSize = sortedList.size()-1;
-
-        int totalDistance = sortedList.get(0).getMileage();
-
-        double sumCost = 0;
-        double sumLiter = 0;
-
-        for (FillEntry entry : sortedList) {
-            sumCost += entry.getPrice();
-            sumLiter += entry.getLiter();
-        }
-
-        tv_show_overview_mileage.setText(String.valueOf(totalDistance + " km"));
-        tv_show_overview_liter.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100))+ " / 100 km");
-        tv_show_overview_cost.setText(String.valueOf(f.format(sumCost)));
-
-        String latestDate = String.valueOf(sortedList.get(listSize).getDate());
-        String[] splittedLatestDate = latestDate.split("\\.");
-
-        Log.d(LOGTAG, "Splitten war erfolgreich! " + latestDate + "(" + splittedLatestDate.length + ") = " + splittedLatestDate[0] + "," + splittedLatestDate[1] + "," + splittedLatestDate[2]);
-
-        String displayTime = getDateDifference( splittedLatestDate );
-
-        tv_show_overview_time.setText(String.valueOf(displayTime));
-    }
-
-    private void updateOverviewLastFill(ArrayList<FillEntry> sortedList) {
-        int listSize = sortedList.size()-1;
-        int actualDistance = sortedList.get(0).getMileage() - sortedList.get(1).getMileage();
-
-        tv_show_overview_mileage.setText(String.valueOf(actualDistance + " km"));
-        tv_show_overview_cost.setText(String.valueOf(f.format(sortedList.get(0).getPrice())));
-        tv_show_overview_liter.setText(String.valueOf(f.format((sortedList.get(0).getLiter() / actualDistance) *100)) + " / 100 km");
-
-        String newestDate = String.valueOf(sortedList.get(0).getDate());
-        String[] splittedNewestDate = newestDate.split("\\.");
-
-        Log.d(LOGTAG, "Splitten war erfolgreich! " + newestDate + "(" + splittedNewestDate.length + ") = " + splittedNewestDate[0] + "," + splittedNewestDate[1] + "," + splittedNewestDate[2]);
-
-        String displayTime = getDateDifference( splittedNewestDate );
-
-        tv_show_overview_time.setText(String.valueOf(displayTime));
-    }
-
-    private void updateOverviewLastMonth(ArrayList<FillEntry> sortedList)
-    {
-        int listSize = sortedList.size()-1;
-        int monthBeforeLastMonth = 0;
-        if(lastCalendarMonth != 1)
-        {
-            monthBeforeLastMonth = lastCalendarMonth-1;
-        }
-        else
-        {
-            monthBeforeLastMonth = 12;
-        }
-        ArrayList<FillEntry> monthBeforeLastMonthSortedList = fmds.getlastMonth(monthBeforeLastMonth, actualCalendarYear);
-        double sumCost = 0;
-        double sumLiter = 0;
-        int totalDistance = 0;
-
-        if(listSize+1 == 1)
-        {
-            totalDistance = sortedList.get(0).getMileage() - monthBeforeLastMonthSortedList.get(0).getMileage();
-        }
-        else
-        {
-            totalDistance = sortedList.get(0).getMileage() - sortedList.get(listSize).getMileage();
-        }
-
-        for (FillEntry entry : sortedList) {
-            sumCost += entry.getPrice();
-            sumLiter += entry.getLiter();
-        }
-
-        tv_show_overview_mileage.setText(String.valueOf(totalDistance + " km"));
-        tv_show_overview_cost.setText(String.valueOf(f.format(sumCost )));
-        tv_show_overview_liter.setText(String.valueOf(f.format((sumLiter / totalDistance) *100)) + " / 100 km");
-        tv_show_overview_time.setText(GetLastMonthName());
-    }
-
-    private void updateOverviewLastYear(ArrayList<FillEntry> sortedList) {
-        int listSize = sortedList.size()-1;
-
-        double sumCost = 0;
-        double sumLiter = 0;
-        int totalDistance = sortedList.get(0).getMileage() - sortedList.get(listSize).getMileage();
-
-        for (FillEntry entry : sortedList) {
-            sumCost += entry.getPrice();
-            sumLiter += entry.getLiter();
-        }
-
-        tv_show_overview_mileage.setText(String.valueOf(totalDistance + " km"));
-        tv_show_overview_cost.setText(String.valueOf(f.format(sumCost)));
-        tv_show_overview_liter.setText(String.valueOf(f.format((sumLiter / totalDistance) * 100)) + " / 100 km");
-
-        tv_show_overview_time.setText(String.valueOf(actualCalendarYear));
-    }
-
-    private String getDateDifference ( String[] splittedDifferenceDate ) {
-        Calendar dateForDifferentiation = Calendar.getInstance();
-        dateForDifferentiation.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splittedDifferenceDate[0]));
-        if ( splittedDifferenceDate[1].equals("0") ) {
-            splittedDifferenceDate[1] = "11";
         } else {
-            splittedDifferenceDate[1] = String.valueOf(Integer.parseInt(splittedDifferenceDate[1]) - 1);
-        }
-        dateForDifferentiation.set(Calendar.MONTH, Integer.parseInt(splittedDifferenceDate[1]));
-        dateForDifferentiation.set(Calendar.YEAR, Integer.parseInt(splittedDifferenceDate[2]));
-
-        int differentiationDay = dateForDifferentiation.get(Calendar.DAY_OF_MONTH);
-        int differentiationMonth = dateForDifferentiation.get(Calendar.MONTH);
-        int differentiationYear = dateForDifferentiation.get(Calendar.YEAR);
-
-        Log.d(LOGTAG, "Letzter Eintrag: " + differentiationDay + "," + differentiationMonth + "," + differentiationYear);
-        Log.d(LOGTAG, "Datum heute" + actualCalendarDay + "," + actualCalendarMonth + "," + actualCalendarYear);
-
-        long dateDifference = calendar.getTimeInMillis() - dateForDifferentiation.getTimeInMillis();
-        Log.d(LOGTAG, "Millisekunden dazwischen: " + dateDifference);
-        int daysBetween = (int) (dateDifference / ( 24 * 60 * 60 * 1000));
-
-        Log.d(LOGTAG, "daysBetween: " + daysBetween);
-
-        String displayComment = "";
-
-
-
-        if ( daysBetween == 0 ) {
-            if ( actualCalendarDay == differentiationDay ) {
-                displayComment = "heute";
-            } else {
-                displayComment = "gestern";
-            }
-        } else if ( daysBetween == 1 ) {
-            displayComment = daysBetween + " Tag";
-        }  else {
-            displayComment = "Vor " + daysBetween + " Tagen";
+            lastActivityEntries = allEntriesList;
         }
 
-        return displayComment;
-    }
-
-    private String GetLastMonthName()
-    {
-        switch (lastCalendarMonth) {
-            case 1:
-                return "Januar";
-            case 2:
-                return "Februar";
-            case 3:
-                return "März";
-            case 4:
-                return "April";
-            case 5:
-                return "Mai";
-            case 6:
-                return "Juni";
-            case 7:
-                return "Juli";
-            case 8:
-                return "August";
-            case 9:
-                return "September";
-            case 10:
-                return "Oktober";
-            case 11:
-                return "November";
-            case 12:
-                return "Dezember";
-        }
-        return "";
+        // TextView tv_menu_lastActivity_monthShort = customView.findViewById(R.id.tv_menu_lastActivity_monthShort);
+        // TextView tv_menu_lastActivity_dayOfMonth = customView.findViewById(R.id.tv_menu_lastActivity_dayOfMonth);
+        // ImageView iv_menu_lastActivity_consumptionStatus = customView.findViewById(R.id.iv_menu_lastActivity_consumptionStatus);
+        // TextView tv_menu_lastActivity_consumption = customView.findViewById(R.id.tv_menu_lastActivity_consumption);
+        // ImageView iv_menu_lastActivity_literPriceStatus = customView.findViewById(R.id.iv_menu_lastActivity_literPriceStatus);
+        // TextView tv_menu_lastActivity_literPrice = customView.findViewById(R.id.tv_menu_lastActivity_literPrice);
+//
+        // DecimalFormat consumptionFormat = new DecimalFormat("0.0");
+        // DecimalFormat literPriceFormat = new DecimalFormat("0.000");
+//
+        // String consumptionText;
+        // int objectListSize = objectList.size() - 1;
+//
+        // if (position + 1 <= objectListSize) {
+        //     int mileageOfEntryBefore = objectList.get(position + 1).getMileage();
+        //     double drivenKilometers = mileageOfEntryBefore - objectList.get(position).getMileage();
+        //     double consumption = objectList.get(position).getLiter() / (drivenKilometers / 100);
+        //     consumptionText = String.valueOf(consumptionFormat.format(consumption));
+        // } else {
+        //     consumptionText = "n/a";
+        // }
+//
+        // tv_menu_lastActivity_monthShort.setText(String.valueOf(objectList.get(position).getMonthShort()));
+        // tv_menu_lastActivity_dayOfMonth.setText(String.valueOf(objectList.get(position).getDayOfMonth()));
+        // tv_menu_lastActivity_consumption.setText(consumptionText);
+        // tv_menu_lastActivity_literPrice.setText(literPriceFormat.format(objectList.get(position).getLiterPrice()));
+//
+        // customView.setTag(objectList.get(position).getID());
+//
+        // return customView;
     }
 }

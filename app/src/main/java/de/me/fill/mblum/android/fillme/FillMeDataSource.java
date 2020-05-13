@@ -38,23 +38,23 @@ class FillMeDataSource {
         o = new FillEntry(9, null, 9, 9.9, 9.9, 9);
         this.o = m;
         Log.d(logTag, "Übergebenens Objekt (m) wurde mit Objekt (o) überschrieben und hat nun folgende Werte:");
-        Log.d(logTag, "Wert für Datum: " + o.getDate() + ", Wert Mileage: " + o.getMileage() + ", Wert Liter: " + o.getLiter() + ", Wert Price: " + o.getPrice() + ", Wert status " + o.getStatus() + ".");
+        Log.d(logTag, "Wert für Datum: " + o.getStringDate() + ", Wert Mileage: " + o.getMileage() + ", Wert Liter: " + o.getLiter() + ", Wert Price: " + o.getPrice() + ", Wert status " + o.getStatus() + ".");
 
         open();
 
         ContentValues values = new ContentValues();
 
-        values.put(FillMeDbHelper.COLUMN_DATE, o.getDate());
-        values.put(FillMeDbHelper.COLUMN_MILEAGE, o.getMileage());
-        values.put(FillMeDbHelper.COLUMN_LITER, o.getLiter());
-        values.put(FillMeDbHelper.COLUMN_PRICE, o.getPrice());
-        values.put(FillMeDbHelper.COLUMN_STATUS, o.getStatus());
+        values.put(FillMeDbHelper.FILLENTRY_COLUMN_DATE, o.getStringDate());
+        values.put(FillMeDbHelper.FILLENTRY_COLUMN_MILEAGE, o.getMileage());
+        values.put(FillMeDbHelper.FILLENTRY_COLUMN_LITER, o.getLiter());
+        values.put(FillMeDbHelper.FILLENTRY_COLUMN_PRICE, o.getPrice());
+        values.put(FillMeDbHelper.FILLENTRY_COLUMN_STATUS, o.getStatus());
 
-        Log.d(logTag, "Value erstellt: " + FillMeDbHelper.COLUMN_DATE + " mit " + o.getDate() + ".");
-        Log.d(logTag, "Value erstellt: " + FillMeDbHelper.COLUMN_MILEAGE + " mit " + o.getMileage() + ".");
-        Log.d(logTag, "Value erstellt: " + FillMeDbHelper.COLUMN_LITER + " mit " + o.getLiter() + ".");
-        Log.d(logTag, "Value erstellt: " + FillMeDbHelper.COLUMN_PRICE + " mit " + o.getPrice() + ".");
-        Log.d(logTag, "Value erstellt: " + FillMeDbHelper.COLUMN_STATUS + " mit " + o.getStatus() + ".");
+        Log.d(logTag, "Value erstellt: " + FillMeDbHelper.FILLENTRY_COLUMN_DATE + " mit " + o.getStringDate() + ".");
+        Log.d(logTag, "Value erstellt: " + FillMeDbHelper.FILLENTRY_COLUMN_MILEAGE + " mit " + o.getMileage() + ".");
+        Log.d(logTag, "Value erstellt: " + FillMeDbHelper.FILLENTRY_COLUMN_LITER + " mit " + o.getLiter() + ".");
+        Log.d(logTag, "Value erstellt: " + FillMeDbHelper.FILLENTRY_COLUMN_PRICE + " mit " + o.getPrice() + ".");
+        Log.d(logTag, "Value erstellt: " + FillMeDbHelper.FILLENTRY_COLUMN_STATUS + " mit " + o.getStatus() + ".");
 
         long result = db.insert(FillMeDbHelper.TABLE_FILLENTRY, null, values);
 
@@ -76,15 +76,15 @@ class FillMeDataSource {
         open();
 
         String sql = "SELECT " +
-                FillMeDbHelper.COLUMN_ID + ", " +
-                FillMeDbHelper.COLUMN_DATE + ", " +
-                FillMeDbHelper.COLUMN_MILEAGE + ", " +
-                FillMeDbHelper.COLUMN_LITER + ", " +
-                FillMeDbHelper.COLUMN_PRICE + ", " +
-                FillMeDbHelper.COLUMN_STATUS +
+                FillMeDbHelper.FILLENTRY_COLUMN_ID + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_DATE + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_MILEAGE + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_LITER + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_PRICE + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_STATUS +
                 " FROM " + FillMeDbHelper.TABLE_FILLENTRY +
-                " WHERE " + FillMeDbHelper.COLUMN_DATE + " LIKE '%.%" + month + "." + year + "'" +
-                " ORDER BY " + FillMeDbHelper.COLUMN_MILEAGE + " DESC ";
+                " WHERE " + FillMeDbHelper.FILLENTRY_COLUMN_DATE + " LIKE '%.%" + month + "." + year + "'" +
+                " ORDER BY " + FillMeDbHelper.FILLENTRY_COLUMN_MILEAGE + " DESC ";
         Log.d(logTag, sql);
         cursor = db.rawQuery(sql, null);
         Log.d(logTag, "Eintrag wurden erfolgreich aus der Datenbanktabelle " + FillMeDbHelper.TABLE_FILLENTRY + " ausgelesen.");
@@ -96,7 +96,7 @@ class FillMeDataSource {
             m = cursorToEntry(cursor);
             list.add(m);
             Log.d(logTag, "Objekt m wurde der Liste hinzugefügt.");
-            Log.d(logTag, "Datum: " + m.getDate() + ", Mileage: " + m.getMileage() + ", Liter: " + m.getLiter() + ", Price: " + m.getPrice() + ")");
+            Log.d(logTag, "Datum: " + m.getStringDate() + ", Mileage: " + m.getMileage() + ", Liter: " + m.getLiter() + ", Price: " + m.getPrice() + ")");
             cursor.moveToNext();
         }
         cursor.close();
@@ -112,15 +112,15 @@ class FillMeDataSource {
         open();
 
         String sql = "SELECT " +
-                FillMeDbHelper.COLUMN_ID + ", " +
-                FillMeDbHelper.COLUMN_DATE + ", " +
-                FillMeDbHelper.COLUMN_MILEAGE + ", " +
-                FillMeDbHelper.COLUMN_LITER + ", " +
-                FillMeDbHelper.COLUMN_PRICE + ", " +
-                FillMeDbHelper.COLUMN_STATUS +
+                FillMeDbHelper.FILLENTRY_COLUMN_ID + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_DATE + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_MILEAGE + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_LITER + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_PRICE + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_STATUS +
                 " FROM " + FillMeDbHelper.TABLE_FILLENTRY +
-                " WHERE " + FillMeDbHelper.COLUMN_DATE + " LIKE '%." + year + "'" +
-                " ORDER BY " + FillMeDbHelper.COLUMN_MILEAGE + " DESC ";
+                " WHERE " + FillMeDbHelper.FILLENTRY_COLUMN_DATE + " LIKE '%." + year + "'" +
+                " ORDER BY " + FillMeDbHelper.FILLENTRY_COLUMN_MILEAGE + " DESC ";
         cursor = db.rawQuery(sql, null);
         Log.d(logTag, "Eintrag wurden erfolgreich aus der Datenbanktabelle " + FillMeDbHelper.TABLE_FILLENTRY + " ausgelesen.");
 
@@ -131,7 +131,7 @@ class FillMeDataSource {
             m = cursorToEntry(cursor);
             list.add(m);
             Log.d(logTag, "Objekt m wurde der Liste hinzugefügt.");
-            Log.d(logTag, "Datum: " + m.getDate() + ", Mileage: " + m.getMileage() + ", Liter: " + m.getLiter() + ", Price: " + m.getPrice() + ")");
+            Log.d(logTag, "Datum: " + m.getStringDate() + ", Mileage: " + m.getMileage() + ", Liter: " + m.getLiter() + ", Price: " + m.getPrice() + ")");
             cursor.moveToNext();
         }
         cursor.close();
@@ -154,14 +154,14 @@ class FillMeDataSource {
         open();
 
         String sqlQuery = "SELECT " +
-                FillMeDbHelper.COLUMN_ID + ", " +
-                FillMeDbHelper.COLUMN_DATE + ", " +
-                FillMeDbHelper.COLUMN_MILEAGE + ", " +
-                FillMeDbHelper.COLUMN_LITER + ", " +
-                FillMeDbHelper.COLUMN_PRICE + ", " +
-                FillMeDbHelper.COLUMN_STATUS +
+                FillMeDbHelper.FILLENTRY_COLUMN_ID + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_DATE + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_MILEAGE + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_LITER + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_PRICE + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_STATUS +
                 " FROM " + FillMeDbHelper.TABLE_FILLENTRY +
-                " ORDER BY " + FillMeDbHelper.COLUMN_MILEAGE + " DESC " +
+                " ORDER BY " + FillMeDbHelper.FILLENTRY_COLUMN_MILEAGE + " DESC " +
                 " LIMIT " + amount;
         cursor = db.rawQuery(sqlQuery, null);
 
@@ -191,14 +191,14 @@ class FillMeDataSource {
         open();
 
         String sql = "SELECT " +
-                FillMeDbHelper.COLUMN_ID + ", " +
-                FillMeDbHelper.COLUMN_DATE + ", " +
-                FillMeDbHelper.COLUMN_MILEAGE + ", " +
-                FillMeDbHelper.COLUMN_LITER + ", " +
-                FillMeDbHelper.COLUMN_PRICE + ", " +
-                FillMeDbHelper.COLUMN_STATUS +
+                FillMeDbHelper.FILLENTRY_COLUMN_ID + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_DATE + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_MILEAGE + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_LITER + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_PRICE + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_STATUS +
                 " FROM " + FillMeDbHelper.TABLE_FILLENTRY +
-                " ORDER BY " + FillMeDbHelper.COLUMN_MILEAGE + " " + descOrAsc;
+                " ORDER BY " + FillMeDbHelper.FILLENTRY_COLUMN_MILEAGE + " " + descOrAsc;
         cursor = db.rawQuery(sql, null);
         Log.d(logTag, "Eintrag wurden erfolgreich aus der Datenbanktabelle " + FillMeDbHelper.TABLE_FILLENTRY + " ausgelesen.");
 
@@ -209,7 +209,7 @@ class FillMeDataSource {
             m = cursorToEntry(cursor);
             list.add(m);
             Log.d(logTag, "Objekt m wurde der Liste hinzugefügt.");
-            Log.d(logTag, "ID: " + m.getID() + ", Datum: " + m.getDate() + ", Mileage: " + m.getMileage() + ", Liter: " + m.getLiter() + ", Price: " + m.getPrice() + "Status: " + m.getStatus() + ")");
+            Log.d(logTag, "ID: " + m.getID() + ", Datum: " + m.getStringDate() + ", Mileage: " + m.getMileage() + ", Liter: " + m.getLiter() + ", Price: " + m.getPrice() + "Status: " + m.getStatus() + ")");
             cursor.moveToNext();
         }
         cursor.close();
@@ -224,14 +224,14 @@ class FillMeDataSource {
         open();
 
         String sql = "SELECT " +
-                FillMeDbHelper.COLUMN_ID + ", " +
-                FillMeDbHelper.COLUMN_DATE + ", " +
-                FillMeDbHelper.COLUMN_MILEAGE + ", " +
-                FillMeDbHelper.COLUMN_LITER + ", " +
-                FillMeDbHelper.COLUMN_PRICE + ", " +
-                FillMeDbHelper.COLUMN_STATUS +
+                FillMeDbHelper.FILLENTRY_COLUMN_ID + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_DATE + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_MILEAGE + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_LITER + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_PRICE + ", " +
+                FillMeDbHelper.FILLENTRY_COLUMN_STATUS +
                 " FROM " + FillMeDbHelper.TABLE_FILLENTRY +
-                " WHERE " + FillMeDbHelper.COLUMN_ID + " = " + id;
+                " WHERE " + FillMeDbHelper.FILLENTRY_COLUMN_ID + " = " + id;
         cursor = db.rawQuery(sql, null);
         Log.d(logTag, "Eintrag wurden erfolgreich aus der Datenbanktabelle " + FillMeDbHelper.TABLE_FILLENTRY + " ausgelesen.");
 
@@ -249,12 +249,12 @@ class FillMeDataSource {
         open();
 
         String sql = "UPDATE " + FillMeDbHelper.TABLE_FILLENTRY +
-                " SET " + FillMeDbHelper.COLUMN_DATE + " = '" + updatedItem.getDate() + "', " +
-                FillMeDbHelper.COLUMN_MILEAGE + " = '" + updatedItem.getMileage() + "', " +
-                FillMeDbHelper.COLUMN_LITER + " = '" + updatedItem.getLiter() + "', " +
-                FillMeDbHelper.COLUMN_PRICE + " = '" + updatedItem.getPrice() + "', " +
-                FillMeDbHelper.COLUMN_STATUS + " = '" + updatedItem.getStatus() +
-                "' WHERE " + FillMeDbHelper.COLUMN_ID + " = " + updatedItem.getID();
+                " SET " + FillMeDbHelper.FILLENTRY_COLUMN_DATE + " = '" + updatedItem.getStringDate() + "', " +
+                FillMeDbHelper.FILLENTRY_COLUMN_MILEAGE + " = '" + updatedItem.getMileage() + "', " +
+                FillMeDbHelper.FILLENTRY_COLUMN_LITER + " = '" + updatedItem.getLiter() + "', " +
+                FillMeDbHelper.FILLENTRY_COLUMN_PRICE + " = '" + updatedItem.getPrice() + "', " +
+                FillMeDbHelper.FILLENTRY_COLUMN_STATUS + " = '" + updatedItem.getStatus() +
+                "' WHERE " + FillMeDbHelper.FILLENTRY_COLUMN_ID + " = " + updatedItem.getID();
 
         db.execSQL(sql);
 
@@ -266,7 +266,7 @@ class FillMeDataSource {
 
         String sql = "DELETE " +
                 " FROM " + FillMeDbHelper.TABLE_FILLENTRY +
-                " WHERE " + FillMeDbHelper.COLUMN_ID + " = " + entryId;
+                " WHERE " + FillMeDbHelper.FILLENTRY_COLUMN_ID + " = " + entryId;
 
         db.execSQL(sql);
 
@@ -281,12 +281,12 @@ class FillMeDataSource {
     }
 
     private FillEntry cursorToEntry(Cursor cursor) {
-        int idIndex = cursor.getColumnIndex(FillMeDbHelper.COLUMN_ID);
-        int dateIndex = cursor.getColumnIndex(FillMeDbHelper.COLUMN_DATE);
-        int mileageIndex = cursor.getColumnIndex(FillMeDbHelper.COLUMN_MILEAGE);
-        int literIndex = cursor.getColumnIndex(FillMeDbHelper.COLUMN_LITER);
-        int priceIndex = cursor.getColumnIndex(FillMeDbHelper.COLUMN_PRICE);
-        int statusIndex = cursor.getColumnIndex(FillMeDbHelper.COLUMN_STATUS);
+        int idIndex = cursor.getColumnIndex(FillMeDbHelper.FILLENTRY_COLUMN_ID);
+        int dateIndex = cursor.getColumnIndex(FillMeDbHelper.FILLENTRY_COLUMN_DATE);
+        int mileageIndex = cursor.getColumnIndex(FillMeDbHelper.FILLENTRY_COLUMN_MILEAGE);
+        int literIndex = cursor.getColumnIndex(FillMeDbHelper.FILLENTRY_COLUMN_LITER);
+        int priceIndex = cursor.getColumnIndex(FillMeDbHelper.FILLENTRY_COLUMN_PRICE);
+        int statusIndex = cursor.getColumnIndex(FillMeDbHelper.FILLENTRY_COLUMN_STATUS);
 
         int id = cursor.getInt(idIndex);
         String date = cursor.getString(dateIndex);

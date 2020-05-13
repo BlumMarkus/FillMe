@@ -2,7 +2,6 @@ package de.me.fill.mblum.android.fillme;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Calendar;
 
@@ -340,7 +341,7 @@ public class NewEntryActivity extends AppCompatActivity {
 
         if (insertion) {
             setHeightOf(layout, 0);
-            number.setBackgroundResource(R.drawable.radius_layout_rounded_green);
+            number.setBackgroundResource(R.drawable.shape_radius_layout_rounded_green);
 
             if (!step.equals(INPUT_STEP_DATE)) {
                 unit.setVisibility(View.VISIBLE);
@@ -348,7 +349,7 @@ public class NewEntryActivity extends AppCompatActivity {
             }
         } else {
             setHeightOf(layout, LinearLayout.LayoutParams.WRAP_CONTENT);
-            number.setBackgroundResource(R.drawable.radius_layout_rounded);
+            number.setBackgroundResource(R.drawable.shape_radius_layout_rounded);
 
             if (!step.equals(INPUT_STEP_DATE)) {
                 input_field.requestFocus();
