@@ -197,7 +197,8 @@ public class SettingsActivity extends AppCompatActivity {
             Uri uri = intent.getData();
             File myFile = new File(uri.getPath());
             String filepath = myFile.getAbsolutePath();
-            filepath = filepath.replace("/document/raw:", "");
+            filepath = filepath.substring(filepath.indexOf(":")+1);
+            filepath.trim();
 
             File csvFile = new File(filepath);
             FileReader reader = new FileReader(csvFile);
