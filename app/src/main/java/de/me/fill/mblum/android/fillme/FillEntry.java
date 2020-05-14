@@ -15,19 +15,21 @@ class FillEntry {
     private double liter;
     private double price;
     private int status;
+    private int lastChanged;
     private int drivenMileage;
 
     /**
      * Constructor with id.
      *
-     * @param id      The object ID
-     * @param date    The added date
-     * @param mileage The current mileage of add date
-     * @param liter   The liter amount
-     * @param price   The price
-     * @param status  Status if user input or auto generated
+     * @param id          The object ID
+     * @param date        The added date
+     * @param mileage     The current mileage of add date
+     * @param liter       The liter amount
+     * @param price       The price
+     * @param status      Status if user input or auto generated
+     * @param lastChanged dateTime for last changed
      */
-    FillEntry(int id, String date, int mileage, double liter, double price, int status) {
+    FillEntry(int id, String date, int mileage, double liter, double price, int status, int lastChanged) {
 
         this.id = id;
         this.date = date;
@@ -35,25 +37,28 @@ class FillEntry {
         this.liter = liter;
         this.price = price;
         this.status = status;
+        this.lastChanged = lastChanged;
         this.drivenMileage = 0;
     }
 
     /**
      * Constructor without id.
      *
-     * @param date    The added date
-     * @param mileage The current mileage of add date
-     * @param liter   The liter amount
-     * @param price   The price
-     * @param status  Status if user input or auto generated
+     * @param date        The added date
+     * @param mileage     The current mileage of add date
+     * @param liter       The liter amount
+     * @param price       The price
+     * @param status      Status if user input or auto generated
+     * @param lastChanged dateTime for last changed
      */
-    FillEntry(String date, int mileage, double liter, double price, int status) {
+    FillEntry(String date, int mileage, double liter, double price, int status, int lastChanged) {
 
         this.date = date;
         this.mileage = mileage;
         this.liter = liter;
         this.price = price;
         this.status = status;
+        this.lastChanged = lastChanged;
         this.drivenMileage = 0;
     }
 
@@ -185,7 +190,7 @@ class FillEntry {
      *
      * @return driven mileage
      */
-    public int getDrivenMileage() {
+    int getDrivenMileage() {
         return drivenMileage;
     }
 
@@ -194,7 +199,11 @@ class FillEntry {
      *
      * @param drivenMileage last
      */
-    public void setDrivenMileage(int drivenMileage) {
+    void setDrivenMileage(int drivenMileage) {
         this.drivenMileage = drivenMileage;
+    }
+
+    int getLastChanged() {
+        return lastChanged;
     }
 }

@@ -34,6 +34,7 @@ public class MenuActivity extends AppCompatActivity {
 
     private LayoutHelper layoutHelper;
     private FillEntriesHelper fillEntriesHelper;
+    private DataSource dataSource;
 
     private LinearLayout layout_menu_lastActivity_1;
     private LinearLayout layout_menu_lastActivity_2;
@@ -42,8 +43,8 @@ public class MenuActivity extends AppCompatActivity {
     private TextView tv_menu_last_entry_mileage;
     private TextView tv_menu_last_entry_date;
 
-    DecimalFormat consumptionFormat;
-    DecimalFormat literPriceFormat;
+    private DecimalFormat consumptionFormat;
+    private DecimalFormat literPriceFormat;
 
     private int doublePositiveDrawable;
     private int positiveDrawable;
@@ -51,15 +52,13 @@ public class MenuActivity extends AppCompatActivity {
     private int negativeDrawable;
     private int doubleNegativeDrawable;
 
+    private ArrayList<FillEntry> initialAllEntries;
+    private int initialEntriesSize;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
         ImageButton btn_menu_add_new_entry = findViewById(R.id.btn_menu_add_new_entry);
         ImageButton btn_menu_settings = findViewById(R.id.btn_menu_settings);
@@ -79,22 +78,22 @@ public class MenuActivity extends AppCompatActivity {
         negativeDrawable = R.drawable.negative_circle_red;
         doubleNegativeDrawable = R.drawable.negative_double_circle_red;
 
-        FillMeDataSource dataSource = new FillMeDataSource(this);
-        ArrayList<FillEntry> allEntries = dataSource.getAllEntries(true);
+        dataSource = new DataSource(this);
+        initialAllEntries = dataSource.getAllEntries(true);
 
         consumptionFormat = new DecimalFormat("0.00");
         literPriceFormat = new DecimalFormat("0.000");
 
         layoutHelper = new LayoutHelper();
 
-        int allEntriesSize = allEntries.size();
+        initialEntriesSize = initialAllEntries.size();
 
         fillEntriesHelper = new FillEntriesHelper();
-        allEntries = fillEntriesHelper.setOptionalFillEntryValues(allEntries);
+        initialAllEntries = fillEntriesHelper.setOptionalFillEntryValues(initialAllEntries);
 
-        updateStatistic(allEntries);
-        updateLastEntryData(allEntries, allEntriesSize);
-        updateLastActivityList(allEntries, allEntriesSize);
+        updateStatistic(initialAllEntries);
+        updateLastEntryData(initialAllEntries, initialEntriesSize);
+        updateLastActivityList(initialAllEntries, initialEntriesSize);
 
         btn_menu_add_new_entry.setOnClickListener(new OnClickListener() {
             @Override
@@ -129,6 +128,34 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        ArrayList<FillEntry> updatedAllEntries = dataSource.getAllEntries(true);
+        updatedAllEntries = fillEntriesHelper.setOptionalFillEntryValues(updatedAllEntries);
+        int updatedListSize = updatedAllEntries.size();
+
+        boolean needsToBeUpdated = false;
+
+        if (updatedListSize != initialEntriesSize) {
+            needsToBeUpdated = true;
+        } else {
+            for (int counter = 0; counter < updatedListSize; counter++) {
+                if (updatedAllEntries.get(counter).getLastChanged() != initialAllEntries.get(counter).getLastChanged()) {
+                    needsToBeUpdated = true;
+                    break;
+                }
+            }
+        }
+
+        if (needsToBeUpdated) {
+            updateStatistic(updatedAllEntries);
+            updateLastEntryData(updatedAllEntries, updatedListSize);
+            updateLastActivityList(updatedAllEntries, updatedListSize);
+        }
+    }
+
     /**
      * Displays the last entries in menu.
      *
@@ -159,8 +186,8 @@ public class MenuActivity extends AppCompatActivity {
         Date now = Calendar.getInstance().getTime();
         Calendar calcCalendar = Calendar.getInstance();
         calcCalendar.setTime(now);
-        // get last 12 months
-        calcCalendar.add(Calendar.MONTH, -12);
+        // get last 11 months + current
+        calcCalendar.add(Calendar.MONTH, -11);
 
         List<DataEntry> chartData = new ArrayList<>();
 

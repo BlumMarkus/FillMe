@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Calendar;
+
 public class EditEntryActivity extends AppCompatActivity {
 
     private final String LOG_TAG = "EditEntryActivity";
@@ -40,7 +42,7 @@ public class EditEntryActivity extends AppCompatActivity {
     private FillEntry fillEntry;
     private FillEntry clickedEntry;
 
-    private FillMeDataSource fmds;
+    private DataSource fmds;
 
     private AlertDialog.Builder deleteAlert;
 
@@ -61,8 +63,8 @@ public class EditEntryActivity extends AppCompatActivity {
             clickedItemId = Integer.parseInt((String) bundle.get("clickedItemID"));
         }
 
-        fmds = new FillMeDataSource(this);
-        clickedEntry = fmds.getEntriesById(clickedItemId);
+        fmds = new DataSource(this);
+        clickedEntry = fmds.getEntryById(clickedItemId);
 
         tv_date = (TextView) findViewById(R.id.tv_Date);
         tv_mileage = (EditText) findViewById(R.id.put_Mileage);
@@ -95,7 +97,7 @@ public class EditEntryActivity extends AppCompatActivity {
                 Log.d(LOG_TAG, "yearCal: " + yearCal + ", monthCal: " + monthCal + ", dayCal: " + dayCal);
 
 
-                DatePickerDialog dialog = new DatePickerDialog(EditEntryActivity.this,android.R.style.Theme_DeviceDefault_Light_Dialog,mDateSetListener,yearCal,monthCal,dayCal);
+                DatePickerDialog dialog = new DatePickerDialog(EditEntryActivity.this, android.R.style.Theme_DeviceDefault_Light_Dialog, mDateSetListener, yearCal, monthCal, dayCal);
                 dialog.show();
             }
         });
@@ -149,7 +151,8 @@ public class EditEntryActivity extends AppCompatActivity {
                 double price = Double.parseDouble(tv_amount.getText().toString());
                 int status = 1;
 
-                fillEntry = new FillEntry(id, date, mileage, liter, price, status);
+                int now = (int) Calendar.getInstance().getTime().getTime();
+                fillEntry = new FillEntry(id, date, mileage, liter, price, status, now);
                 fmds.updateData(fillEntry);
                 Log.d(LOG_TAG, "Daten erolfgreich abgeändert");
                 finish();

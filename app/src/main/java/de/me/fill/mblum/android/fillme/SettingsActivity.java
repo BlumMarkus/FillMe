@@ -26,10 +26,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private FillMeDataSource dataSource;
+    private DataSource dataSource;
     private StringBuilder data;
 
     public static final int rquestcode = 1;
@@ -50,7 +51,7 @@ public class SettingsActivity extends AppCompatActivity {
         Button btn_settings_exportData = findViewById(R.id.btn_settings_exportData);
         Button btn_settings_importData = findViewById(R.id.btn_settings_importData);
 
-        dataSource = new FillMeDataSource(this);
+        dataSource = new DataSource(this);
 
         btn_settings_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +147,7 @@ public class SettingsActivity extends AppCompatActivity {
         ArrayList<FillEntry> list = dataSource.getAllEntries(false);
 
         //Header
-        data.append(String.format("%s,%s,%s,%s,%s", FillMeDbHelper.FILLENTRY_COLUMN_DATE, FillMeDbHelper.FILLENTRY_COLUMN_MILEAGE, FillMeDbHelper.FILLENTRY_COLUMN_LITER, FillMeDbHelper.FILLENTRY_COLUMN_PRICE, FillMeDbHelper.FILLENTRY_COLUMN_STATUS));
+        data.append(String.format("%s,%s,%s,%s,%s", DatabaseHelper.FILLENTRY_COLUMN_DATE, DatabaseHelper.FILLENTRY_COLUMN_MILEAGE, DatabaseHelper.FILLENTRY_COLUMN_LITER, DatabaseHelper.FILLENTRY_COLUMN_PRICE, DatabaseHelper.FILLENTRY_COLUMN_STATUS));
 
         //data
         for (FillEntry entry : list) {
@@ -216,9 +217,11 @@ public class SettingsActivity extends AppCompatActivity {
             String line;
             buffer.readLine();
 
+            int now = (int) Calendar.getInstance().getTime().getTime();
+
             while ((line = buffer.readLine()) != null) {
                 String[] tokens = line.split(",");
-                FillEntry fillEntry = new FillEntry(tokens[0], Integer.parseInt(tokens[1]), Double.parseDouble(tokens[2]), Double.parseDouble(tokens[3]), Integer.parseInt(tokens[4]));
+                FillEntry fillEntry = new FillEntry(tokens[0], Integer.parseInt(tokens[1]), Double.parseDouble(tokens[2]), Double.parseDouble(tokens[3]), Integer.parseInt(tokens[4]), now);
                 dataSource.writeEntry(fillEntry);
             }
             Toast.makeText(this, "Datenbank wurde erfolreich Importiert!", Toast.LENGTH_SHORT).show();

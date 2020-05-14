@@ -21,7 +21,7 @@ import java.util.Calendar;
 public class NewEntryActivity extends AppCompatActivity {
 
     FillEntry fillEntryObject;
-    FillMeDataSource fmds;
+    DataSource fmds;
     private String LOGTAG = "newEntryActivity";
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -113,7 +113,7 @@ public class NewEntryActivity extends AppCompatActivity {
         layout_newEntry_price_inputs = findViewById(R.id.layout_newEntry_price_inputs);
         layout_newEntry_liter_inputs = findViewById(R.id.layout_newEntry_liter_inputs);
 
-        fmds = new FillMeDataSource(this);
+        fmds = new DataSource(this);
 
         dateInputConfirmed = false;
         mileageInputConfirmed = true;
@@ -173,7 +173,8 @@ public class NewEntryActivity extends AppCompatActivity {
                     price = Double.parseDouble(priceInput);
                     liter = Double.parseDouble(literInput);
 
-                    fillEntryObject = new FillEntry(dateInput, mileage, liter, price, 1);
+                    int now = (int) Calendar.getInstance().getTime().getTime();
+                    fillEntryObject = new FillEntry(dateInput, mileage, liter, price, 1, now);
                     boolean result = fmds.writeEntry(fillEntryObject);
 
                     if (result) {

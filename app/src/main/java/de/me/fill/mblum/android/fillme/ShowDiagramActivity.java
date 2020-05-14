@@ -24,7 +24,6 @@ import java.util.Collections;
 
 public class ShowDiagramActivity extends AppCompatActivity {
 
-    private FillMeDataSource fmds;
     private ArrayList<FillEntry> list;
 
     @Override
@@ -38,8 +37,8 @@ public class ShowDiagramActivity extends AppCompatActivity {
         setLineChartStyle(mChartConsumption, "Liter pro 100 Kilometer");
         setLineChartStyle(mChartCosts, "€ pro Liter");
 
-        fmds = new FillMeDataSource(this);
-        list = fmds.getAllEntries(true);
+        DataSource dataSource = new DataSource(this);
+        list = dataSource.getAllEntries(true);
         Collections.reverse(list);
 
         fillLpKChart(mChartConsumption);

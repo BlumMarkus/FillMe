@@ -5,16 +5,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-/**
- * Created by mblum on 11.07.2017.
- */
+import java.util.Calendar;
 
-public class FillMeDbHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
 
     private String logTag = "FillMeDbHelper";
 
     private static final String DB_NAME = "databaseVI.db"; //später ,wenn funktionsbereit: database.db
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     static final String TABLE_FILLENTRY = "fillentries"; //entries
     static final String FILLENTRY_COLUMN_ID = "fill_id";
@@ -23,6 +21,7 @@ public class FillMeDbHelper extends SQLiteOpenHelper {
     static final String FILLENTRY_COLUMN_LITER = "liter";
     static final String FILLENTRY_COLUMN_PRICE = "price";
     static final String FILLENTRY_COLUMN_STATUS = "status";
+    static final String FILLENTRY_COLUMN_LASTCHANGED = "last_changed";
 
     static final String TABLE_SETTINGS = "settings";
     static final String SETTINGS_COLUMN_ID = "idSettings";
@@ -36,9 +35,10 @@ public class FillMeDbHelper extends SQLiteOpenHelper {
                     FILLENTRY_COLUMN_MILEAGE + " INTEGER NOT NULL, " +
                     FILLENTRY_COLUMN_LITER + " REAL NOT NULL, " +
                     FILLENTRY_COLUMN_PRICE + " REAL NOT NULL, " +
-                    FILLENTRY_COLUMN_STATUS + " INTEGER NOT NULL)"; // 1 = Usereingabe | 0 = Generiert
+                    FILLENTRY_COLUMN_STATUS + " INTEGER NOT NULL, " +
+                    FILLENTRY_COLUMN_LASTCHANGED + " INTEGER NOT NULL)";
 
-    FillMeDbHelper(Context context) {
+    DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
@@ -55,7 +55,33 @@ public class FillMeDbHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int currentVersion, int newVersion) {
 
+        if (currentVersion == 1 && newVersion == 2) {
+            // Added new table named settings with columns idSetting, name, value
+            // Added new column for table fillEntry
+
+            long now = Calendar.getInstance().getTime().getTime();
+
+            String sqlNewTableAndColumns =
+                    "CREATE TABLE " + TABLE_SETTINGS + "(" +
+                            SETTINGS_COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                            SETTINGS_COLUMN_NAME + " TEXT NOT NULL, " +
+                            SETTINGS_COLUMN_VALUE + " TEXT NOT NULL);";
+
+            String sqlNewColumn =
+                    "ALTER TABLE " + TABLE_FILLENTRY +
+                            " ADD " + FILLENTRY_COLUMN_LASTCHANGED + " INTEGER NOT NULL DEFAULT " + now + ";";
+
+            try {
+                Log.d(logTag, "Tabellenupgrade v1 auf v2 wird mit folgenden SQL-Befehl durchgeführt: " + sqlNewTableAndColumns);
+                sqLiteDatabase.execSQL(sqlNewTableAndColumns);
+                Log.d(logTag, "Tabellenupgrade v1 auf v2 wird mit folgenden SQL-Befehl durchgeführt: " + sqlNewColumn);
+                sqLiteDatabase.execSQL(sqlNewColumn);
+                Log.d(logTag, "Tabellenupgrade v1 auf v2 wurde durchgeführt.");
+            } catch (Exception ex) {
+                Log.d(logTag, "Anlegen der Tabelle fehlgeschlagen: " + ex.getMessage());
+            }
+        }
     }
 }
