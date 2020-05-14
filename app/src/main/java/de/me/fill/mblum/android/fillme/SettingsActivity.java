@@ -200,10 +200,10 @@ public class SettingsActivity extends AppCompatActivity {
             Uri uri = intent.getData();
             String filePath = uri.getPath();
             filePath = filePath.substring(filePath.indexOf(":") + 1);
+            String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath();
 
             // Quick and dirty...
-            if (Build.VERSION.SDK_INT < 29) {
-                String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath().replace('/' + filePath, "");
+            if (Build.VERSION.SDK_INT < 29 && !filePath.contains(absolutePath)) {
                 filePath = absolutePath + '/' + filePath;
             }
 
