@@ -147,11 +147,11 @@ public class SettingsActivity extends AppCompatActivity {
         ArrayList<FillEntry> list = dataSource.getAllEntries(false);
 
         //Header
-        data.append(String.format("%s,%s,%s,%s,%s", DatabaseHelper.FILLENTRY_COLUMN_DATE, DatabaseHelper.FILLENTRY_COLUMN_MILEAGE, DatabaseHelper.FILLENTRY_COLUMN_LITER, DatabaseHelper.FILLENTRY_COLUMN_PRICE, DatabaseHelper.FILLENTRY_COLUMN_STATUS));
+        data.append(String.format("%s,%s,%s,%s,%s,%s", DatabaseHelper.FILLENTRY_COLUMN_DATE, DatabaseHelper.FILLENTRY_COLUMN_MILEAGE, DatabaseHelper.FILLENTRY_COLUMN_LITER, DatabaseHelper.FILLENTRY_COLUMN_PRICE, DatabaseHelper.FILLENTRY_COLUMN_STATUS, DatabaseHelper.FILLENTRY_COLUMN_LASTCHANGED));
 
         //data
         for (FillEntry entry : list) {
-            String fillEntryString = String.format("\n%s,%s,%s,%s,%s", entry.getStringDate(), entry.getMileage(), entry.getLiter(), entry.getPrice(), entry.getStatus());
+            String fillEntryString = String.format("\n%s,%s,%s,%s,%s,%s", entry.getStringDate(), entry.getMileage(), entry.getLiter(), entry.getPrice(), entry.getStatus(), entry.getLastChanged());
             data.append(fillEntryString);
         }
 
@@ -160,8 +160,7 @@ public class SettingsActivity extends AppCompatActivity {
                 generateCSVOnSD(this, "Export_Database.csv", data);
             } else {
                 // Request permission from the user
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
             }
         } else {
             Toast.makeText(this, "Sie benötigen ein SD-Karte", Toast.LENGTH_SHORT).show();
