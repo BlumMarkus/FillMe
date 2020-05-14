@@ -171,12 +171,6 @@ class FillEntriesHelper {
             fillEntryList.get(i).setDrivenMileage(drivenMileage);
         }
 
-        // Check if mileage of last Entry can be driven mileage => 50 % on top of max
-        int lastObjectMileage = fillEntryList.get(listSize - 1).getMileage();
-        if (lastObjectMileage < (maxDrivenMileage * 1.5)) {
-            fillEntryList.get(listSize - 1).setDrivenMileage(lastObjectMileage);
-        }
-
         return fillEntryList;
     }
 
@@ -192,7 +186,7 @@ class FillEntriesHelper {
 
         for (FillEntry fillEntryObject : fillEntryList) {
             int objectYear = fillEntryObject.getDate().get(Calendar.YEAR);
-            int objectMonth = fillEntryObject.getDate().get(Calendar.MONTH);
+            int objectMonth = fillEntryObject.getDate().get(Calendar.MONTH) + 1;
 
             if (objectYear == year && objectMonth == month) {
                 monthList.add(fillEntryObject);

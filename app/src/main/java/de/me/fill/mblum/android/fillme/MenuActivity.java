@@ -159,6 +159,7 @@ public class MenuActivity extends AppCompatActivity {
         Date now = Calendar.getInstance().getTime();
         Calendar calcCalendar = Calendar.getInstance();
         calcCalendar.setTime(now);
+        // get last 12 months
         calcCalendar.add(Calendar.MONTH, -12);
 
         List<DataEntry> chartData = new ArrayList<>();
@@ -167,8 +168,8 @@ public class MenuActivity extends AppCompatActivity {
         double value;
 
         for (int i = 0; i < 12; i++) {
-            xAxisName = dateHelper.getMonthShort(calcCalendar.get(Calendar.MONTH));
-            value = fillEntriesHelper.getConsumptionAvgMonth(calcCalendar.get(Calendar.MONTH), calcCalendar.get(Calendar.YEAR), allEntriesList);
+            xAxisName = dateHelper.getMonthShort(calcCalendar.get(Calendar.MONTH) + 1);
+            value = fillEntriesHelper.getConsumptionAvgMonth(calcCalendar.get(Calendar.MONTH) + 1, calcCalendar.get(Calendar.YEAR), allEntriesList);
 
             chartData.add(new ValueDataEntry(xAxisName, value));
 
