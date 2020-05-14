@@ -201,8 +201,10 @@ public class SettingsActivity extends AppCompatActivity {
             String filePath = uri.getPath();
             filePath = filePath.substring(filePath.indexOf(":") + 1);
 
+            // Quick and dirty...
             if (Build.VERSION.SDK_INT < 29) {
-                filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + '/' + filePath;
+                String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath().replace('/' + filePath, "");
+                filePath = absolutePath + '/' + filePath;
             }
 
             File csvFile = new File(filePath);
