@@ -69,7 +69,7 @@ class FillEntry {
         Calendar date = Calendar.getInstance();
 
         int year = Integer.parseInt(this.date.substring(6, 10));
-        int month = Integer.parseInt(this.date.substring(3, 5));
+        int month = Integer.parseInt(this.date.substring(3, 5)) - 1;
         int day = Integer.parseInt(this.date.substring(0, 2));
 
         date.set(year, month, day);
