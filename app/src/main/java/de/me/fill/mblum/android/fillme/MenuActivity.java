@@ -34,7 +34,7 @@ public class MenuActivity extends AppCompatActivity {
 
     private LayoutHelper layoutHelper;
     private FillEntriesHelper fillEntriesHelper;
-    private DataSource dataSource;
+    private FillEntryDataSource dataSource;
 
     private LinearLayout layout_menu_lastActivity_1;
     private LinearLayout layout_menu_lastActivity_2;
@@ -78,7 +78,7 @@ public class MenuActivity extends AppCompatActivity {
         negativeDrawable = R.drawable.negative_circle_red;
         doubleNegativeDrawable = R.drawable.negative_double_circle_red;
 
-        dataSource = new DataSource(this);
+        dataSource = new FillEntryDataSource(this);
         initialAllEntries = dataSource.getAllEntries(true);
 
         consumptionFormat = new DecimalFormat("0.00");
@@ -153,6 +153,7 @@ public class MenuActivity extends AppCompatActivity {
             updateStatistic(updatedAllEntries);
             updateLastEntryData(updatedAllEntries, updatedListSize);
             updateLastActivityList(updatedAllEntries, updatedListSize);
+            initialAllEntries = updatedAllEntries;
         }
     }
 

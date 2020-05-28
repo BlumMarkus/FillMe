@@ -42,7 +42,7 @@ public class EditEntryActivity extends AppCompatActivity {
     private FillEntry fillEntry;
     private FillEntry clickedEntry;
 
-    private DataSource fmds;
+    private FillEntryDataSource fmds;
 
     private AlertDialog.Builder deleteAlert;
 
@@ -63,7 +63,7 @@ public class EditEntryActivity extends AppCompatActivity {
             clickedItemId = Integer.parseInt((String) bundle.get("clickedItemID"));
         }
 
-        fmds = new DataSource(this);
+        fmds = new FillEntryDataSource(this);
         clickedEntry = fmds.getEntryById(clickedItemId);
 
         tv_date = (TextView) findViewById(R.id.tv_Date);

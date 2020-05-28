@@ -66,7 +66,8 @@
     <string name="str_newEntry_dateToday">Heute</string>
     <string name="str_newEntry_dateSelect">Kalender</string>
     <string name="str_newEntry_mileageTitle">Kilometerstand:</string>
-    <string name="str_newEntry_costTitle">Preis:</string>
+    <string name="str_newEntry_literPriceTitle">Literpreis:</string>
+    <string name="str_newEntry_fullPriceTitle">Gesamtpreis:</string>
     <string name="str_newEntry_literTitle">Liter:</string>
     <string name="str_counter_1">1</string>
     <string name="str_counter_2">2</string>
@@ -75,6 +76,13 @@
 
     <!-- Setting Strings -->
     <string name="str_settings_menuDisplay_title">Menü Anzeige</string>
+    <string name="str_settings_menuDisplay_changeStatistic">Statistik in der Übersicht:</string>
+    <string name="str_settings_menuDisplay_lastActivityNumber">Anzahl letzte Aktivitäten:</string>
+    <string name="str_settings_addEntry_title">Dateneintrag</string>
+    <string name="str_settings_addEntry_literFormat">Litereingabe:</string>
+    <string name="str_settings_addEntry_literFormat_literPrice">Literpreis</string>
+    <string name="str_settings_addEntry_literFormat_fullPrice">Gesamtpreis</string>
+    <string name="str_settings_addEntry_literFormat_both">Beides</string>
     <string name="str_settings_dataExportImport_title">Daten export/import</string>
     <string name="str_settings_dataExportImport_overwriteData">Daten überschreiben</string>
     <string name="str_exportData">Daten exportieren</string>

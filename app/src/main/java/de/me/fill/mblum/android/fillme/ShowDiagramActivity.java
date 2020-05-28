@@ -37,7 +37,7 @@ public class ShowDiagramActivity extends AppCompatActivity {
         setLineChartStyle(mChartConsumption, "Liter pro 100 Kilometer");
         setLineChartStyle(mChartCosts, "€ pro Liter");
 
-        DataSource dataSource = new DataSource(this);
+        FillEntryDataSource dataSource = new FillEntryDataSource(this);
         list = dataSource.getAllEntries(true);
         Collections.reverse(list);
 

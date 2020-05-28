@@ -27,7 +27,7 @@ public class ShowEntriesActivity extends AppCompatActivity {
         ListView lv_showEntries_all = findViewById(R.id.lv_showEntries_all);
         ImageButton btn_newEntry_cancel = findViewById(R.id.btn_showEntries_cancel);
 
-        DataSource fmds = new DataSource(this);
+        FillEntryDataSource fmds = new FillEntryDataSource(this);
         ArrayList<FillEntry> list = fmds.getAllEntries(true);
 
         ShowEntriesListViewAdapter showEntriesListViewAdapter = new ShowEntriesListViewAdapter(this, list);

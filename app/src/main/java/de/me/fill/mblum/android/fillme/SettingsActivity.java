@@ -12,6 +12,8 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,10 +31,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements DialogSingleChoice.DialogSingleChoiceListener {
 
-    private DataSource dataSource;
+    private FillEntryDataSource fillEntryDataSource;
     private StringBuilder data;
+
+    private SettingsDataSource settingsDataSource;
+    private Setting menuStatisticSettingObject;
+    private Setting lastActivityNumberSettingObject;
+    private Setting literformatSettingObject;
 
     public static final int rquestcode = 1;
 
@@ -50,8 +58,21 @@ public class SettingsActivity extends AppCompatActivity {
         ImageButton btn_settings_cancel = findViewById(R.id.btn_settings_cancel);
         Button btn_settings_exportData = findViewById(R.id.btn_settings_exportData);
         Button btn_settings_importData = findViewById(R.id.btn_settings_importData);
+        LinearLayout layout_settings_changeLiterEntry = findViewById(R.id.layout_settings_changeLiterEntry);
+        TextView tv_settings_changeStatistic_value = findViewById(R.id.tv_settings_changeStatistic_value);
+        TextView tv_settings_changeStatistic_lastActivityNumber = findViewById(R.id.tv_settings_changeStatistic_lastActivityNumber);
+        TextView tv_settings_changeLiterEntry_value = findViewById(R.id.tv_settings_changeLiterEntry_value);
 
-        dataSource = new DataSource(this);
+        settingsDataSource = new SettingsDataSource(this);
+        menuStatisticSettingObject = settingsDataSource.getByName(SettingsDataSource.SETTING_MENUSTATISTIC);
+        lastActivityNumberSettingObject = settingsDataSource.getByName(SettingsDataSource.SETTING_LASTACTIVITY_NUMBEROFENTRIES);
+        literformatSettingObject = settingsDataSource.getByName(SettingsDataSource.SETTING_LITERFORMAT);
+
+        tv_settings_changeStatistic_value.setText(menuStatisticSettingObject.getChoices()[Integer.parseInt(menuStatisticSettingObject.getValue())]);
+        tv_settings_changeStatistic_lastActivityNumber.setText(lastActivityNumberSettingObject.getChoices()[Integer.parseInt(lastActivityNumberSettingObject.getValue())]);
+        tv_settings_changeLiterEntry_value.setText(literformatSettingObject.getChoices()[Integer.parseInt(literformatSettingObject.getValue())]);
+
+        fillEntryDataSource = new FillEntryDataSource(this);
 
         btn_settings_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,19 +81,84 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        // Menu
+        tv_settings_changeStatistic_value.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] choices = menuStatisticSettingObject.getChoices();
+                int indexOfString = Integer.parseInt(menuStatisticSettingObject.getValue());
+
+                String dialogTitle = getString(R.string.str_settings_menuDisplay_changeStatistic);
+
+                DialogFragment dialogSingleChoice = new DialogSingleChoice(dialogTitle, choices, indexOfString, SettingsDataSource.SETTING_MENUSTATISTIC);
+                dialogSingleChoice.show(getSupportFragmentManager(), "menuStatistic Dialog");
+            }
+        });
+
+        tv_settings_changeStatistic_lastActivityNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] choices = lastActivityNumberSettingObject.getChoices();
+                int indexOfString = Integer.parseInt(lastActivityNumberSettingObject.getValue());
+
+                String dialogTitle = getString(R.string.str_settings_menuDisplay_lastActivityNumber);
+
+                DialogFragment dialogSingleChoice = new DialogSingleChoice(dialogTitle, choices, indexOfString, SettingsDataSource.SETTING_LASTACTIVITY_NUMBEROFENTRIES);
+                dialogSingleChoice.show(getSupportFragmentManager(), "lastActivity Dialog");
+            }
+        });
+
+        // Data
+        layout_settings_changeLiterEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] choices = literformatSettingObject.getChoices();
+                int indexOfString = Integer.parseInt(literformatSettingObject.getValue());
+
+                String dialogTitle = getString(R.string.str_settings_addEntry_literFormat);
+
+                DialogFragment dialogSingleChoice = new DialogSingleChoice(dialogTitle, choices, indexOfString, SettingsDataSource.SETTING_LITERFORMAT);
+                dialogSingleChoice.show(getSupportFragmentManager(), "literFormat Dialog");
+            }
+        });
+
+        // Export/Import
         btn_settings_exportData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 exportData();
             }
         });
-
         btn_settings_importData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 importData();
             }
         });
+    }
+
+    @Override
+    public void onPositiveButtonClicked(String[] choicesArray, int clickedPosition, String identifier) {
+        switch (identifier) {
+            case SettingsDataSource.SETTING_MENUSTATISTIC:
+                menuStatisticSettingObject.setValue(String.valueOf(clickedPosition));
+                settingsDataSource.updateByObject(menuStatisticSettingObject);
+                break;
+            case SettingsDataSource.SETTING_LASTACTIVITY_NUMBEROFENTRIES:
+                lastActivityNumberSettingObject.setValue(String.valueOf(clickedPosition));
+                settingsDataSource.updateByObject(lastActivityNumberSettingObject);
+                break;
+            case SettingsDataSource.SETTING_LITERFORMAT:
+                literformatSettingObject.setValue(String.valueOf(clickedPosition));
+                settingsDataSource.updateByObject(literformatSettingObject);
+                break;
+        }
+
+        this.onResume();
+    }
+
+    @Override
+    public void onNegativeButtonClicked() {
     }
 
     @Override
@@ -144,7 +230,7 @@ public class SettingsActivity extends AppCompatActivity {
      */
     private void exportData() {
         data = new StringBuilder();
-        ArrayList<FillEntry> list = dataSource.getAllEntries(false);
+        ArrayList<FillEntry> list = fillEntryDataSource.getAllEntries(false);
 
         //Header
         data.append(String.format("%s,%s,%s,%s,%s,%s", DatabaseHelper.FILLENTRY_COLUMN_DATE, DatabaseHelper.FILLENTRY_COLUMN_MILEAGE, DatabaseHelper.FILLENTRY_COLUMN_LITER, DatabaseHelper.FILLENTRY_COLUMN_PRICE, DatabaseHelper.FILLENTRY_COLUMN_STATUS, DatabaseHelper.FILLENTRY_COLUMN_LASTCHANGED));
@@ -211,7 +297,7 @@ public class SettingsActivity extends AppCompatActivity {
             FileReader reader = new FileReader(csvFile);
             BufferedReader buffer = new BufferedReader(reader);
 
-            dataSource.deleteAllData();
+            fillEntryDataSource.deleteAllData();
 
             String line;
             buffer.readLine();
@@ -221,7 +307,7 @@ public class SettingsActivity extends AppCompatActivity {
             while ((line = buffer.readLine()) != null) {
                 String[] tokens = line.split(",");
                 FillEntry fillEntry = new FillEntry(tokens[0], Integer.parseInt(tokens[1]), Double.parseDouble(tokens[2]), Double.parseDouble(tokens[3]), Integer.parseInt(tokens[4]), now);
-                dataSource.writeEntry(fillEntry);
+                fillEntryDataSource.writeEntry(fillEntry);
             }
             Toast.makeText(this, "Datenbank wurde erfolreich Importiert!", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {

@@ -13,12 +13,12 @@ import java.util.Calendar;
  * Created by mblum on 11.07.2017.
  */
 
-class DataSource {
+class FillEntryDataSource {
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
     private String logTag = "FillMeDataSource";
 
-    DataSource(Context context) {
+    FillEntryDataSource(Context context) {
         dbHelper = new DatabaseHelper(context);
         Log.d(logTag, "DataSource: DbHelper wurde erstellt.");
     }

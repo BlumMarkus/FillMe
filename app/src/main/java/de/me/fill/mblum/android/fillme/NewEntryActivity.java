@@ -21,7 +21,8 @@ import java.util.Calendar;
 public class NewEntryActivity extends AppCompatActivity {
 
     FillEntry fillEntryObject;
-    DataSource fmds;
+    FillEntryDataSource fillEntryDataSource;
+    SettingsDataSource settingsDataSource;
     private String LOGTAG = "newEntryActivity";
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -35,9 +36,11 @@ public class NewEntryActivity extends AppCompatActivity {
     private int currentDateMonth;
     private int currentDateDayOfMonth;
 
-    private EditText input_mileage;
+    private EditText input_newEntry_mileage;
+    private EditText input_newEntry_literPrice;
+    private EditText input_newEntry_fullPrice;
     private EditText input_price;
-    private EditText input_liter;
+    private EditText input_newEntry_liter;
 
     private TextView tv_newEntry_number_date;
     private TextView tv_newEntry_number_mileage;
@@ -71,6 +74,8 @@ public class NewEntryActivity extends AppCompatActivity {
     private final String INPUT_STEP_PRICE = "price";
     private final String INPUT_STEP_LITER = "liter";
 
+    private Setting literFormatSetting;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,10 +95,12 @@ public class NewEntryActivity extends AppCompatActivity {
         Button btn_newEntry_confirm = findViewById(R.id.btn_newEntry_confirm);
         ImageButton btn_newEntry_cancel = findViewById(R.id.btn_newEntry_cancel);
 
+        TextView tv_newEntry_price_title = findViewById(R.id.tv_newEntry_price_title);
+
         layout_newEntry_date_input_buttons = findViewById(R.id.layout_newEntry_date_buttons);
-        input_mileage = findViewById(R.id.input_newEntry_mileage);
+        input_newEntry_mileage = findViewById(R.id.input_newEntry_mileage);
         input_price = findViewById(R.id.input_newEntry_price);
-        input_liter = findViewById(R.id.input_newEntry_liter);
+        input_newEntry_liter = findViewById(R.id.input_newEntry_liter);
 
         tv_newEntry_number_date = findViewById(R.id.tv_newEntry_number_date);
         tv_newEntry_number_mileage = findViewById(R.id.tv_newEntry_number_mileage);
@@ -113,7 +120,12 @@ public class NewEntryActivity extends AppCompatActivity {
         layout_newEntry_price_inputs = findViewById(R.id.layout_newEntry_price_inputs);
         layout_newEntry_liter_inputs = findViewById(R.id.layout_newEntry_liter_inputs);
 
-        fmds = new DataSource(this);
+        fillEntryDataSource = new FillEntryDataSource(this);
+        settingsDataSource = new SettingsDataSource(this);
+
+        literFormatSetting = settingsDataSource.getByName(SettingsDataSource.SETTING_LITERFORMAT);
+        String priceTitle = literFormatSetting.getChoices()[Integer.parseInt(literFormatSetting.getValue())] + ":";
+        tv_newEntry_price_title.setText(priceTitle);
 
         dateInputConfirmed = false;
         mileageInputConfirmed = true;
@@ -132,7 +144,7 @@ public class NewEntryActivity extends AppCompatActivity {
 
                 String value = String.format("%02d", currentDateDayOfMonth) + "." + String.format("%02d", currentDateMonth + 1) + "." + String.format("%02d", currentDateYear);
 
-                changeInputState(true, value, layout_newEntry_date_input_buttons, tv_newEntry_selected_date_field, tv_newEntry_number_date, INPUT_STEP_DATE, input_mileage, tv_newEntry_entered_mileage_unit);
+                changeInputState(true, value, layout_newEntry_date_input_buttons, tv_newEntry_selected_date_field, tv_newEntry_number_date, INPUT_STEP_DATE, input_newEntry_mileage, tv_newEntry_entered_mileage_unit);
                 dateInputConfirmed = true;
             }
         });
@@ -173,9 +185,13 @@ public class NewEntryActivity extends AppCompatActivity {
                     price = Double.parseDouble(priceInput);
                     liter = Double.parseDouble(literInput);
 
+                    if (literFormatSetting.getValue().equals(SettingsDataSource.VALUE_LITERFORMAT_LITERPRICE_DEFAULT)) {
+                        price = price * liter;
+                    }
+
                     int now = (int) Calendar.getInstance().getTime().getTime();
                     fillEntryObject = new FillEntry(dateInput, mileage, liter, price, 1, now);
-                    boolean result = fmds.writeEntry(fillEntryObject);
+                    boolean result = fillEntryDataSource.writeEntry(fillEntryObject);
 
                     if (result) {
                         Toast.makeText(NewEntryActivity.this, "Datenbankeintrag erfolgreich", Toast.LENGTH_SHORT).show();
@@ -192,10 +208,12 @@ public class NewEntryActivity extends AppCompatActivity {
         btn_newEntry_confirm_mileage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                String mileageInput = input_mileage.getText().toString();
+                String mileageInput = input_newEntry_mileage.getText().toString();
 
-                changeInputState(true, mileageInput, layout_newEntry_mileage_inputs, tv_newEntry_entered_mileage_field, tv_newEntry_number_mileage, INPUT_STEP_MILEAGE, input_mileage, tv_newEntry_entered_mileage_unit);
-                mileageInputConfirmed = true;
+                if (!mileageInput.equals("")) {
+                    changeInputState(true, mileageInput, layout_newEntry_mileage_inputs, tv_newEntry_entered_mileage_field, tv_newEntry_number_mileage, INPUT_STEP_MILEAGE, input_newEntry_mileage, tv_newEntry_entered_mileage_unit);
+                    mileageInputConfirmed = true;
+                }
             }
         });
 
@@ -204,26 +222,30 @@ public class NewEntryActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String priceInput = input_price.getText().toString();
 
-                changeInputState(true, priceInput, layout_newEntry_price_inputs, tv_newEntry_entered_price_field, tv_newEntry_number_price, INPUT_STEP_PRICE, input_price, tv_newEntry_entered_price_unit);
-                priceInputConfirmed = true;
+                if (!priceInput.equals("")) {
+                    changeInputState(true, priceInput, layout_newEntry_price_inputs, tv_newEntry_entered_price_field, tv_newEntry_number_price, INPUT_STEP_PRICE, input_price, tv_newEntry_entered_price_unit);
+                    priceInputConfirmed = true;
+                }
             }
         });
 
         btn_newEntry_confirm_liter.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                String literInput = input_liter.getText().toString();
+                String literInput = input_newEntry_liter.getText().toString();
 
-                changeInputState(true, literInput, layout_newEntry_liter_inputs, tv_newEntry_entered_liter_field, tv_newEntry_number_liter, INPUT_STEP_LITER, input_liter, tv_newEntry_entered_liter_unit);
-                literInputConfirmed = true;
+                if (!literInput.equals("")) {
+                    changeInputState(true, literInput, layout_newEntry_liter_inputs, tv_newEntry_entered_liter_field, tv_newEntry_number_liter, INPUT_STEP_LITER, input_newEntry_liter, tv_newEntry_entered_liter_unit);
+                    literInputConfirmed = true;
+                }
             }
         });
 
-        // TestView OnClickListener
+        // TextView OnClickListener
         tv_newEntry_selected_date_field.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeInputState(false, "", layout_newEntry_date_input_buttons, tv_newEntry_selected_date_field, tv_newEntry_number_date, INPUT_STEP_DATE, input_mileage, tv_newEntry_entered_mileage_unit);
+                changeInputState(false, "", layout_newEntry_date_input_buttons, tv_newEntry_selected_date_field, tv_newEntry_number_date, INPUT_STEP_DATE, input_newEntry_mileage, tv_newEntry_entered_mileage_unit);
                 dateInputConfirmed = false;
             }
         });
@@ -231,7 +253,7 @@ public class NewEntryActivity extends AppCompatActivity {
         tv_newEntry_entered_mileage_field.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeInputState(false, "", layout_newEntry_mileage_inputs, tv_newEntry_entered_mileage_field, tv_newEntry_number_mileage, INPUT_STEP_MILEAGE, input_mileage, tv_newEntry_entered_mileage_unit);
+                changeInputState(false, "", layout_newEntry_mileage_inputs, tv_newEntry_entered_mileage_field, tv_newEntry_number_mileage, INPUT_STEP_MILEAGE, input_newEntry_mileage, tv_newEntry_entered_mileage_unit);
                 mileageInputConfirmed = false;
             }
         });
@@ -247,29 +269,28 @@ public class NewEntryActivity extends AppCompatActivity {
         tv_newEntry_entered_liter_field.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeInputState(false, "", layout_newEntry_liter_inputs, tv_newEntry_entered_liter_field, tv_newEntry_number_liter, INPUT_STEP_LITER, input_liter, tv_newEntry_entered_liter_unit);
+                changeInputState(false, "", layout_newEntry_liter_inputs, tv_newEntry_entered_liter_field, tv_newEntry_number_liter, INPUT_STEP_LITER, input_newEntry_liter, tv_newEntry_entered_liter_unit);
                 literInputConfirmed = false;
             }
         });
 
         // OnFocusChange Listener
-        input_mileage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        input_newEntry_mileage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
-                    String mileageInput = input_mileage.getText().toString();
+                    String mileageInput = input_newEntry_mileage.getText().toString();
 
                     btn_newEntry_confirm_mileage.setVisibility(View.INVISIBLE);
-                    setWidthOf(input_mileage, LinearLayout.LayoutParams.MATCH_PARENT);
+                    setWidthOf(input_newEntry_mileage, LinearLayout.LayoutParams.MATCH_PARENT);
 
                     if (!mileageInput.equals("")) {
-                        changeInputState(true, mileageInput, layout_newEntry_mileage_inputs, tv_newEntry_entered_mileage_field, tv_newEntry_number_mileage, INPUT_STEP_MILEAGE, input_mileage, tv_newEntry_entered_mileage_unit);
+                        changeInputState(true, mileageInput, layout_newEntry_mileage_inputs, tv_newEntry_entered_mileage_field, tv_newEntry_number_mileage, INPUT_STEP_MILEAGE, input_newEntry_mileage, tv_newEntry_entered_mileage_unit);
                         mileageInputConfirmed = true;
                     }
                 } else {
                     btn_newEntry_confirm_mileage.setVisibility(View.VISIBLE);
-                    setWidthOf(input_mileage, 0);
-
+                    setWidthOf(input_newEntry_mileage, 0);
                 }
             }
         });
@@ -294,22 +315,22 @@ public class NewEntryActivity extends AppCompatActivity {
             }
         });
 
-        input_liter.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        input_newEntry_liter.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
-                    String literInput = input_liter.getText().toString();
+                    String literInput = input_newEntry_liter.getText().toString();
 
                     btn_newEntry_confirm_liter.setVisibility(View.INVISIBLE);
-                    setWidthOf(input_liter, LinearLayout.LayoutParams.MATCH_PARENT);
+                    setWidthOf(input_newEntry_liter, LinearLayout.LayoutParams.MATCH_PARENT);
 
                     if (!literInput.equals("")) {
-                        changeInputState(true, literInput, layout_newEntry_liter_inputs, tv_newEntry_entered_liter_field, tv_newEntry_number_liter, INPUT_STEP_LITER, input_liter, tv_newEntry_entered_liter_unit);
+                        changeInputState(true, literInput, layout_newEntry_liter_inputs, tv_newEntry_entered_liter_field, tv_newEntry_number_liter, INPUT_STEP_LITER, input_newEntry_liter, tv_newEntry_entered_liter_unit);
                         literInputConfirmed = true;
                     }
                 } else {
                     btn_newEntry_confirm_liter.setVisibility(View.VISIBLE);
-                    setWidthOf(input_liter, 0);
+                    setWidthOf(input_newEntry_liter, 0);
                 }
             }
         });
@@ -321,7 +342,7 @@ public class NewEntryActivity extends AppCompatActivity {
                 month = month + 1;
                 String value = String.format("%02d", dayOfMonth) + "." + String.format("%02d", month) + "." + String.format("%04d", year);
 
-                changeInputState(true, value, layout_newEntry_date_input_buttons, tv_newEntry_selected_date_field, tv_newEntry_number_date, INPUT_STEP_DATE, input_mileage, tv_newEntry_entered_mileage_unit);
+                changeInputState(true, value, layout_newEntry_date_input_buttons, tv_newEntry_selected_date_field, tv_newEntry_number_date, INPUT_STEP_DATE, input_newEntry_mileage, tv_newEntry_entered_mileage_unit);
                 dateInputConfirmed = true;
             }
         };

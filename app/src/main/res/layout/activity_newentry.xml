@@ -297,11 +297,12 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/tv_newEntry_price_title"
                             android:layout_width="wrap_content"
                             android:layout_height="45sp"
                             android:gravity="center_vertical"
                             android:labelFor="@id/input_newEntry_price"
-                            android:text="@string/str_newEntry_costTitle"
+                            android:text=""
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="18sp" />
 
