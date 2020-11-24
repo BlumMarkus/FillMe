@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FillMe.iml" filepath="$PROJECT_DIR$/FillMe.iml" group="FillMe" />
-      <module fileurl="file://$PROJECT_DIR$/app/FillMe-app.iml" filepath="$PROJECT_DIR$/app/FillMe-app.iml" group="FillMe/app" />
-      <module fileurl="file://$PROJECT_DIR$/StudioProjects-FillMe.iml" filepath="$PROJECT_DIR$/StudioProjects-FillMe.iml" group="FillMe" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="FillMe/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FillMe.iml" filepath="$PROJECT_DIR$/.idea/modules/FillMe.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/FillMe.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/FillMe.app.iml" />
     </modules>
   </component>
 </project>

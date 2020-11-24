@@ -24,6 +24,23 @@
     <string name="str_UnitConsumptionCost">€ pro 100 km</string>
     <string name="str_UnitTotalConsumption">l pro 100 km</string>
     <string name="str_UnitTotalConsumptionCost">€ pro 100 km</string>
+    <string name="str_NumberSeparator">.</string>
+
+    <!-- Calendar strings -->
+    <string name="str_monday_full">Montag</string>
+    <string name="str_tuesday_full">Dienstag</string>
+    <string name="str_wednesday_full">Mittwoch</string>
+    <string name="str_thursday_full">Donnerstag</string>
+    <string name="str_friday_full">Freitag</string>
+    <string name="str_saturday_full">Samstag</string>
+    <string name="str_sunday_full">Sonntag</string>
+    <string name="str_monday_short">Mo.</string>
+    <string name="str_tuesday_short">Di.</string>
+    <string name="str_wednesday_short">Mi.</string>
+    <string name="str_thursday_short">Do.</string>
+    <string name="str_friday_short">Fr.</string>
+    <string name="str_saturday_short">Sa.</string>
+    <string name="str_sunday_short">So.</string>
 
     <!-- Titles -->
     <string name="str_newEntry_title">Eintrag hinzufügen</string>
@@ -40,6 +57,11 @@
     <string name="str_accept">bestätigen</string>
     <string name="str_save">speichern</string>
     <string name="str_delete">löschen</string>
+
+    <string name="str_headline_newEntry_date">Wann hast Du getankt?</string>
+    <string name="str_headline_newEntry_mileage">Was sagt der Zähler?</string>
+    <string name="str_headline_newEntry_price">Was hast Du gezahlt?</string>
+    <string name="str_headline_newEntry_liter">Wie viel hast du getankt?</string>
 
     <!-- Button strings -->
     <string name="str_yes">JA</string>

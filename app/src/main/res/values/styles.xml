@@ -8,4 +8,23 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Widget.CalendarView.Custom" parent="android:Widget.CalendarView">
+        <item name="colorAccent">@color/colorPrimaryLight</item>
+        <item name="color">@color/colorBackgroundWhite</item>
+    </style>
+
+    <style name="Widget.AppCompat.EditText.Custom" parent="android:Widget.EditText">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+    <style name="Widget.Material.NumberPicker.Custom" parent="android:Widget.Material.NumberPicker">
+        <item name="android:textSize">40sp</item>
+        <item name="colorControlNormal">@color/colorBackgroundWhite</item>
+    </style>
+
+    <style name="Widget.Material.NumberPicker.HundredthCent" parent="android:Widget.Material.NumberPicker">
+        <item name="android:textSize">25sp</item>
+        <item name="android:gravity">top|center_horizontal</item>
+        <item name="colorControlNormal">@color/colorBackgroundWhite</item>
+    </style>
 </resources>

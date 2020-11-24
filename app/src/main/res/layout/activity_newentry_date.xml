@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_newEntry_complete"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundWhite"
+    android:orientation="vertical"
+    tools:context="de.me.fill.mblum.android.fillme.NewEntryDateActivity">
+
+    <!-- Header Area -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="35sp"
+        android:orientation="horizontal"
+        android:paddingTop="12sp">
+
+        <ImageButton
+            android:id="@+id/btn_newEntryDate_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/str_description_btn_cancel"
+            android:padding="18sp"
+            app:srcCompat="@drawable/arrow_back_icon" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Image"
+            android:padding="8dp"
+            app:srcCompat="@drawable/vector_calendar" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25sp"
+        android:paddingHorizontal="18sp"
+        android:text="@string/str_headline_newEntry_date"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <CalendarView
+        android:id="@+id/calendarView_newEntryDate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dateTextAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:theme="@style/Widget.CalendarView.Custom"
+        android:weekDayTextAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

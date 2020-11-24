@@ -60,6 +60,36 @@ class FillEntryDataSource {
         }
     }
 
+    /**
+     * Returns the last added entry
+     *
+     * @return fillEntry
+     */
+    FillEntry getLastEntry() {
+        Cursor cursor;
+        open();
+
+        String sql = "SELECT " +
+                DatabaseHelper.FILLENTRY_COLUMN_ID + ", " +
+                DatabaseHelper.FILLENTRY_COLUMN_DATE + ", " +
+                DatabaseHelper.FILLENTRY_COLUMN_MILEAGE + ", " +
+                DatabaseHelper.FILLENTRY_COLUMN_LITER + ", " +
+                DatabaseHelper.FILLENTRY_COLUMN_PRICE + ", " +
+                DatabaseHelper.FILLENTRY_COLUMN_STATUS + ", " +
+                DatabaseHelper.FILLENTRY_COLUMN_LASTCHANGED +
+                " FROM " + DatabaseHelper.TABLE_FILLENTRY +
+                " ORDER BY " + DatabaseHelper.FILLENTRY_COLUMN_MILEAGE + " DESC" +
+                " LIMIT 1;";
+        cursor = database.rawQuery(sql, null);
+
+        cursor.moveToFirst();
+        FillEntry fillEntry = cursorToEntry(cursor);
+        cursor.close();
+        close();
+
+        return fillEntry;
+    }
+
     ArrayList<FillEntry> getAllEntries(Boolean isDesc) {
         Cursor cursor;
         ArrayList<FillEntry> list = new ArrayList<>();

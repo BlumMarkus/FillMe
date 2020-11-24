@@ -98,8 +98,9 @@ public class MenuActivity extends AppCompatActivity {
         btn_menu_add_new_entry.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent newEntryActivity = new Intent(MenuActivity.this, NewEntryActivity.class);
+                Intent newEntryActivity = new Intent(MenuActivity.this, NewEntryDateActivity.class);
                 startActivity(newEntryActivity);
+                overridePendingTransition(R.anim.slide_in_bottom_top, R.anim.slide_out_top_bottom);
             }
         });
 

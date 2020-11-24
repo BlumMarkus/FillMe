@@ -2,9 +2,11 @@
 <resources>
     <!-- Primary Colors -->
     <color name="colorPrimary">#1E86E2</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryLight">#5ca3e2</color>
+    <color name="colorPrimaryDark">#0d4170</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorGrey">#DBDBDB</color>
+    <color name="colorSuccess">#2bb673</color>
 
     <!-- Text color -->
     <color name="colorPrimaryText">#616161</color>
